@@ -64,3 +64,12 @@ func AgeGroupBounds(ag AgeGroup) (min, max int) {
 		return 0, 0
 	}
 }
+
+// AgeAtDate calculates age at a given date (standard calculation).
+func AgeAtDate(birthDate, date time.Time) int {
+	years := date.Year() - birthDate.Year()
+	if date.YearDay() < birthDate.YearDay() {
+		years--
+	}
+	return years
+}

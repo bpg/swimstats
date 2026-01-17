@@ -199,3 +199,24 @@ func (e ValidationError) Error() string {
 func NewValidationError(field, message string) ValidationError {
 	return ValidationError{Field: field, Message: message}
 }
+
+// IsValidEvent checks if a string is a valid event code.
+func IsValidEvent(event string) bool {
+	return EventCode(event).IsValid()
+}
+
+// AccessLevel represents the user's permission level.
+type AccessLevel string
+
+const (
+	AccessLevelFull     AccessLevel = "full"
+	AccessLevelViewOnly AccessLevel = "view_only"
+)
+
+// User represents an authenticated user.
+type User struct {
+	ID          string      `json:"id"`
+	Email       string      `json:"email"`
+	Name        string      `json:"name,omitempty"`
+	AccessLevel AccessLevel `json:"access_level"`
+}

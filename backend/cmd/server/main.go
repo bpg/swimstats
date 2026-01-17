@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/bpg/swimstats/backend/internal/api"
+	"github.com/bpg/swimstats/backend/internal/auth"
 	"github.com/bpg/swimstats/backend/internal/store/postgres"
 )
 
@@ -83,11 +84,21 @@ func main() {
 
 	logger.Info("connected to database")
 
+	// Initialize auth provider
+	authConfig := auth.DefaultConfig()
+	if err := authConfig.Validate(); err != nil {
+		logger.Error("invalid auth config", "error", err)
+		os.Exit(1)
+	}
+
+	authProvider, err := auth.NewProvider(ctx, authConfig, logger)
+	if err != nil {
+		logger.Error("failed to create auth provider", "error", err)
+		os.Exit(1)
+	}
+
 	// Create router with dependencies
-	router := api.NewRouter(logger)
-	// TODO: Inject services and auth provider when they're created
-	// router.SetDB(db)
-	// router.SetAuthProvider(authProvider)
+	router := api.NewRouter(logger, authProvider, db.Pool)
 
 	// Create HTTP server
 	server := &http.Server{
