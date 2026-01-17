@@ -1,0 +1,283 @@
+# SwimStats - Swim Progress Tracker
+
+A web application for competitive swimmers to track their times, view personal bests, and visualize their progress over time.
+
+## Features
+
+- 🏊 **Record Swim Times** - Log race results with event, time, and meet details
+- 🏆 **Personal Bests** - Track PBs across all events and course types (25m/50m)
+- 📈 **Progress Charts** - Visualize improvement over time
+- 🎯 **Time Standards** - Compare times against regional/national standards
+- 👥 **Comparison** - Side-by-side comparison with other swimmers
+- 📱 **Responsive** - Works on desktop and mobile
+
+## Tech Stack
+
+**Backend:**
+- Go 1.25+
+- Chi router
+- PostgreSQL with SQLC
+- OIDC authentication (Authentik/Keycloak compatible)
+
+**Frontend:**
+- React 18 with TypeScript
+- Vite for build tooling
+- TailwindCSS for styling
+- React Query for server state
+- Recharts for data visualization
+
+## Prerequisites
+
+- [Go 1.25+](https://go.dev/dl/)
+- [Node.js 18+](https://nodejs.org/)
+- [Docker](https://www.docker.com/) & Docker Compose
+- [golang-migrate](https://github.com/golang-migrate/migrate) CLI (for running migrations manually)
+
+### Installing golang-migrate
+
+```bash
+# macOS
+brew install golang-migrate
+
+# Linux
+curl -L https://github.com/golang-migrate/migrate/releases/download/v4.17.0/migrate.linux-amd64.tar.gz | tar xvz
+sudo mv migrate /usr/local/bin/
+
+# Or use Docker (see below)
+```
+
+## Quick Start (Development Mode)
+
+### 1. Start PostgreSQL
+
+```bash
+# Start the database
+docker-compose up -d postgres
+
+# Wait for it to be healthy
+docker-compose ps
+```
+
+### 2. Run Database Migrations
+
+```bash
+# Option A: Using golang-migrate CLI
+migrate -path backend/migrations \
+  -database "postgres://swimstats:swimstats@localhost:5432/swimstats?sslmode=disable" \
+  up
+
+# Option B: Using Docker Compose (includes migrate service)
+docker-compose --profile migrate up migrate
+```
+
+### 3. Start the Backend
+
+```bash
+cd backend
+
+# Install dependencies
+go mod download
+
+# Run the server in development mode
+ENV=development go run ./cmd/server
+```
+
+The backend will start on `http://localhost:8080`.
+
+### 4. Start the Frontend
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+
+The frontend will start on `http://localhost:5173`.
+
+### 5. Access the Application
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+> **Note:** In development mode (no OIDC configured), the app uses mock authentication. Click "Continue to App" on the login page to enter as a dev user with full access.
+
+## Environment Variables
+
+### Backend
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | `8080` | Server port |
+| `ENV` | `development` | Environment (`development` or `production`) |
+| `DATABASE_URL` | `postgres://swimstats:swimstats@localhost:5432/swimstats?sslmode=disable` | PostgreSQL connection string |
+| `OIDC_ISSUER` | - | OIDC provider URL (required in production) |
+| `OIDC_CLIENT_ID` | - | OAuth2 client ID |
+| `OIDC_CLIENT_SECRET` | - | OAuth2 client secret |
+| `OIDC_REDIRECT_URL` | `http://localhost:5173/auth/callback` | OAuth2 redirect URL |
+| `OIDC_FULL_ACCESS_CLAIM` | `swimstats_admin` | Claim/group for full access |
+
+### Frontend
+
+Create a `.env` file in the `frontend/` directory:
+
+```bash
+# Only needed for production OIDC authentication
+VITE_OIDC_AUTHORITY=https://auth.example.com/application/o/swimstats/
+VITE_OIDC_CLIENT_ID=your-client-id
+VITE_OIDC_REDIRECT_URI=http://localhost:5173/auth/callback
+VITE_OIDC_POST_LOGOUT_REDIRECT_URI=http://localhost:5173/
+```
+
+> **Tip:** Leave these unset in development to use mock authentication.
+
+## Running Tests
+
+### Backend Tests
+
+```bash
+cd backend
+
+# Create test database
+createdb swimstats_test
+
+# Run migrations on test database
+migrate -path migrations \
+  -database "postgres://swimstats:swimstats@localhost:5432/swimstats_test?sslmode=disable" \
+  up
+
+# Run all tests
+go test ./...
+
+# Run tests with verbose output
+go test -v ./...
+
+# Run integration tests only
+go test -v ./tests/integration/...
+```
+
+### Frontend Tests
+
+```bash
+cd frontend
+
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm test -- --watch
+
+# Run tests with UI
+npm run test:ui
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+## Project Structure
+
+```
+swimstats/
+├── backend/
+│   ├── cmd/server/          # Application entrypoint
+│   ├── internal/
+│   │   ├── api/             # HTTP handlers and routes
+│   │   │   ├── handlers/    # Request handlers
+│   │   │   └── middleware/  # HTTP middleware
+│   │   ├── auth/            # OIDC authentication
+│   │   ├── domain/          # Business logic (services)
+│   │   │   ├── meet/        # Meet service
+│   │   │   ├── swimmer/     # Swimmer service
+│   │   │   └── time/        # Time service
+│   │   └── store/           # Data access layer
+│   │       ├── db/          # SQLC generated code
+│   │       ├── postgres/    # Repository implementations
+│   │       └── queries/     # SQL query definitions
+│   ├── migrations/          # Database migrations
+│   └── tests/               # Integration tests
+├── frontend/
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   ├── hooks/           # Custom React hooks
+│   │   ├── pages/           # Page components
+│   │   ├── services/        # API client services
+│   │   ├── stores/          # Zustand state stores
+│   │   ├── types/           # TypeScript types
+│   │   └── utils/           # Utility functions
+│   └── tests/               # Frontend tests
+├── specs/                   # Project specifications
+└── docker-compose.yaml      # Docker Compose config
+```
+
+## Common Commands
+
+```bash
+# Regenerate SQLC types after modifying SQL queries
+cd backend && sqlc generate
+
+# Format Go code
+cd backend && go fmt ./...
+
+# Format frontend code
+cd frontend && npm run format
+
+# Lint frontend
+cd frontend && npm run lint
+
+# Build frontend for production
+cd frontend && npm run build
+
+# Reset database
+docker-compose down -v
+docker-compose up -d postgres
+# Then run migrations again
+```
+
+## API Documentation
+
+The API follows RESTful conventions:
+
+| Endpoint | Methods | Description |
+|----------|---------|-------------|
+| `/api/v1/swimmer` | GET, PUT | Get/update swimmer profile |
+| `/api/v1/meets` | GET, POST | List/create meets |
+| `/api/v1/meets/:id` | GET, PUT, DELETE | Get/update/delete meet |
+| `/api/v1/times` | GET, POST | List/create times |
+| `/api/v1/times/batch` | POST | Create multiple times |
+| `/api/v1/times/:id` | GET, PUT, DELETE | Get/update/delete time |
+| `/api/v1/personal-bests` | GET | Get personal bests |
+
+All endpoints require authentication. In development mode, the backend accepts requests with a mock `Authorization: Bearer dev-token` header or no auth at all (thanks to `ENV=development`).
+
+## Troubleshooting
+
+### Database connection refused
+
+Make sure PostgreSQL is running:
+```bash
+docker-compose ps
+docker-compose logs postgres
+```
+
+### Migration errors
+
+Reset the database and try again:
+```bash
+docker-compose down -v
+docker-compose up -d postgres
+# Wait a few seconds, then run migrations
+```
+
+### Frontend proxy errors
+
+Ensure the backend is running on port 8080 before starting the frontend.
+
+### OIDC errors in production
+
+Verify all OIDC environment variables are correctly set and the OIDC provider is accessible.
+
+## License
+
+MIT
