@@ -159,7 +159,7 @@ export function Home() {
                 </div>
               </Link>
               <Link
-                to="/time-history"
+                to="/times"
                 className="block p-4 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
               >
                 <div className="flex items-center gap-3">

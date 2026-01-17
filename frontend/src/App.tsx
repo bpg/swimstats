@@ -106,6 +106,7 @@ function AuthenticatedApp() {
           <Route path="/meets" element={<Meets />} />
           <Route path="/add-times" element={<AddTimes />} />
           <Route path="/times" element={<TimeHistory />} />
+          <Route path="/time-history" element={<TimeHistory />} />
           <Route path="/personal-bests" element={<PersonalBests />} />
           <Route path="/progress" element={<Progress />} />
           <Route path="/standards" element={<Standards />} />
