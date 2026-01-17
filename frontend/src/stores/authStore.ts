@@ -52,8 +52,9 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'swimstats-auth',
       partialize: (state) => ({
-        // Only persist minimal state - user info will be refreshed on load
+        // Persist auth state and user info for dev mode
         isAuthenticated: state.isAuthenticated,
+        user: state.user,
       }),
     }
   )
