@@ -31,13 +31,14 @@ function createApiClient(): AxiosInstance {
       if (import.meta.env.DEV) {
         const authStore = useAuthStore.getState();
         if (!config.headers.Authorization && authStore.isAuthenticated) {
-          // For dev mode, we might use mock auth
-          const mockUser = JSON.stringify({
+          // For dev mode, we use mock auth
+          // Base64 encode to avoid "Invalid header value char" errors with Vite proxy
+          const mockUser = {
             email: 'dev@swimstats.local',
             name: 'Developer',
             access: authStore.canWrite() ? 'full' : 'view_only',
-          });
-          config.headers['X-Mock-User'] = mockUser;
+          };
+          config.headers['X-Mock-User'] = btoa(JSON.stringify(mockUser));
         }
       }
       return config;

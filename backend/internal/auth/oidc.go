@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log/slog"
@@ -103,8 +104,16 @@ func (p *Provider) VerifyToken(ctx context.Context, rawToken string) (*User, err
 }
 
 // parseDevToken parses a mock token for development.
-// Format: JSON in X-Mock-User header: {"email":"test@example.com","access":"full"}
+// Format: Base64-encoded JSON or plain JSON in X-Mock-User header
+// Example: {"email":"test@example.com","access":"full"}
 func (p *Provider) parseDevToken(rawToken string) (*User, error) {
+	tokenData := rawToken
+
+	// Try to base64 decode first (frontend sends base64 to avoid header encoding issues)
+	if decoded, err := base64.StdEncoding.DecodeString(rawToken); err == nil {
+		tokenData = string(decoded)
+	}
+
 	// Try to parse as JSON
 	var mockUser struct {
 		Email  string `json:"email"`
@@ -112,7 +121,7 @@ func (p *Provider) parseDevToken(rawToken string) (*User, error) {
 		Access string `json:"access"`
 	}
 
-	if err := json.Unmarshal([]byte(rawToken), &mockUser); err != nil {
+	if err := json.Unmarshal([]byte(tokenData), &mockUser); err != nil {
 		// Default mock user if parsing fails
 		return &User{
 			ID:          "dev-user",
