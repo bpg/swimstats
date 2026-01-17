@@ -199,6 +199,7 @@ As a swim parent, I want to import my daughter's historical swim results from on
 - **FR-023**: System MUST allow editing and deleting recorded times
 - **FR-024**: System MUST validate time format and reject invalid entries
 - **FR-025**: System MUST allow optional notes/context for each time entry (e.g., "Regionals", "Time Trial")
+- **FR-026**: System MUST support quick entry workflow optimized for entering multiple times in succession (e.g., after a meet)
 
 **Personal Bests**
 
@@ -215,7 +216,9 @@ As a swim parent, I want to import my daughter's historical swim results from on
 - **FR-043**: System MUST allow editing and deleting time standards
 - **FR-044**: System MUST allow importing time standards from structured data (for convenience when adding Swimming Canada or provincial standards)
 - **FR-045**: System MUST support defining standards for either or both course types (25m/50m)
-- **FR-046**: System MUST include pre-loaded Swimming Canada national time standards (Provincial, Western/Eastern Canadian, Junior National, Senior National) for all age groups and events
+- **FR-046**: System MUST include pre-loaded time standards for all age groups and events:
+  - Swimming Canada national standards (Provincial, Western/Eastern Canadian, Junior National, Senior National)
+  - Swim Ontario provincial standards
 - **FR-047**: System MUST display only standards applicable to the current course context in comparisons
 
 **Comparisons**
@@ -276,12 +279,13 @@ As a swim parent, I want to import my daughter's historical swim results from on
 ### Measurable Outcomes
 
 - **SC-001**: Users can record a new swim time in under 30 seconds
-- **SC-002**: Users can view personal bests for all events on a single screen
-- **SC-003**: Users can create a complete time standard (all events for one age group) in under 5 minutes
-- **SC-004**: Users can see comparison against a standard within 2 clicks from any screen
-- **SC-005**: Progress graphs load and display within 2 seconds for up to 500 recorded times
-- **SC-006**: System correctly identifies personal bests 100% of the time when new times are entered
-- **SC-007**: Age-based standard comparisons correctly apply the swimmer's age at time of swim
-- **SC-008**: All data persists correctly across application restarts with zero data loss
-- **SC-009**: Users can export and re-import all their data without any loss or corruption
-- **SC-010**: New users can understand how to add their first time without external documentation
+- **SC-002**: Users can enter multiple times from a meet (5+ events) in under 3 minutes using quick entry
+- **SC-003**: Users can view personal bests for all events on a single screen
+- **SC-004**: Users can create a complete time standard (all events for one age group) in under 5 minutes
+- **SC-005**: Users can see comparison against a standard within 2 clicks from any screen
+- **SC-006**: Progress graphs load and display within 2 seconds for up to 500 recorded times
+- **SC-007**: System correctly identifies personal bests 100% of the time when new times are entered
+- **SC-008**: Age-based standard comparisons correctly apply the swimmer's age at time of swim
+- **SC-009**: All data persists correctly across application restarts with zero data loss
+- **SC-010**: Users can export and re-import all their data without any loss or corruption
+- **SC-011**: New users can understand how to add their first time without external documentation
