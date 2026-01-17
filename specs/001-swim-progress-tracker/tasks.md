@@ -140,20 +140,20 @@
 - [X] T068 [US1] Create useSwimmer hook in frontend/src/hooks/useSwimmer.ts (React Query)
 - [X] T069 [US1] Create useMeets hook in frontend/src/hooks/useMeets.ts (React Query)
 - [X] T070 [US1] Create useTimes hook in frontend/src/hooks/useTimes.ts (React Query)
-- [ ] T071 [US1] Create SwimmerProfile component in frontend/src/components/swimmer/SwimmerProfile.tsx
-- [ ] T072 [US1] Create SwimmerSetupForm component in frontend/src/components/swimmer/SwimmerSetupForm.tsx
-- [ ] T073 [US1] Create MeetList component in frontend/src/components/meets/MeetList.tsx
-- [ ] T074 [US1] Create MeetForm component in frontend/src/components/meets/MeetForm.tsx
-- [ ] T075 [US1] Create MeetSelector component in frontend/src/components/meets/MeetSelector.tsx
-- [ ] T076 [US1] Create TimeEntryForm component in frontend/src/components/times/TimeEntryForm.tsx
-- [ ] T077 [US1] Create QuickEntryForm component in frontend/src/components/times/QuickEntryForm.tsx (batch entry)
-- [ ] T078 [US1] Create TimeHistory component in frontend/src/components/times/TimeHistory.tsx
-- [ ] T079 [US1] Create EventSelector component in frontend/src/components/times/EventSelector.tsx
+- [X] T071 [US1] Create SwimmerProfile component in frontend/src/components/swimmer/SwimmerProfile.tsx
+- [X] T072 [US1] Create SwimmerSetupForm component in frontend/src/components/swimmer/SwimmerSetupForm.tsx
+- [X] T073 [US1] Create MeetList component in frontend/src/components/meets/MeetList.tsx
+- [X] T074 [US1] Create MeetForm component in frontend/src/components/meets/MeetForm.tsx
+- [X] T075 [US1] Create MeetSelector component in frontend/src/components/meets/MeetSelector.tsx
+- [X] T076 [US1] Create TimeEntryForm component in frontend/src/components/times/TimeEntryForm.tsx
+- [X] T077 [US1] Create QuickEntryForm component in frontend/src/components/times/QuickEntryForm.tsx (batch entry)
+- [X] T078 [US1] Create TimeHistory component in frontend/src/components/times/TimeHistory.tsx
+- [X] T079 [US1] Create EventSelector component in frontend/src/components/times/EventSelector.tsx
 - [X] T080 [US1] Create time formatting utils in frontend/src/utils/timeFormat.ts
-- [ ] T081 [US1] Create Home page in frontend/src/pages/Home.tsx
-- [ ] T082 [US1] Create Meets page in frontend/src/pages/Meets.tsx
-- [ ] T083 [US1] Create AddTimes page in frontend/src/pages/AddTimes.tsx
-- [ ] T084 [US1] Create TimeHistory page in frontend/src/pages/TimeHistory.tsx
+- [X] T081 [US1] Create Home page in frontend/src/pages/Home.tsx
+- [X] T082 [US1] Create Meets page in frontend/src/pages/Meets.tsx
+- [X] T083 [US1] Create AddTimes page in frontend/src/pages/AddTimes.tsx
+- [X] T084 [US1] Create TimeHistory page in frontend/src/pages/TimeHistory.tsx
 
 **Checkpoint**: User Story 1 complete - can record times organized by meet
 
