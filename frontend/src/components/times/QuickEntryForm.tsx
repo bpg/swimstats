@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui';
+import { Button, Input, Select, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui';
 import { EventSelector } from './EventSelector';
 import { MeetSelector } from '@/components/meets/MeetSelector';
 import { TimeBatchInput, EventCode, BatchResult } from '@/types/time';
-import { CourseType } from '@/types/meet';
+import { CourseType, MeetInput } from '@/types/meet';
 import { useCreateBatchTimes } from '@/hooks/useTimes';
+import { useCreateMeet } from '@/hooks/useMeets';
 import { parseTime } from '@/utils/timeFormat';
 
 interface TimeEntry {
@@ -36,8 +37,20 @@ export function QuickEntryForm({
   ]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [newPBs, setNewPBs] = useState<EventCode[]>([]);
+  
+  // Quick add meet state
+  const [showQuickMeet, setShowQuickMeet] = useState(false);
+  const [quickMeet, setQuickMeet] = useState<MeetInput>({
+    name: '',
+    city: '',
+    country: 'Canada',
+    date: new Date().toISOString().split('T')[0],
+    course_type: courseType || '25m',
+  });
+  const [quickMeetError, setQuickMeetError] = useState('');
 
   const mutation = useCreateBatchTimes();
+  const createMeetMutation = useCreateMeet();
 
   const addEntry = () => {
     setEntries(prev => [...prev, { id: generateId(), event: '', time_str: '', notes: '' }]);
@@ -111,6 +124,38 @@ export function QuickEntryForm({
     setErrors({});
   };
 
+  const handleQuickMeetSubmit = async () => {
+    if (!quickMeet.name.trim()) {
+      setQuickMeetError('Meet name is required');
+      return;
+    }
+    if (!quickMeet.city.trim()) {
+      setQuickMeetError('City is required');
+      return;
+    }
+    
+    try {
+      const meet = await createMeetMutation.mutateAsync(quickMeet);
+      setMeetId(meet.id);
+      setShowQuickMeet(false);
+      setQuickMeet({
+        name: '',
+        city: '',
+        country: 'Canada',
+        date: new Date().toISOString().split('T')[0],
+        course_type: courseType || '25m',
+      });
+      setQuickMeetError('');
+      // Clear the meet error if it existed
+      setErrors(prev => {
+        const { meet_id, ...rest } = prev;
+        return rest;
+      });
+    } catch (error: any) {
+      setQuickMeetError(error.message || 'Failed to create meet');
+    }
+  };
+
   if (newPBs.length > 0) {
     return (
       <Card>
@@ -157,14 +202,115 @@ export function QuickEntryForm({
           )}
 
           {!defaultMeetId && (
-            <MeetSelector
-              name="meet_id"
-              value={meetId}
-              onChange={(e) => setMeetId(e.target.value)}
-              courseType={courseType}
-              error={errors.meet_id}
-              required
-            />
+            <div className="space-y-3">
+              {!showQuickMeet ? (
+                <>
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1">
+                      <MeetSelector
+                        name="meet_id"
+                        value={meetId}
+                        onChange={(e) => setMeetId(e.target.value)}
+                        courseType={courseType}
+                        error={errors.meet_id}
+                        required
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowQuickMeet(true)}
+                      className="mb-0.5 px-3 py-2 text-sm font-medium text-cyan-600 hover:text-cyan-700 hover:bg-cyan-50 rounded-lg transition-colors whitespace-nowrap"
+                    >
+                      + New Meet
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="p-4 bg-cyan-50 border border-cyan-200 rounded-lg space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-medium text-cyan-900">Quick Add Meet</h4>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowQuickMeet(false);
+                        setQuickMeetError('');
+                      }}
+                      className="text-cyan-600 hover:text-cyan-800"
+                    >
+                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  {quickMeetError && (
+                    <p className="text-sm text-red-600">{quickMeetError}</p>
+                  )}
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <Input
+                      label="Meet Name"
+                      placeholder="e.g., Winter Championships"
+                      value={quickMeet.name}
+                      onChange={(e) => setQuickMeet(prev => ({ ...prev, name: e.target.value }))}
+                      required
+                    />
+                    <Input
+                      label="City"
+                      placeholder="e.g., Toronto"
+                      value={quickMeet.city}
+                      onChange={(e) => setQuickMeet(prev => ({ ...prev, city: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <Input
+                      label="Date"
+                      type="date"
+                      value={quickMeet.date}
+                      onChange={(e) => setQuickMeet(prev => ({ ...prev, date: e.target.value }))}
+                      required
+                    />
+                    <Select
+                      label="Course Type"
+                      value={quickMeet.course_type}
+                      onChange={(e) => setQuickMeet(prev => ({ 
+                        ...prev, 
+                        course_type: e.target.value as CourseType 
+                      }))}
+                      options={[
+                        { value: '25m', label: '25m (Short Course)' },
+                        { value: '50m', label: '50m (Long Course)' },
+                      ]}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="flex gap-2 pt-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={handleQuickMeetSubmit}
+                      isLoading={createMeetMutation.isPending}
+                    >
+                      Create Meet
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setShowQuickMeet(false);
+                        setQuickMeetError('');
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
           )}
 
           {errors.entries && (

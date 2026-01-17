@@ -165,6 +165,8 @@
 - [X] Add /time-history route alias for Time History page
 - [X] Add swimmer profile editor to Settings page
 - [X] Update README.md with development setup instructions
+- [X] Fix "Recent Meets0" / "Time History0" display bug (React rendering numeric 0)
+- [X] Add Quick Add Meet option to QuickEntryForm for streamlined time entry workflow
 
 ---
 
