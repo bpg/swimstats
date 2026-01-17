@@ -32,18 +32,20 @@ As a swim parent, I want to select whether I'm viewing/entering data for the 25m
 
 ### User Story 1 - Record Swim Times (Priority: P1)
 
-As a swim parent, I want to record my daughter's swim times from competitions and time trials so that I have an accurate history of all her performances.
+As a swim parent, I want to record my daughter's swim times from competitions and time trials so that I have an accurate history of all her performances organized by meet.
 
 **Why this priority**: Without the ability to record times, no other features (personal bests, comparisons, graphs) can function. This is the foundational data entry capability.
 
-**Independent Test**: Can be fully tested by entering a swim time and verifying it appears in the swimmer's time history. Delivers immediate value by creating a permanent record of performances.
+**Independent Test**: Can be fully tested by creating a meet and entering swim times for it, then verifying times appear in the swimmer's history with meet details. Delivers immediate value by creating a permanent record of performances.
 
 **Acceptance Scenarios**:
 
-1. **Given** I am in the 25m or 50m course context, **When** I add a new time entry with event (stroke + distance), time, and date, **Then** the time is saved for the current course and appears in the swimmer's time history
-2. **Given** I have entered times, **When** I view the time history for that event, **Then** I see all recorded times for the current course context, sorted by date with the most recent first
-3. **Given** I made an error entering a time, **When** I edit or delete that time entry, **Then** the correction is saved and reflected throughout the system
-4. **Given** I am entering a time, **When** I select an event, **Then** I can choose from all standard competitive swimming events (Freestyle, Backstroke, Breaststroke, Butterfly, IM at standard distances)
+1. **Given** I want to record times from a meet, **When** I create a new meet with name, city, country (defaulting to Canada), and date, **Then** the meet is saved and I can add times to it
+2. **Given** I have created or selected a meet, **When** I add time entries with event (stroke + distance) and time, **Then** the times are saved and associated with that meet
+3. **Given** I have entered times, **When** I view the time history for an event, **Then** I see all recorded times for the current course context with meet details, sorted by date
+4. **Given** I made an error entering a time, **When** I edit or delete that time entry, **Then** the correction is saved and reflected throughout the system
+5. **Given** I am entering times, **When** I select an event, **Then** I can choose from all standard competitive swimming events (Freestyle, Backstroke, Breaststroke, Butterfly, IM at standard distances)
+6. **Given** I attended a meet I've recorded before, **When** I want to add times, **Then** I can select the existing meet from a list instead of re-entering details
 
 ---
 
@@ -186,77 +188,85 @@ As a swim parent, I want to import my daughter's historical swim results from on
 - **FR-011**: System MUST calculate swimmer's current age and age on any given date
 - **FR-012**: System MUST support a single swimmer profile initially, with data model designed to accommodate multiple swimmers in future updates
 
+**Meets**
+
+- **FR-020**: System MUST allow creating a meet record with: meet name, city, country (defaults to Canada), and date
+- **FR-021**: System MUST associate all recorded times with a meet
+- **FR-022**: System MUST allow editing and deleting meet records
+- **FR-023**: System MUST list previous meets for easy selection when adding times
+
 **Time Entry**
 
-- **FR-020**: System MUST allow recording swim times with: event (stroke + distance), time (in minutes:seconds.hundredths format), date of swim (course type determined by current context)
-- **FR-021**: System MUST support all standard competitive swimming events:
+- **FR-030**: System MUST allow recording swim times with: event (stroke + distance), time (in minutes:seconds.hundredths format), associated meet (course type determined by current context)
+- **FR-031**: System MUST support all standard competitive swimming events:
   - Freestyle: 50m, 100m, 200m, 400m, 800m, 1500m
   - Backstroke: 50m, 100m, 200m
   - Breaststroke: 50m, 100m, 200m
   - Butterfly: 50m, 100m, 200m
   - Individual Medley: 200m, 400m
-- **FR-022**: System MUST store times separately for 25m and 50m courses (times are never mixed or converted between courses)
-- **FR-023**: System MUST allow editing and deleting recorded times
-- **FR-024**: System MUST validate time format and reject invalid entries
-- **FR-025**: System MUST allow optional notes/context for each time entry (e.g., "Regionals", "Time Trial")
-- **FR-026**: System MUST support quick entry workflow optimized for entering multiple times in succession (e.g., after a meet)
+- **FR-032**: System MUST store times separately for 25m and 50m courses (times are never mixed or converted between courses)
+- **FR-033**: System MUST allow editing and deleting recorded times
+- **FR-034**: System MUST validate time format and reject invalid entries
+- **FR-035**: System MUST allow optional notes/context for each time entry (e.g., "heat", "final", "PB")
+- **FR-036**: System MUST support quick entry workflow: select/create meet once, then enter multiple times for that meet in succession
 
 **Personal Bests**
 
-- **FR-030**: System MUST automatically track personal best times for each event and course type combination
-- **FR-031**: System MUST update personal bests when a faster time is recorded
-- **FR-032**: System MUST display personal bests organized by stroke and distance within the current course context
-- **FR-033**: System MUST indicate when a newly entered time is a personal best
+- **FR-040**: System MUST automatically track personal best times for each event and course type combination
+- **FR-041**: System MUST update personal bests when a faster time is recorded
+- **FR-042**: System MUST display personal bests organized by stroke and distance within the current course context
+- **FR-043**: System MUST indicate when a newly entered time is a personal best
 
 **Time Standards**
 
-- **FR-040**: System MUST allow creating custom time standards with a name and description
-- **FR-041**: System MUST allow defining qualifying times for each event within a standard
-- **FR-042**: System MUST support age-group-based standards following Swimming Canada age brackets (10&Under, 11-12, 13-14, 15-17, Senior/Open)
-- **FR-043**: System MUST allow editing and deleting time standards
-- **FR-044**: System MUST allow importing time standards from structured data (for convenience when adding Swimming Canada or provincial standards)
-- **FR-045**: System MUST support defining standards for either or both course types (25m/50m)
-- **FR-046**: System MUST include pre-loaded time standards for all age groups and events:
+- **FR-050**: System MUST allow creating custom time standards with a name and description
+- **FR-051**: System MUST allow defining qualifying times for each event within a standard
+- **FR-052**: System MUST support age-group-based standards following Swimming Canada age brackets (10&Under, 11-12, 13-14, 15-17, Senior/Open)
+- **FR-053**: System MUST allow editing and deleting time standards
+- **FR-054**: System MUST allow importing time standards from structured data (for convenience when adding Swimming Canada or provincial standards)
+- **FR-055**: System MUST support defining standards for either or both course types (25m/50m)
+- **FR-056**: System MUST include pre-loaded time standards for all age groups and events:
   - Swimming Canada national standards (Provincial, Western/Eastern Canadian, Junior National, Senior National)
   - Swim Ontario provincial standards
-- **FR-047**: System MUST display only standards applicable to the current course context in comparisons
+- **FR-057**: System MUST display only standards applicable to the current course context in comparisons
 
 **Comparisons**
 
-- **FR-050**: System MUST compare swimmer's personal bests against a selected time standard within the current course context
-- **FR-051**: System MUST calculate and display time difference between swimmer's time and standard
-- **FR-052**: System MUST visually indicate when a standard has been achieved
-- **FR-053**: System MUST use age-appropriate standard times based on swimmer's age at time of swim
-- **FR-054**: System MUST allow switching between different standards for comparison (within current course)
+- **FR-060**: System MUST compare swimmer's personal bests against a selected time standard within the current course context
+- **FR-061**: System MUST calculate and display time difference between swimmer's time and standard
+- **FR-062**: System MUST visually indicate when a standard has been achieved
+- **FR-063**: System MUST use age-appropriate standard times based on swimmer's age at time of swim
+- **FR-064**: System MUST allow switching between different standards for comparison (within current course)
 
 **Progress Visualization**
 
-- **FR-060**: System MUST display line graphs showing time progression for any event within the current course context
-- **FR-061**: System MUST show time standard reference lines on progress graphs when a standard is selected
-- **FR-062**: System MUST allow filtering graphs by date range
-- **FR-063**: System MUST display times with faster times shown lower on the y-axis (intuitive for improvement)
-- **FR-064**: System MUST show data points with dates on hover/selection
+- **FR-070**: System MUST display line graphs showing time progression for any event within the current course context
+- **FR-071**: System MUST show time standard reference lines on progress graphs when a standard is selected
+- **FR-072**: System MUST allow filtering graphs by date range
+- **FR-073**: System MUST display times with faster times shown lower on the y-axis (intuitive for improvement)
+- **FR-074**: System MUST show data points with meet details on hover/selection
 
 **Data Management**
 
-- **FR-070**: System MUST persist all data so it survives browser sessions and page refreshes
-- **FR-071**: System MUST allow exporting all data for backup purposes (downloadable file)
-- **FR-072**: System MUST allow importing previously exported data for restoration
-- **FR-073**: System MUST work in modern web browsers (Chrome, Firefox, Safari, Edge)
+- **FR-080**: System MUST persist all data so it survives browser sessions and page refreshes
+- **FR-081**: System MUST allow exporting all data for backup purposes (downloadable file)
+- **FR-082**: System MUST allow importing previously exported data for restoration
+- **FR-083**: System MUST work in modern web browsers (Chrome, Firefox, Safari, Edge)
 
 **Historical Import (Future/Optional)**
 
-- **FR-080**: System SHOULD support importing historical swim results from external sources
-- **FR-081**: System SHOULD provide a preview of imported data before committing
-- **FR-082**: System SHOULD detect and handle conflicts between imported and existing times
-- **FR-083**: System SHOULD support manual file upload as a fallback import method (CSV or structured format)
+- **FR-090**: System SHOULD support importing historical swim results from external sources
+- **FR-091**: System SHOULD provide a preview of imported data before committing
+- **FR-092**: System SHOULD detect and handle conflicts between imported and existing times
+- **FR-093**: System SHOULD support manual file upload as a fallback import method (CSV or structured format)
 
 ### Key Entities
 
 - **Swimmer**: The athlete being tracked; attributes include name, birth date, gender
-- **Time Entry**: A recorded swim performance; attributes include event, course type, time value, date, optional notes; linked to Swimmer
+- **Meet**: A competition event; attributes include name, city, country (default: Canada), date, course type (25m/50m)
+- **Time Entry**: A recorded swim performance; attributes include event, time value, optional notes; linked to Swimmer and Meet
 - **Event**: A swimming discipline; attributes include stroke (Freestyle, Backstroke, Breaststroke, Butterfly, IM) and distance (50m, 100m, 200m, etc.)
-- **Course Type**: The pool length; either 25m (short course) or 50m (long course)
+- **Course Type**: The pool length; either 25m (short course) or 50m (long course); derived from Meet
 - **Time Standard**: A named collection of qualifying times; attributes include name, description, course type applicability
 - **Standard Time**: A qualifying time within a standard; attributes include event, time value, age group (min/max age); linked to Time Standard
 - **Personal Best**: Derived from Time Entries; the fastest time for each event/course combination
