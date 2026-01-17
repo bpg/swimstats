@@ -12,21 +12,20 @@
 
 ## User Scenarios & Testing *(mandatory)*
 
-### User Story 0 - Select Course Context (Priority: P1)
+### User Story 0 - Filter by Course Type (Priority: P1)
 
-As a swim parent, I want to select whether I'm viewing/entering data for the 25m (short course) or 50m (long course) season so that all information is relevant to the current competitive season.
+As a swim parent, I want to filter data by 25m (short course) or 50m (long course) so that I can focus on times relevant to the current competitive season.
 
-**Why this priority**: The 25m and 50m seasons are fundamentally separate in competitive swimming - times are not comparable across course types. Making this selection explicit prevents confusion and mirrors how swimmers, coaches, and parents think about their data.
+**Why this priority**: The 25m and 50m seasons are fundamentally separate in competitive swimming - times are not comparable across course types. Filtering by course mirrors how swimmers, coaches, and parents think about their data.
 
-**Independent Test**: Can be fully tested by selecting a course type and verifying that all subsequent views (times, personal bests, comparisons, graphs) show only data for that course.
+**Independent Test**: Can be fully tested by having meets/times for both course types, then filtering to one course and verifying only relevant data is shown.
 
 **Acceptance Scenarios**:
 
-1. **Given** I open the application, **When** I start using it, **Then** I can clearly select whether I'm working with 25m or 50m data
-2. **Given** I have selected 25m course, **When** I view any data (times, PBs, comparisons), **Then** I see only 25m data
-3. **Given** I am viewing 25m data, **When** I want to see 50m data, **Then** I can easily switch course context
-4. **Given** I switch from 25m to 50m context, **When** the view updates, **Then** all displayed data reflects the 50m course
-5. **Given** I am entering a new time, **When** the entry form appears, **Then** it defaults to the currently selected course context
+1. **Given** I have times from both 25m and 50m meets, **When** I filter to 25m, **Then** I see only data from 25m meets
+2. **Given** I am viewing 25m data, **When** I want to see 50m data, **Then** I can easily switch the filter
+3. **Given** I switch from 25m to 50m filter, **When** the view updates, **Then** all displayed data (times, PBs, comparisons, graphs) reflects only 50m meets
+4. **Given** I have no filter applied, **When** I view data, **Then** I can see all times but they are clearly labeled by course type
 
 ---
 
@@ -40,7 +39,7 @@ As a swim parent, I want to record my daughter's swim times from competitions an
 
 **Acceptance Scenarios**:
 
-1. **Given** I want to record times from a meet, **When** I create a new meet with name, city, country (defaulting to Canada), and date, **Then** the meet is saved and I can add times to it
+1. **Given** I want to record times from a meet, **When** I create a new meet with name, city, country (defaulting to Canada), date, and course type (25m or 50m), **Then** the meet is saved and I can add times to it
 2. **Given** I have created or selected a meet, **When** I add time entries with event (stroke + distance) and time, **Then** the times are saved and associated with that meet
 3. **Given** I have entered times, **When** I view the time history for an event, **Then** I see all recorded times for the current course context with meet details, sorted by date
 4. **Given** I made an error entering a time, **When** I edit or delete that time entry, **Then** the correction is saved and reflected throughout the system
@@ -168,19 +167,19 @@ As a swim parent, I want to import my daughter's historical swim results from on
 - What happens when a swimmer ages into a new age group mid-season? Automatically apply appropriate age group standards based on swim date and swimmer's age at time of competition (following Swimming Canada age determination rules: age as of December 31 of the competition year)
 - How are tied times handled for personal bests? Display the most recent occurrence as the personal best
 - What happens if historical import retrieves hundreds of times? Show progress indicator and allow cancellation; process in batches to avoid browser timeouts
-- What happens when user switches course context while entering data? Prompt to save or discard unsaved changes before switching
+- What happens when user changes the course filter while viewing data? Filter updates immediately; any unsaved data entry remains tied to its original meet
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-**Course Context**
+**Course Filtering**
 
-- **FR-001**: System MUST provide clear selection between 25m (short course) and 50m (long course) contexts
-- **FR-002**: System MUST maintain the selected course context across all views until explicitly changed
-- **FR-003**: System MUST filter all displayed data (times, personal bests, comparisons, graphs) to the selected course context
-- **FR-004**: System MUST default new time entries to the currently selected course context
-- **FR-005**: System MUST clearly indicate the current course context at all times
+- **FR-001**: System MUST provide clear filtering between 25m (short course) and 50m (long course) data
+- **FR-002**: System MUST maintain the selected course filter across views until explicitly changed
+- **FR-003**: System MUST filter all displayed data (times, personal bests, comparisons, graphs) by course type when a filter is active
+- **FR-004**: System MUST clearly indicate when a course filter is active and which course is selected
+- **FR-005**: System MUST allow viewing all data (both courses) with clear course type labels when no filter is active
 
 **Swimmer Profile**
 
@@ -190,10 +189,10 @@ As a swim parent, I want to import my daughter's historical swim results from on
 
 **Meets**
 
-- **FR-020**: System MUST allow creating a meet record with: meet name, city, country (defaults to Canada), and date
-- **FR-021**: System MUST associate all recorded times with a meet
+- **FR-020**: System MUST allow creating a meet record with: meet name, city, country (defaults to Canada), date, and course type (25m or 50m)
+- **FR-021**: System MUST associate all recorded times with a meet; times inherit course type from their meet
 - **FR-022**: System MUST allow editing and deleting meet records
-- **FR-023**: System MUST list previous meets for easy selection when adding times
+- **FR-023**: System MUST list previous meets for easy selection when adding times, filterable by course type
 
 **Time Entry**
 
@@ -263,10 +262,10 @@ As a swim parent, I want to import my daughter's historical swim results from on
 ### Key Entities
 
 - **Swimmer**: The athlete being tracked; attributes include name, birth date, gender
-- **Meet**: A competition event; attributes include name, city, country (default: Canada), date, course type (25m/50m)
-- **Time Entry**: A recorded swim performance; attributes include event, time value, optional notes; linked to Swimmer and Meet
+- **Meet**: A competition event; attributes include name, city, country (default: Canada), date, course type (25m or 50m)
+- **Time Entry**: A recorded swim performance; attributes include event, time value, optional notes; linked to Swimmer and Meet; inherits course type from Meet
 - **Event**: A swimming discipline; attributes include stroke (Freestyle, Backstroke, Breaststroke, Butterfly, IM) and distance (50m, 100m, 200m, etc.)
-- **Course Type**: The pool length; either 25m (short course) or 50m (long course); derived from Meet
+- **Course Type**: The pool length; either 25m (short course) or 50m (long course); stored on Meet, inherited by Time Entries
 - **Time Standard**: A named collection of qualifying times; attributes include name, description, course type applicability
 - **Standard Time**: A qualifying time within a standard; attributes include event, time value, age group (min/max age); linked to Time Standard
 - **Personal Best**: Derived from Time Entries; the fastest time for each event/course combination
@@ -274,8 +273,10 @@ As a swim parent, I want to import my daughter's historical swim results from on
 ### Assumptions
 
 - Web-based application accessed via browser, optimized for laptop/desktop use
-- Course-centric organization: 25m (short course) and 50m (long course) are treated as separate contexts reflecting the seasonal nature of competitive swimming
-- Times from 25m and 50m courses are never mixed, compared, or converted - they are fundamentally different
+- Course type is a property of the meet (a meet happens at a specific pool which is 25m or 50m)
+- Times inherit course type from their associated meet
+- Times from 25m and 50m courses are never compared or converted - they are fundamentally different
+- Course filtering allows focusing on one season's data while keeping all data accessible
 - Initially tracks one Canadian competitive swimmer, but data architecture supports future expansion to multiple swimmers
 - Times are primarily entered manually by the user; historical import is a future convenience feature
 - Age groups in time standards follow Swimming Canada conventions (typically 10&Under, 11-12, 13-14, 15-17, Senior/Open)
