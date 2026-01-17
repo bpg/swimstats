@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-const API_URL = '/api';
+const API_URL = '/api/v1';
 
 /**
  * Mock data for testing.

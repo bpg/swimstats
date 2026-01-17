@@ -109,8 +109,8 @@
 - [X] T043 [P] [US1] Create swimmer API tests in backend/tests/integration/swimmer_test.go
 - [X] T044 [P] [US1] Create meet API tests in backend/tests/integration/meet_test.go
 - [X] T045 [P] [US1] Create time entry API tests in backend/tests/integration/time_test.go
-- [ ] T046 [P] [US1] Create meet components tests in frontend/tests/components/meets.test.tsx
-- [ ] T047 [P] [US1] Create time entry components tests in frontend/tests/components/times.test.tsx
+- [X] T046 [P] [US1] Create meet components tests in frontend/tests/components/meets.test.tsx
+- [X] T047 [P] [US1] Create time entry components tests in frontend/tests/components/times.test.tsx
 
 ### Backend Implementation for US1
 
