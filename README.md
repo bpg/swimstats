@@ -14,12 +14,14 @@ A web application for competitive swimmers to track their times, view personal b
 ## Tech Stack
 
 **Backend:**
+
 - Go 1.25+
 - Chi router
 - PostgreSQL with SQLC
 - OIDC authentication (Authentik/Keycloak compatible)
 
 **Frontend:**
+
 - React 18 with TypeScript
 - Vite for build tooling
 - TailwindCSS for styling
@@ -273,6 +275,14 @@ docker-compose up -d postgres
 ### Frontend proxy errors
 
 Ensure the backend is running on port 8080 before starting the frontend.
+
+**"Invalid header value char" error**: This can occur when the mock authentication header contains special characters. The codebase now base64 encodes the `X-Mock-User` header to prevent this issue. If you see this error, make sure both frontend and backend have the latest code.
+
+### Hot Module Replacement (HMR) not working
+
+If changes to files don't trigger hot reload:
+1. File changes made by external tools (like AI assistants) may not trigger macOS FSEvents
+2. **Solution**: Restart the frontend dev server with `Ctrl+C` then `npm run dev`
 
 ### OIDC errors in production
 

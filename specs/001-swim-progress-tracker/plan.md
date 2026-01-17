@@ -126,6 +126,32 @@ docker-compose.yaml           # Local development
 - React SPA provides responsive, interactive UI for data entry and visualization
 - Clear separation of concerns between data/logic (backend) and presentation (frontend)
 
+## Implementation Progress
+
+| Phase | Status | Notes |
+|-------|--------|-------|
+| Phase 1: Setup | ✅ Complete | Project scaffolding, Docker, CI |
+| Phase 2: Foundational | ✅ Complete | DB, Auth, Core UI, Test setup |
+| Phase 3: US1 - Record Times | ✅ Complete | Full CRUD for swimmers, meets, times |
+| Phase 4: US2 - Personal Bests | ⏳ Pending | Next up |
+| Phase 5: US3 - Standards | ⏳ Pending | |
+| Phase 6: US4 - Compare | ⏳ Pending | |
+| Phase 7: US5 - Progress Charts | ⏳ Pending | |
+| Phase 8: US6 - Standing | ⏳ Pending | |
+| Phase 9: Polish | ⏳ Pending | |
+
+**Current State**: MVP core (US1) is complete and tested. App can:
+- Create and manage swimmer profile
+- Create and manage meets
+- Record swim times with batch entry
+- View time history with filtering
+- Filter by course type (25m/50m)
+
+**Known Issues Resolved**:
+- Base64 encoded `X-Mock-User` header to fix proxy errors
+- Added Settings button to navigation
+- Added swimmer profile editing to Settings page
+
 ## Complexity Tracking
 
 No Constitution violations requiring justification. The architecture follows standard web application patterns with appropriate technology choices for each layer.

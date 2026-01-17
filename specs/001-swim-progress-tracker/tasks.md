@@ -157,6 +157,15 @@
 
 **Checkpoint**: User Story 1 complete - can record times organized by meet
 
+### Post-US1 Fixes & Polish (Completed)
+
+- [X] Fix proxy "Invalid header value char" error - base64 encode X-Mock-User header
+- [X] Add Settings button to navigation (gear icon near Sign out)
+- [X] Add Settings link to mobile menu
+- [X] Add /time-history route alias for Time History page
+- [X] Add swimmer profile editor to Settings page
+- [X] Update README.md with development setup instructions
+
 ---
 
 ## Phase 4: User Story 2 - View Personal Bests (Priority: P1)
