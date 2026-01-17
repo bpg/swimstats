@@ -106,40 +106,40 @@
 
 ### Tests for User Story 1
 
-- [ ] T043 [P] [US1] Create swimmer API tests in backend/tests/integration/swimmer_test.go
-- [ ] T044 [P] [US1] Create meet API tests in backend/tests/integration/meet_test.go
-- [ ] T045 [P] [US1] Create time entry API tests in backend/tests/integration/time_test.go
+- [X] T043 [P] [US1] Create swimmer API tests in backend/tests/integration/swimmer_test.go
+- [X] T044 [P] [US1] Create meet API tests in backend/tests/integration/meet_test.go
+- [X] T045 [P] [US1] Create time entry API tests in backend/tests/integration/time_test.go
 - [ ] T046 [P] [US1] Create meet components tests in frontend/tests/components/meets.test.tsx
 - [ ] T047 [P] [US1] Create time entry components tests in frontend/tests/components/times.test.tsx
 
 ### Backend Implementation for US1
 
-- [ ] T048 [P] [US1] Create swimmer sqlc queries in backend/internal/store/queries/swimmer.sql
-- [ ] T049 [P] [US1] Create meet sqlc queries in backend/internal/store/queries/meet.sql
-- [ ] T050 [P] [US1] Create time sqlc queries in backend/internal/store/queries/time.sql
-- [ ] T051 Run sqlc generate to create Go code from queries
-- [ ] T052 [US1] Create swimmer repository in backend/internal/store/postgres/swimmer.go
-- [ ] T053 [US1] Create meet repository in backend/internal/store/postgres/meet.go
-- [ ] T054 [US1] Create time repository in backend/internal/store/postgres/time.go
-- [ ] T055 [US1] Create swimmer service in backend/internal/domain/swimmer/service.go
-- [ ] T056 [US1] Create meet service in backend/internal/domain/meet/service.go
-- [ ] T057 [US1] Create time service in backend/internal/domain/time/service.go (includes batch create)
-- [ ] T058 [US1] Create swimmer handlers in backend/internal/api/handlers/swimmer.go (GET/PUT /swimmer)
-- [ ] T059 [US1] Create meet handlers in backend/internal/api/handlers/meet.go (CRUD /meets)
-- [ ] T060 [US1] Create time handlers in backend/internal/api/handlers/time.go (CRUD /times, POST /times/batch)
-- [ ] T061 [US1] Register US1 routes in backend/internal/api/router.go
+- [X] T048 [P] [US1] Create swimmer sqlc queries in backend/internal/store/queries/swimmer.sql
+- [X] T049 [P] [US1] Create meet sqlc queries in backend/internal/store/queries/meet.sql
+- [X] T050 [P] [US1] Create time sqlc queries in backend/internal/store/queries/time.sql
+- [X] T051 Run sqlc generate to create Go code from queries
+- [X] T052 [US1] Create swimmer repository in backend/internal/store/postgres/swimmer.go
+- [X] T053 [US1] Create meet repository in backend/internal/store/postgres/meet.go
+- [X] T054 [US1] Create time repository in backend/internal/store/postgres/time.go
+- [X] T055 [US1] Create swimmer service in backend/internal/domain/swimmer/service.go
+- [X] T056 [US1] Create meet service in backend/internal/domain/meet/service.go
+- [X] T057 [US1] Create time service in backend/internal/domain/time/service.go (includes batch create)
+- [X] T058 [US1] Create swimmer handlers in backend/internal/api/handlers/swimmer.go (GET/PUT /swimmer)
+- [X] T059 [US1] Create meet handlers in backend/internal/api/handlers/meet.go (CRUD /meets)
+- [X] T060 [US1] Create time handlers in backend/internal/api/handlers/time.go (CRUD /times, POST /times/batch)
+- [X] T061 [US1] Register US1 routes in backend/internal/api/router.go
 
 ### Frontend Implementation for US1
 
-- [ ] T062 [P] [US1] Create swimmer types in frontend/src/types/swimmer.ts
-- [ ] T063 [P] [US1] Create meet types in frontend/src/types/meet.ts
-- [ ] T064 [P] [US1] Create time types in frontend/src/types/time.ts
-- [ ] T065 [US1] Create swimmer API service in frontend/src/services/swimmer.ts
-- [ ] T066 [US1] Create meet API service in frontend/src/services/meets.ts
-- [ ] T067 [US1] Create time API service in frontend/src/services/times.ts
-- [ ] T068 [US1] Create useSwimmer hook in frontend/src/hooks/useSwimmer.ts (React Query)
-- [ ] T069 [US1] Create useMeets hook in frontend/src/hooks/useMeets.ts (React Query)
-- [ ] T070 [US1] Create useTimes hook in frontend/src/hooks/useTimes.ts (React Query)
+- [X] T062 [P] [US1] Create swimmer types in frontend/src/types/swimmer.ts
+- [X] T063 [P] [US1] Create meet types in frontend/src/types/meet.ts
+- [X] T064 [P] [US1] Create time types in frontend/src/types/time.ts
+- [X] T065 [US1] Create swimmer API service in frontend/src/services/swimmer.ts
+- [X] T066 [US1] Create meet API service in frontend/src/services/meets.ts
+- [X] T067 [US1] Create time API service in frontend/src/services/times.ts
+- [X] T068 [US1] Create useSwimmer hook in frontend/src/hooks/useSwimmer.ts (React Query)
+- [X] T069 [US1] Create useMeets hook in frontend/src/hooks/useMeets.ts (React Query)
+- [X] T070 [US1] Create useTimes hook in frontend/src/hooks/useTimes.ts (React Query)
 - [ ] T071 [US1] Create SwimmerProfile component in frontend/src/components/swimmer/SwimmerProfile.tsx
 - [ ] T072 [US1] Create SwimmerSetupForm component in frontend/src/components/swimmer/SwimmerSetupForm.tsx
 - [ ] T073 [US1] Create MeetList component in frontend/src/components/meets/MeetList.tsx
@@ -149,7 +149,7 @@
 - [ ] T077 [US1] Create QuickEntryForm component in frontend/src/components/times/QuickEntryForm.tsx (batch entry)
 - [ ] T078 [US1] Create TimeHistory component in frontend/src/components/times/TimeHistory.tsx
 - [ ] T079 [US1] Create EventSelector component in frontend/src/components/times/EventSelector.tsx
-- [ ] T080 [US1] Create time formatting utils in frontend/src/utils/timeFormat.ts
+- [X] T080 [US1] Create time formatting utils in frontend/src/utils/timeFormat.ts
 - [ ] T081 [US1] Create Home page in frontend/src/pages/Home.tsx
 - [ ] T082 [US1] Create Meets page in frontend/src/pages/Meets.tsx
 - [ ] T083 [US1] Create AddTimes page in frontend/src/pages/AddTimes.tsx
