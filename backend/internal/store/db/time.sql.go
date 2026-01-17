@@ -17,9 +17,9 @@ const countTimes = `-- name: CountTimes :one
 SELECT COUNT(*) FROM times t
 JOIN meets m ON m.id = t.meet_id
 WHERE t.swimmer_id = $1
-  AND ($2::varchar IS NULL OR m.course_type = $2)
-  AND ($3::varchar IS NULL OR t.event = $3)
-  AND ($4::uuid IS NULL OR t.meet_id = $4)
+  AND ($2::varchar = '' OR m.course_type = $2)
+  AND ($3::varchar = '' OR t.event = $3)
+  AND ($4::uuid = '00000000-0000-0000-0000-000000000000' OR t.meet_id = $4)
 `
 
 type CountTimesParams struct {
@@ -46,7 +46,7 @@ SELECT event, COUNT(*)::int AS count
 FROM times t
 JOIN meets m ON m.id = t.meet_id
 WHERE t.swimmer_id = $1
-  AND ($2::varchar IS NULL OR m.course_type = $2)
+  AND ($2::varchar = '' OR m.course_type = $2)
 GROUP BY event
 ORDER BY event
 `
@@ -425,9 +425,9 @@ SELECT
 FROM times t
 JOIN meets m ON m.id = t.meet_id
 WHERE t.swimmer_id = $1
-  AND ($2::varchar IS NULL OR m.course_type = $2)
-  AND ($3::varchar IS NULL OR t.event = $3)
-  AND ($4::uuid IS NULL OR t.meet_id = $4)
+  AND ($2::varchar = '' OR m.course_type = $2)
+  AND ($3::varchar = '' OR t.event = $3)
+  AND ($4::uuid = '00000000-0000-0000-0000-000000000000' OR t.meet_id = $4)
 ORDER BY m.date DESC, t.event
 LIMIT $5 OFFSET $6
 `

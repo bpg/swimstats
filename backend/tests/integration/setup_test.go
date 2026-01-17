@@ -2,24 +2,30 @@ package integration
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
+
+	"github.com/bpg/swimstats/backend/internal/api"
+	"github.com/bpg/swimstats/backend/internal/auth"
 )
 
 // APIClient is a helper for making API requests in tests.
 type APIClient struct {
-	t          *testing.T
-	handler    http.Handler
+	t           *testing.T
+	handler     http.Handler
 	accessLevel string
 }
 
 // NewAPIClient creates a new API test client.
 func NewAPIClient(t *testing.T, handler http.Handler) *APIClient {
 	return &APIClient{
-		t:          t,
-		handler:    handler,
+		t:           t,
+		handler:     handler,
 		accessLevel: "full",
 	}
 }
@@ -73,7 +79,13 @@ func (c *APIClient) doRequest(method, path string, body interface{}) *httptest.R
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-Mock-User", c.accessLevel)
+	// Send mock user as JSON so the auth provider can parse it
+	mockUserJSON, _ := json.Marshal(map[string]string{
+		"email":  "test@swimstats.local",
+		"name":   "Test User",
+		"access": c.accessLevel,
+	})
+	req.Header.Set("X-Mock-User", string(mockUserJSON))
 
 	rr := httptest.NewRecorder()
 	c.handler.ServeHTTP(rr, req)
@@ -107,15 +119,26 @@ func (db *TestDB) TeardownTestDB(ctx interface{}, t *testing.T) {
 	db.Close()
 }
 
-// setupTestHandler creates the API handler for testing.
-// This is a placeholder that will be implemented when the handlers are created.
+// setupTestHandler creates the API handler for testing with the real router.
 func setupTestHandler(t *testing.T, testDB *TestDB) http.Handler {
 	t.Helper()
-	
-	// TODO: This will be implemented when the API handlers are created.
-	// For now, return a simple placeholder that returns 501 Not Implemented.
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusNotImplemented)
-		w.Write([]byte(`{"error":"API not implemented yet"}`))
-	})
+
+	// Create a logger that discards output during tests (or use slog.Default())
+	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelWarn, // Only show warnings and errors during tests
+	}))
+
+	// Create auth provider in dev mode (skips real OIDC validation)
+	authCfg := auth.Config{
+		SkipValidation: true,
+	}
+	authProvider, err := auth.NewProvider(context.Background(), authCfg, logger)
+	if err != nil {
+		t.Fatalf("Failed to create auth provider: %v", err)
+	}
+
+	// Create the router with all dependencies
+	router := api.NewRouter(logger, authProvider, testDB.Pool)
+
+	return router.Handler()
 }

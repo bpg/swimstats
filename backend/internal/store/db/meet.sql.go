@@ -15,7 +15,7 @@ import (
 
 const countMeets = `-- name: CountMeets :one
 SELECT COUNT(*) FROM meets
-WHERE ($1::varchar IS NULL OR course_type = $1)
+WHERE ($1::varchar = '' OR course_type = $1)
 `
 
 func (q *Queries) CountMeets(ctx context.Context, dollar_1 string) (int64, error) {
@@ -152,7 +152,7 @@ SELECT
     COUNT(t.id)::int AS time_count
 FROM meets m
 LEFT JOIN times t ON t.meet_id = m.id
-WHERE ($1::varchar IS NULL OR m.course_type = $1)
+WHERE ($1::varchar = '' OR m.course_type = $1)
 GROUP BY m.id
 ORDER BY m.date DESC
 LIMIT $2
@@ -218,7 +218,7 @@ SELECT
     COUNT(t.id)::int AS time_count
 FROM meets m
 LEFT JOIN times t ON t.meet_id = m.id
-WHERE ($1::varchar IS NULL OR m.course_type = $1)
+WHERE ($1::varchar = '' OR m.course_type = $1)
 GROUP BY m.id
 ORDER BY m.date DESC
 LIMIT $2 OFFSET $3

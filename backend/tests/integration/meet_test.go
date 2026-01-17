@@ -2,6 +2,7 @@ package integration
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -283,11 +284,12 @@ func TestMeetAPI(t *testing.T) {
 		testDB.ClearTables(ctx, t)
 
 		// Create 5 meets
-		for i := 1; i <= 5; i++ {
+		dates := []string{"2026-01-10", "2026-01-11", "2026-01-12", "2026-01-13", "2026-01-14"}
+		for i, date := range dates {
 			input := MeetInput{
-				Name:       "Meet " + string(rune('0'+i)),
+				Name:       fmt.Sprintf("Meet %d", i+1),
 				City:       "Toronto",
-				Date:       "2026-01-" + string(rune('0'+i)) + "0",
+				Date:       date,
 				CourseType: "25m",
 			}
 			rr := client.Post("/api/v1/meets", input)

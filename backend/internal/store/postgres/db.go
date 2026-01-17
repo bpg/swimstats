@@ -121,13 +121,13 @@ func (db *DB) Ping(ctx context.Context) error {
 func (db *DB) Health(ctx context.Context) map[string]interface{} {
 	stats := db.Pool.Stat()
 	return map[string]interface{}{
-		"status":           "up",
-		"total_conns":      stats.TotalConns(),
-		"idle_conns":       stats.IdleConns(),
-		"acquired_conns":   stats.AcquiredConns(),
-		"max_conns":        stats.MaxConns(),
-		"constructing":     stats.ConstructingConns(),
-		"new_conns_count":  stats.NewConnsCount(),
+		"status":                     "up",
+		"total_conns":                stats.TotalConns(),
+		"idle_conns":                 stats.IdleConns(),
+		"acquired_conns":             stats.AcquiredConns(),
+		"max_conns":                  stats.MaxConns(),
+		"constructing":               stats.ConstructingConns(),
+		"new_conns_count":            stats.NewConnsCount(),
 		"max_lifetime_destroy_count": stats.MaxLifetimeDestroyCount(),
 	}
 }
