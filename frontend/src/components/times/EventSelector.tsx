@@ -6,10 +6,11 @@ export interface EventSelectorProps extends Omit<SelectProps, 'options'> {
   groupByStroke?: boolean;
   value?: EventCode;
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  labelClassName?: string;
 }
 
 export const EventSelector = forwardRef<HTMLSelectElement, EventSelectorProps>(
-  ({ groupByStroke = false, label = 'Event', placeholder = 'Select event', ...props }, ref) => {
+  ({ groupByStroke = false, label = 'Event', placeholder = 'Select event', labelClassName, ...props }, ref) => {
     const options = useMemo(() => {
       if (groupByStroke) {
         // Create optgroup-like structure (flattened since Select doesn't support optgroups)
@@ -35,6 +36,7 @@ export const EventSelector = forwardRef<HTMLSelectElement, EventSelectorProps>(
       <Select
         ref={ref}
         label={label}
+        labelClassName={labelClassName}
         placeholder={placeholder}
         options={options}
         {...props}

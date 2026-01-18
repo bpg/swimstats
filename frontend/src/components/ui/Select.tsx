@@ -14,6 +14,7 @@ export interface SelectOption {
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
+  labelClassName?: string;
   error?: string;
   hint?: string;
   options: SelectOption[];
@@ -21,7 +22,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, label, error, hint, options, placeholder, id, ...props }, ref) => {
+  ({ className, label, labelClassName, error, hint, options, placeholder, id, ...props }, ref) => {
     const selectId = id || props.name;
 
     return (
@@ -29,7 +30,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="block text-sm font-medium text-slate-700 mb-1"
+            className={cn("block text-sm font-medium text-slate-700 mb-1", labelClassName)}
           >
             {label}
             {props.required && <span className="text-red-500 ml-1">*</span>}

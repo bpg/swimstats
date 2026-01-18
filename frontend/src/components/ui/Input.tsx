@@ -8,12 +8,13 @@ function cn(...inputs: (string | undefined | null | false)[]) {
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
+  labelClassName?: string;
   error?: string;
   hint?: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, hint, id, ...props }, ref) => {
+  ({ className, label, labelClassName, error, hint, id, ...props }, ref) => {
     const inputId = id || props.name;
 
     return (
@@ -21,7 +22,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-slate-700 mb-1"
+            className={cn("block text-sm font-medium text-slate-700 mb-1", labelClassName)}
           >
             {label}
             {props.required && <span className="text-red-500 ml-1">*</span>}

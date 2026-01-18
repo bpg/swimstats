@@ -317,27 +317,41 @@ export function QuickEntryForm({
             <p className="text-sm text-red-600">{errors.entries}</p>
           )}
 
-          <div className="space-y-4">
-            {entries.map((entry, idx) => (
-              <div key={entry.id} className="flex gap-3 items-start p-4 bg-slate-50 rounded-lg">
+          <div className="space-y-3">
+            {/* Column headers - visible on sm+ screens */}
+            <div className="hidden sm:flex gap-3 items-end px-4">
+              <div className="flex-1 grid grid-cols-3 gap-3">
+                <label className="block text-sm font-medium text-slate-700">Event</label>
+                <label className="block text-sm font-medium text-slate-700">Time</label>
+                <label className="block text-sm font-medium text-slate-700">Notes</label>
+              </div>
+              {/* Spacer for delete button column */}
+              <div className="w-7" />
+            </div>
+            
+            {entries.map((entry) => (
+              <div key={entry.id} className="flex gap-3 items-center p-4 bg-slate-50 rounded-lg">
                 <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <EventSelector
                     value={entry.event as EventCode}
                     onChange={(e) => updateEntry(entry.id, 'event', e.target.value)}
-                    label={idx === 0 ? 'Event' : undefined}
-                    placeholder="Event"
+                    label="Event"
+                    labelClassName="sm:hidden"
+                    placeholder="Select event"
                     error={errors[`${entry.id}_event`]}
                   />
                   <Input
-                    label={idx === 0 ? 'Time' : undefined}
+                    label="Time"
+                    labelClassName="sm:hidden"
                     placeholder="SS.ss or M:SS.ss"
                     value={entry.time_str}
                     onChange={(e) => updateEntry(entry.id, 'time_str', e.target.value)}
                     error={errors[`${entry.id}_time`]}
                   />
                   <Input
-                    label={idx === 0 ? 'Notes' : undefined}
-                    placeholder="Notes (optional)"
+                    label="Notes"
+                    labelClassName="sm:hidden"
+                    placeholder="Optional"
                     value={entry.notes}
                     onChange={(e) => updateEntry(entry.id, 'notes', e.target.value)}
                   />
@@ -346,7 +360,7 @@ export function QuickEntryForm({
                   <button
                     type="button"
                     onClick={() => removeEntry(entry.id)}
-                    className="mt-6 p-1 text-slate-400 hover:text-red-500"
+                    className="p-1 text-slate-400 hover:text-red-500 transition-colors"
                     aria-label="Remove entry"
                   >
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
