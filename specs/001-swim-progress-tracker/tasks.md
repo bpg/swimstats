@@ -206,6 +206,35 @@
 
 ---
 
+## Phase 4b: All Times View (Enhancement to US1/US2)
+
+**Goal**: View all recorded times for a selected event with PB indicators
+
+**Independent Test**: Select an event, view all times sorted by date, verify PBs are marked
+
+### Backend Implementation for All Times
+
+- [x] T085b [AllTimes] Verify existing times query supports event filtering (already exists)
+- [x] T086b [AllTimes] Use personalBests API to identify PB time IDs (no backend change needed)
+
+### Frontend Implementation for All Times
+
+- [x] T087b [P] [AllTimes] Create AllTimesList component in frontend/src/components/times/AllTimesList.tsx
+- [x] T088b [P] [AllTimes] Create EventFilter component in frontend/src/components/times/EventFilter.tsx
+- [x] T089b [P] [AllTimes] Create SortToggle component in frontend/src/components/times/SortToggle.tsx
+- [x] T090b [AllTimes] Reuse existing useTimes hook (no new hook needed)
+- [x] T091b [AllTimes] Create AllTimes page in frontend/src/pages/AllTimes.tsx
+- [x] T092b [AllTimes] Update navigation order: Add Times → All Times → Personal Bests → Meets
+- [x] T093b [AllTimes] Add PB badge display to AllTimesList using existing NewPBBadge component
+
+### Tests for All Times
+
+- [x] T094b [P] [AllTimes] Create All Times component tests in frontend/tests/components/alltimes.test.tsx
+
+**Checkpoint**: All Times view complete - can view all times per event with PB markers
+
+---
+
 ## Phase 5: User Story 3 - Manage Time Standards (Priority: P2)
 
 **Goal**: Create, edit, delete time standards with pre-loaded Swimming Canada/Swim Ontario standards

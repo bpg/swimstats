@@ -257,6 +257,16 @@ As a swim parent, I want to import my daughter's historical swim results from on
 - **FR-042**: System MUST display personal bests organized by stroke and distance within the current course context
 - **FR-043**: System MUST indicate when a newly entered time is a personal best
 
+**All Times View**
+
+- **FR-044**: System MUST provide an "All Times" view to display all recorded times for a selected event
+- **FR-045**: System MUST allow users to select an event from a dropdown to filter the times list
+- **FR-046**: System MUST display each time entry with: time value, meet name, date, and notes (if any)
+- **FR-047**: System MUST mark personal best times with a visual indicator (PB badge) in the times list
+- **FR-048**: System MUST sort times by date (newest first) by default
+- **FR-049**: System MUST allow users to toggle sorting between date (newest first) and time (fastest first)
+- **FR-04A**: System MUST respect the current course type filter (25m/50m) when displaying times
+
 **Time Standards**
 
 - **FR-050**: System MUST allow creating custom time standards with a name and description

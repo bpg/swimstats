@@ -133,28 +133,36 @@ docker-compose.yaml           # Local development
 | Phase 1: Setup | ✅ Complete | Project scaffolding, Docker, CI |
 | Phase 2: Foundational | ✅ Complete | DB, Auth, Core UI, Test setup |
 | Phase 3: US1 - Record Times | ✅ Complete | Full CRUD for swimmers, meets, times |
-| Phase 4: US2 - Personal Bests | ⏳ Pending | Next up |
+| Phase 4: US2 - Personal Bests | ✅ Complete | PB calculation, display, API |
+| Phase 4b: All Times View | ✅ Complete | Event-based time history with PB badges |
 | Phase 5: US3 - Standards | ⏳ Pending | |
 | Phase 6: US4 - Compare | ⏳ Pending | |
 | Phase 7: US5 - Progress Charts | ⏳ Pending | |
 | Phase 8: US6 - Standing | ⏳ Pending | |
 | Phase 9: Polish | ⏳ Pending | |
 
-**Current State**: MVP core (US1) is complete and tested. App can:
+**Current State**: MVP (US1 + US2 + All Times) is complete and tested. App can:
 - Create and manage swimmer profile
 - Create and manage meets (with inline quick-add from time entry)
 - Record swim times with batch entry
 - View time history with filtering
 - Filter by course type (25m/50m)
+- View personal bests by stroke
+- View all times per event with PB indicators and sorting (by date or time)
 
 **Known Issues Resolved**:
 - Base64 encoded `X-Mock-User` header to fix proxy errors
 - Added Settings button to navigation
 - Added swimmer profile editing to Settings page
 - Fixed "Recent Meets0" / "Time History0" display bug (React rendering numeric 0)
+- Fixed auth persistence (persist user object in localStorage)
+- Fixed request ID generation (invalid characters in logging middleware)
 
 **UX Enhancements**:
 - Quick Add Meet: Create meets inline from time entry form (FR-037)
+- Navigation reordering: Add Times before Meets
+
+**Navigation Order**: Add Times → All Times → Personal Bests → Meets → Progress → Standards
 
 ## Complexity Tracking
 

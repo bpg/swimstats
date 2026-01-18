@@ -11,3 +11,8 @@ export { TimeHistory } from './TimeHistory';
 export type { TimeHistoryProps } from './TimeHistory';
 
 export { NewPBBadge } from './NewPBBadge';
+
+export { EventFilter } from './EventFilter';
+export { SortToggle } from './SortToggle';
+export type { SortBy } from './SortToggle';
+export { AllTimesList } from './AllTimesList';
