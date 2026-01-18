@@ -169,6 +169,8 @@
 - [X] Add Quick Add Meet option to QuickEntryForm for streamlined time entry workflow
 - [X] Reorder navigation menu: Add Times before Meets
 - [X] Fix auth persistence: persist user object in localStorage (not just isAuthenticated)
+- [X] Fix Quick Entry form alignment: use column headers instead of per-row labels
+- [X] Add labelClassName prop to Input, Select, and EventSelector components
 
 ---
 
@@ -231,7 +233,15 @@
 
 - [x] T094b [P] [AllTimes] Create All Times component tests in frontend/tests/components/alltimes.test.tsx
 
-**Checkpoint**: All Times view complete - can view all times per event with PB markers
+### All Times Consolidation & Polish
+
+- [x] T095b [AllTimes] Convert AllTimesList from cards to compact table format
+- [x] T096b [AllTimes] Remove "All Events" option (require specific event selection)
+- [x] T097b [AllTimes] Consolidate /times and /all-times routes (removed TimeHistory page)
+- [x] T098b [AllTimes] Update Home Quick Action to link to /all-times
+- [x] T099b [AllTimes] Add rank badges (gold/silver/bronze) when sorting by fastest
+
+**Checkpoint**: All Times view complete - can view all times per event with PB markers and rankings
 
 ---
 

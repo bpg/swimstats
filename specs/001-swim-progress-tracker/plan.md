@@ -144,8 +144,7 @@ docker-compose.yaml           # Local development
 **Current State**: MVP (US1 + US2 + All Times) is complete and tested. App can:
 - Create and manage swimmer profile
 - Create and manage meets (with inline quick-add from time entry)
-- Record swim times with batch entry
-- View time history with filtering
+- Record swim times with batch entry (Quick Entry form with proper column alignment)
 - Filter by course type (25m/50m)
 - View personal bests by stroke
 - View all times per event with PB indicators and sorting (by date or time)
@@ -157,10 +156,14 @@ docker-compose.yaml           # Local development
 - Fixed "Recent Meets0" / "Time History0" display bug (React rendering numeric 0)
 - Fixed auth persistence (persist user object in localStorage)
 - Fixed request ID generation (invalid characters in logging middleware)
+- Fixed Quick Entry form alignment (column headers instead of per-row labels)
 
 **UX Enhancements**:
 - Quick Add Meet: Create meets inline from time entry form (FR-037)
 - Navigation reordering: Add Times before Meets
+- Consolidated "All Times" and "Time History" into single compact table view
+- Removed "All Events" option from All Times (must select specific event for meaningful ranking)
+- All Times shows rank badges (gold/silver/bronze) when sorting by fastest
 
 **Navigation Order**: Add Times → All Times → Personal Bests → Meets → Progress → Standards
 

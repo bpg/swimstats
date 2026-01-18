@@ -260,12 +260,14 @@ As a swim parent, I want to import my daughter's historical swim results from on
 **All Times View**
 
 - **FR-044**: System MUST provide an "All Times" view to display all recorded times for a selected event
-- **FR-045**: System MUST allow users to select an event from a dropdown to filter the times list
-- **FR-046**: System MUST display each time entry with: time value, meet name, date, and notes (if any)
+- **FR-045**: System MUST require users to select a specific event from a dropdown (no "all events" option, as ranking across different events is not meaningful)
+- **FR-046**: System MUST display each time entry in a compact table format with: time value, meet name, date, and notes (if any)
 - **FR-047**: System MUST mark personal best times with a visual indicator (PB badge) in the times list
 - **FR-048**: System MUST sort times by date (newest first) by default
 - **FR-049**: System MUST allow users to toggle sorting between date (newest first) and time (fastest first)
-- **FR-04A**: System MUST respect the current course type filter (25m/50m) when displaying times
+- **FR-04A**: System MUST display rank badges (1st, 2nd, 3rd with medal colors) when sorting by fastest time
+- **FR-04B**: System MUST respect the current course type filter (25m/50m) when displaying times
+- **FR-04C**: System MUST default to the first event (50m Freestyle) when no event is selected
 
 **Time Standards**
 
