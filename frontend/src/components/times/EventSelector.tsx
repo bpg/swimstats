@@ -7,30 +7,40 @@ export interface EventSelectorProps extends Omit<SelectProps, 'options'> {
   value?: EventCode;
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   labelClassName?: string;
+  /** Events to exclude from the dropdown (e.g., already entered for this meet) */
+  excludeEvents?: EventCode[];
 }
 
 export const EventSelector = forwardRef<HTMLSelectElement, EventSelectorProps>(
-  ({ groupByStroke = false, label = 'Event', placeholder = 'Select event', labelClassName, ...props }, ref) => {
+  ({ groupByStroke = false, label = 'Event', placeholder = 'Select event', labelClassName, excludeEvents = [], ...props }, ref) => {
+    const excludeSet = useMemo(() => new Set(excludeEvents), [excludeEvents]);
+    
     const options = useMemo(() => {
       if (groupByStroke) {
         // Create optgroup-like structure (flattened since Select doesn't support optgroups)
         const grouped: { value: string; label: string; disabled?: boolean }[] = [];
         
         Object.entries(EVENTS_BY_STROKE).forEach(([stroke, events]) => {
-          grouped.push({ value: `__${stroke}`, label: `── ${stroke} ──`, disabled: true });
-          events.forEach(event => {
-            grouped.push({ value: event.code, label: event.name });
-          });
+          // Only add stroke header if there are available events in this group
+          const availableEvents = events.filter(e => !excludeSet.has(e.code));
+          if (availableEvents.length > 0) {
+            grouped.push({ value: `__${stroke}`, label: `── ${stroke} ──`, disabled: true });
+            availableEvents.forEach(event => {
+              grouped.push({ value: event.code, label: event.name });
+            });
+          }
         });
         
         return grouped;
       }
       
-      return EVENTS.map(event => ({
-        value: event.code,
-        label: event.name,
-      }));
-    }, [groupByStroke]);
+      return EVENTS
+        .filter(event => !excludeSet.has(event.code))
+        .map(event => ({
+          value: event.code,
+          label: event.name,
+        }));
+    }, [groupByStroke, excludeSet]);
 
     return (
       <Select

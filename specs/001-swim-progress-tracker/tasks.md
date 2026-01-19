@@ -202,6 +202,9 @@
 - [x] **Frontend**: Add `ApiRequestError` class with error code support
 - [x] **Frontend**: Add client-side duplicate event validation in QuickEntryForm
 - [x] **Frontend**: Handle DUPLICATE_EVENT error in TimeEntryForm and QuickEntryForm
+- [x] **Frontend**: Filter out already-entered events from EventSelector dropdown
+- [x] **Frontend**: Add `excludeEvents` prop to EventSelector component
+- [x] **Tests**: Add test for excluded events in dropdown
 - [x] **Docs**: Update tasks.md with this enhancement
 
 ---

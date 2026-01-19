@@ -16,6 +16,7 @@ export function useTimes(params?: TimeListParams) {
   return useQuery({
     queryKey: timeKeys.list(params),
     queryFn: () => timeService.listTimes(params),
+    enabled: params !== undefined,
   });
 }
 

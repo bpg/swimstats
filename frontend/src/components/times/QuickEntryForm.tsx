@@ -5,7 +5,7 @@ import { EventSelector } from './EventSelector';
 import { MeetSelector } from '@/components/meets/MeetSelector';
 import { TimeBatchInput, EventCode, BatchResult } from '@/types/time';
 import { CourseType, MeetInput } from '@/types/meet';
-import { useCreateBatchTimes } from '@/hooks/useTimes';
+import { useCreateBatchTimes, useTimes } from '@/hooks/useTimes';
 import { useCreateMeet } from '@/hooks/useMeets';
 import { parseTime } from '@/utils/timeFormat';
 import { ApiRequestError } from '@/services/api';
@@ -56,6 +56,34 @@ export function QuickEntryForm({
 
   const mutation = useCreateBatchTimes();
   const createMeetMutation = useCreateMeet();
+  
+  // Fetch existing times for the selected meet to know which events are taken
+  const { data: existingTimesData } = useTimes(
+    meetId ? { meet_id: meetId, limit: 100 } : undefined
+  );
+  
+  // For each entry, compute which events to exclude (exclude other entries' events, but not its own)
+  const getExcludedEventsForEntry = (entryId: string): EventCode[] => {
+    const excluded: EventCode[] = [];
+    
+    // Add events already recorded for this meet
+    if (existingTimesData?.times) {
+      existingTimesData.times.forEach(time => {
+        if (!excluded.includes(time.event)) {
+          excluded.push(time.event);
+        }
+      });
+    }
+    
+    // Add events selected in OTHER rows (not the current one)
+    entries.forEach(entry => {
+      if (entry.id !== entryId && entry.event && !excluded.includes(entry.event)) {
+        excluded.push(entry.event);
+      }
+    });
+    
+    return excluded;
+  };
 
   const addEntry = () => {
     setEntries(prev => [...prev, { id: generateId(), event: '', time_str: '', notes: '' }]);
@@ -385,6 +413,7 @@ export function QuickEntryForm({
                     labelClassName="sm:hidden"
                     placeholder="Select event"
                     error={errors[`${entry.id}_event`]}
+                    excludeEvents={getExcludedEventsForEntry(entry.id)}
                   />
                   <Input
                     label="Time"

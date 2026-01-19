@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button, Input, Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { EventSelector } from './EventSelector';
 import { MeetSelector } from '@/components/meets/MeetSelector';
 import { TimeInput, TimeRecord, EventCode } from '@/types/time';
 import { CourseType } from '@/types/meet';
-import { useCreateTime, useUpdateTime } from '@/hooks/useTimes';
+import { useCreateTime, useUpdateTime, useTimes } from '@/hooks/useTimes';
 import { parseTime, formatTime } from '@/utils/timeFormat';
 import { ApiRequestError } from '@/services/api';
 
@@ -33,6 +33,26 @@ export function TimeEntryForm({
 
   const createMutation = useCreateTime();
   const updateMutation = useUpdateTime();
+  
+  // Fetch existing times for the selected meet
+  const { data: existingTimesData } = useTimes(
+    formData.meet_id ? { meet_id: formData.meet_id, limit: 100 } : undefined
+  );
+  
+  // Compute events to exclude (already in meet, but allow current event when editing)
+  const excludedEvents = useMemo(() => {
+    if (!existingTimesData?.times) return [];
+    
+    const excluded: EventCode[] = [];
+    existingTimesData.times.forEach(time => {
+      // When editing, don't exclude the event we're editing
+      if (initialData && time.id === initialData.id) return;
+      if (!excluded.includes(time.event)) {
+        excluded.push(time.event);
+      }
+    });
+    return excluded;
+  }, [existingTimesData, initialData]);
 
   const isEditing = !!initialData;
   const isPending = createMutation.isPending || updateMutation.isPending;
@@ -121,6 +141,7 @@ export function TimeEntryForm({
             onChange={(e) => setFormData(prev => ({ ...prev, event: e.target.value as EventCode }))}
             groupByStroke
             error={errors.event}
+            excludeEvents={excludedEvents}
             required
           />
 
