@@ -14,6 +14,7 @@ interface MeetTimesListProps {
  * Display all times from a specific meet, grouped by event.
  */
 export function MeetTimesList({ meetId, courseType }: MeetTimesListProps) {
+  const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const { data, isLoading, error, refetch } = useTimes({
     meet_id: meetId,
@@ -22,18 +23,22 @@ export function MeetTimesList({ meetId, courseType }: MeetTimesListProps) {
   const { data: pbData } = usePersonalBests(courseType);
   const deleteMutation = useDeleteTime();
 
-  const handleDelete = async (time: TimeRecord) => {
-    const eventInfo = getEventInfo(time.event);
-    const eventName = eventInfo?.name || time.event;
-    
-    if (window.confirm(`Delete ${eventName} time of ${time.time_formatted}?`)) {
-      setDeletingId(time.id);
-      try {
-        await deleteMutation.mutateAsync(time.id);
-      } finally {
-        setDeletingId(null);
-      }
+  const handleDeleteClick = (timeId: string) => {
+    setConfirmingDeleteId(timeId);
+  };
+
+  const handleConfirmDelete = async (timeId: string) => {
+    setDeletingId(timeId);
+    setConfirmingDeleteId(null);
+    try {
+      await deleteMutation.mutateAsync(timeId);
+    } finally {
+      setDeletingId(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmingDeleteId(null);
   };
 
   if (isLoading) {
@@ -145,20 +150,39 @@ export function MeetTimesList({ meetId, courseType }: MeetTimesListProps) {
                       {time.notes || '—'}
                     </td>
                     <td className="py-3">
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => handleDelete(time)}
-                        isLoading={deletingId === time.id}
-                        aria-label={`Delete ${eventInfo?.name || time.event} time`}
-                        className="text-slate-400 hover:text-red-600 hover:bg-red-50"
-                      >
-                        {deletingId !== time.id && (
-                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-                        )}
-                      </Button>
+                      {confirmingDeleteId === time.id ? (
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => handleConfirmDelete(time.id)}
+                            className="text-xs px-2 py-1 rounded bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+                            aria-label="Confirm delete"
+                          >
+                            Delete
+                          </button>
+                          <button
+                            onClick={handleCancelDelete}
+                            className="text-xs px-2 py-1 rounded bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
+                            aria-label="Cancel delete"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteClick(time.id)}
+                          isLoading={deletingId === time.id}
+                          aria-label={`Delete ${eventInfo?.name || time.event} time`}
+                          className="text-slate-400 hover:text-red-600 hover:bg-red-50"
+                        >
+                          {deletingId !== time.id && (
+                            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          )}
+                        </Button>
+                      )}
                     </td>
                   </tr>
                 );

@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { timeService } from '@/services/times';
 import { TimeRecord, TimeInput, TimeBatchInput, TimeListParams } from '@/types/time';
 import { personalBestKeys } from './usePersonalBests';
+import { meetKeys } from './useMeets';
 
 export const timeKeys = {
   all: ['times'] as const,
@@ -73,6 +74,8 @@ export function useDeleteTime() {
       queryClient.removeQueries({ queryKey: timeKeys.detail(id) });
       queryClient.invalidateQueries({ queryKey: timeKeys.lists() });
       queryClient.invalidateQueries({ queryKey: personalBestKeys.all });
+      // Also invalidate meets to update time_count
+      queryClient.invalidateQueries({ queryKey: meetKeys.all });
     },
   });
 }

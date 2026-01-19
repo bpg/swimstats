@@ -233,9 +233,8 @@ describe('MeetTimesList', () => {
     expect(deleteButton).toBeInTheDocument();
   });
 
-  it('confirms before deleting a time entry', async () => {
+  it('shows inline confirmation when delete is clicked', async () => {
     const user = userEvent.setup();
-    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false);
 
     render(<MeetTimesList meetId={mockMeet.id} courseType="25m" />, { wrapper: createWrapper() });
 
@@ -246,13 +245,33 @@ describe('MeetTimesList', () => {
     const deleteButton = screen.getByRole('button', { name: /delete 100m freestyle time/i });
     await user.click(deleteButton);
 
-    expect(confirmSpy).toHaveBeenCalledWith('Delete 100m Freestyle time of 1:05.32?');
-    confirmSpy.mockRestore();
+    // Should show inline confirmation buttons
+    expect(screen.getByRole('button', { name: /confirm delete/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /cancel delete/i })).toBeInTheDocument();
+  });
+
+  it('cancels delete when cancel is clicked', async () => {
+    const user = userEvent.setup();
+
+    render(<MeetTimesList meetId={mockMeet.id} courseType="25m" />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(screen.getByText('100m Freestyle')).toBeInTheDocument();
+    });
+
+    const deleteButton = screen.getByRole('button', { name: /delete 100m freestyle time/i });
+    await user.click(deleteButton);
+
+    // Click cancel
+    const cancelButton = screen.getByRole('button', { name: /cancel delete/i });
+    await user.click(cancelButton);
+
+    // Should be back to showing the delete button
+    expect(screen.getByRole('button', { name: /delete 100m freestyle time/i })).toBeInTheDocument();
   });
 
   it('deletes time entry when confirmed', async () => {
     const user = userEvent.setup();
-    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
 
     render(<MeetTimesList meetId={mockMeet.id} courseType="25m" />, { wrapper: createWrapper() });
 
@@ -263,8 +282,14 @@ describe('MeetTimesList', () => {
     const deleteButton = screen.getByRole('button', { name: /delete 100m freestyle time/i });
     await user.click(deleteButton);
 
-    // Confirm was called
-    expect(confirmSpy).toHaveBeenCalled();
-    confirmSpy.mockRestore();
+    // Click confirm
+    const confirmButton = screen.getByRole('button', { name: /confirm delete/i });
+    await user.click(confirmButton);
+
+    // The delete should have been triggered (mutation called)
+    // The confirmation buttons should no longer be visible
+    await waitFor(() => {
+      expect(screen.queryByRole('button', { name: /confirm delete/i })).not.toBeInTheDocument();
+    });
   });
 });
