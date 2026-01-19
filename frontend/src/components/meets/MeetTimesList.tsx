@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { TimeRecord, getEventInfo, EventCode } from '@/types/time';
-import { Card, CardHeader, CardTitle, CardContent, Loading, ErrorBanner } from '@/components/ui';
-import { useTimes } from '@/hooks/useTimes';
+import { Loading, ErrorBanner, Button } from '@/components/ui';
+import { useTimes, useDeleteTime } from '@/hooks/useTimes';
 import { usePersonalBests } from '@/hooks/usePersonalBests';
 import { CourseType } from '@/types/meet';
 
@@ -13,12 +14,27 @@ interface MeetTimesListProps {
  * Display all times from a specific meet, grouped by event.
  */
 export function MeetTimesList({ meetId, courseType }: MeetTimesListProps) {
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const { data, isLoading, error, refetch } = useTimes({
     meet_id: meetId,
     limit: 100,
   });
-
   const { data: pbData } = usePersonalBests(courseType);
+  const deleteMutation = useDeleteTime();
+
+  const handleDelete = async (time: TimeRecord) => {
+    const eventInfo = getEventInfo(time.event);
+    const eventName = eventInfo?.name || time.event;
+    
+    if (window.confirm(`Delete ${eventName} time of ${time.time_formatted}?`)) {
+      setDeletingId(time.id);
+      try {
+        await deleteMutation.mutateAsync(time.id);
+      } finally {
+        setDeletingId(null);
+      }
+    }
+  };
 
   if (isLoading) {
     return <Loading className="py-8" />;
@@ -94,6 +110,7 @@ export function MeetTimesList({ meetId, courseType }: MeetTimesListProps) {
               <th className="pb-3 font-medium">Event</th>
               <th className="pb-3 font-medium">Time</th>
               <th className="pb-3 font-medium">Notes</th>
+              <th className="pb-3 font-medium w-20"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -126,6 +143,22 @@ export function MeetTimesList({ meetId, courseType }: MeetTimesListProps) {
                     </td>
                     <td className="py-3 text-slate-600">
                       {time.notes || '—'}
+                    </td>
+                    <td className="py-3">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleDelete(time)}
+                        isLoading={deletingId === time.id}
+                        aria-label={`Delete ${eventInfo?.name || time.event} time`}
+                        className="text-slate-400 hover:text-red-600 hover:bg-red-50"
+                      >
+                        {deletingId !== time.id && (
+                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        )}
+                      </Button>
                     </td>
                   </tr>
                 );

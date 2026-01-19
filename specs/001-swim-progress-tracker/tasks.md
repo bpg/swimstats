@@ -183,6 +183,14 @@
 - [x] **Tests**: Add tests for MeetDetails page and MeetTimesList component
 - [x] **Tests**: Add tests for QuickEntryForm success state with navigation options
 
+### US1 Enhancement: Delete Time from Meet Details
+
+- [x] **Frontend**: Add delete button to MeetTimesList for each time entry
+- [x] **Frontend**: Implement confirmation dialog before deletion
+- [x] **Frontend**: Use existing `useDeleteTime` hook for mutation
+- [x] **Tests**: Add delete time tests to meets.test.tsx
+- [x] **Mocks**: Add DELETE /times/:id handler to MSW handlers
+
 ---
 
 ## Phase 4: User Story 2 - View Personal Bests (Priority: P1)

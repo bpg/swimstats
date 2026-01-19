@@ -220,4 +220,51 @@ describe('MeetTimesList', () => {
     // PB badge should be present
     expect(screen.getByText('PB')).toBeInTheDocument();
   });
+
+  it('shows delete button for each time entry', async () => {
+    render(<MeetTimesList meetId={mockMeet.id} courseType="25m" />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(screen.getByText('100m Freestyle')).toBeInTheDocument();
+    });
+
+    // Delete button should be present
+    const deleteButton = screen.getByRole('button', { name: /delete 100m freestyle time/i });
+    expect(deleteButton).toBeInTheDocument();
+  });
+
+  it('confirms before deleting a time entry', async () => {
+    const user = userEvent.setup();
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false);
+
+    render(<MeetTimesList meetId={mockMeet.id} courseType="25m" />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(screen.getByText('100m Freestyle')).toBeInTheDocument();
+    });
+
+    const deleteButton = screen.getByRole('button', { name: /delete 100m freestyle time/i });
+    await user.click(deleteButton);
+
+    expect(confirmSpy).toHaveBeenCalledWith('Delete 100m Freestyle time of 1:05.32?');
+    confirmSpy.mockRestore();
+  });
+
+  it('deletes time entry when confirmed', async () => {
+    const user = userEvent.setup();
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
+
+    render(<MeetTimesList meetId={mockMeet.id} courseType="25m" />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(screen.getByText('100m Freestyle')).toBeInTheDocument();
+    });
+
+    const deleteButton = screen.getByRole('button', { name: /delete 100m freestyle time/i });
+    await user.click(deleteButton);
+
+    // Confirm was called
+    expect(confirmSpy).toHaveBeenCalled();
+    confirmSpy.mockRestore();
+  });
 });

@@ -168,6 +168,14 @@ export const handlers = [
     );
   }),
 
+  http.delete(`${API_URL}/times/:id`, ({ params }) => {
+    const { id } = params;
+    if (id === mockTime.id || (id as string).startsWith('batch-time-')) {
+      return new HttpResponse(null, { status: 204 });
+    }
+    return HttpResponse.json({ error: 'not found' }, { status: 404 });
+  }),
+
   // Personal Bests
   http.get(`${API_URL}/personal-bests`, () => {
     return HttpResponse.json({
