@@ -114,10 +114,36 @@ export const handlers = [
   }),
 
   // Times
-  http.get(`${API_URL}/times`, () => {
+  http.get(`${API_URL}/times`, ({ request }) => {
+    const url = new URL(request.url);
+    const meetId = url.searchParams.get('meet_id');
+    
+    // Return empty list for unknown meet IDs
+    if (meetId === 'no-times-meet') {
+      return HttpResponse.json({
+        times: [],
+        total: 0,
+      });
+    }
+    
+    // Filter times by meet_id if provided
+    const times = meetId && meetId !== mockTime.meet_id 
+      ? [] 
+      : [{
+          ...mockTime,
+          meet: {
+            id: mockMeet.id,
+            name: mockMeet.name,
+            city: mockMeet.city,
+            country: mockMeet.country,
+            date: mockMeet.date,
+            course_type: mockMeet.course_type,
+          },
+        }];
+    
     return HttpResponse.json({
-      times: [mockTime],
-      total: 1,
+      times,
+      total: times.length,
     });
   }),
 

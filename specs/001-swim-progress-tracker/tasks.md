@@ -172,6 +172,17 @@
 - [X] Fix Quick Entry form alignment: use column headers instead of per-row labels
 - [X] Add labelClassName prop to Input, Select, and EventSelector components
 
+### US1 Enhancement: Save Feedback & Meet Details Page
+
+- [x] **Frontend**: Update QuickEntryForm to show success state with times count (not just PB notification)
+- [x] **Frontend**: Add "View Meet" and "Add More Times" buttons to success state
+- [x] **Frontend**: Create MeetDetails page (`/meets/:id`) showing all times from a specific meet
+- [x] **Frontend**: Create MeetTimesList component displaying times in a table grouped by event
+- [x] **Frontend**: Add navigation to MeetDetails from MeetList (click on meet name)
+- [x] **Frontend**: Update App.tsx with /meets/:id route
+- [x] **Tests**: Add tests for MeetDetails page and MeetTimesList component
+- [x] **Tests**: Add tests for QuickEntryForm success state with navigation options
+
 ---
 
 ## Phase 4: User Story 2 - View Personal Bests (Priority: P1)

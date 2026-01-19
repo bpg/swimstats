@@ -233,6 +233,9 @@ As a swim parent, I want to import my daughter's historical swim results from on
 - **FR-021**: System MUST associate all recorded times with a meet; times inherit course type from their meet
 - **FR-022**: System MUST allow editing and deleting meet records
 - **FR-023**: System MUST list previous meets for easy selection when adding times, filterable by course type
+- **FR-024**: System MUST provide a meet details page showing all times recorded for that meet
+- **FR-025**: System MUST display times on the meet details page grouped by event or in a table format
+- **FR-026**: System MUST allow navigation to the meet details page from the meets list and after saving times
 
 **Time Entry**
 
@@ -249,6 +252,8 @@ As a swim parent, I want to import my daughter's historical swim results from on
 - **FR-035**: System MUST allow optional notes/context for each time entry (e.g., "heat", "final", "PB")
 - **FR-036**: System MUST support quick entry workflow: select/create meet once, then enter multiple times for that meet in succession
 - **FR-037**: System SHOULD allow creating a new meet inline during time entry without navigating away from the entry form
+- **FR-038**: System MUST provide clear feedback after saving times: show success message with count of times saved
+- **FR-039**: System MUST offer navigation options after saving: "View Meet" to see all times for the meet, "Add More" to continue adding times
 
 **Personal Bests**
 

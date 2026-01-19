@@ -11,6 +11,7 @@ import { lazy, Suspense } from 'react';
 
 const Home = lazy(() => import('@/pages/Home'));
 const Meets = lazy(() => import('@/pages/Meets'));
+const MeetDetails = lazy(() => import('@/pages/MeetDetails'));
 const AddTimes = lazy(() => import('@/pages/AddTimes'));
 const AllTimes = lazy(() => import('@/pages/AllTimes'));
 const PersonalBests = lazy(() => import('@/pages/PersonalBests'));
@@ -104,6 +105,7 @@ function AuthenticatedApp() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/meets" element={<Meets />} />
+          <Route path="/meets/:id" element={<MeetDetails />} />
           <Route path="/add-times" element={<AddTimes />} />
           <Route path="/all-times" element={<AllTimes />} />
           <Route path="/personal-bests" element={<PersonalBests />} />

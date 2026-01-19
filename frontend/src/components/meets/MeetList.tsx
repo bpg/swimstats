@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Meet, CourseType } from '@/types/meet';
 import { Card, CardContent, CardHeader, CardTitle, Loading, ErrorBanner } from '@/components/ui';
 import { useMeets } from '@/hooks/useMeets';
@@ -8,6 +9,7 @@ export interface MeetListProps {
   onSelectMeet?: (meet: Meet) => void;
   showHeader?: boolean;
   emptyMessage?: string;
+  linkToDetails?: boolean; // If true, clicking a meet navigates to /meets/:id
 }
 
 export function MeetList({
@@ -16,6 +18,7 @@ export function MeetList({
   onSelectMeet,
   showHeader = true,
   emptyMessage = 'No meets found.',
+  linkToDetails = false,
 }: MeetListProps) {
   const { data, isLoading, error } = useMeets({ course_type: courseType, limit });
 
@@ -44,13 +47,9 @@ export function MeetList({
         <p className="text-slate-500 text-center py-8">{emptyMessage}</p>
       ) : (
         <ul className="divide-y divide-slate-100">
-          {meets.map((meet) => (
-            <li key={meet.id}>
-              <button
-                onClick={() => onSelectMeet?.(meet)}
-                className="w-full px-4 py-3 flex items-center justify-between hover:bg-slate-50 transition-colors text-left"
-                disabled={!onSelectMeet}
-              >
+          {meets.map((meet) => {
+            const itemContent = (
+              <>
                 <div className="min-w-0">
                   <p className="font-medium text-slate-900 truncate">{meet.name}</p>
                   <p className="text-sm text-slate-500">
@@ -71,15 +70,36 @@ export function MeetList({
                       {meet.time_count} time{meet.time_count !== 1 ? 's' : ''}
                     </span>
                   )}
-                  {onSelectMeet && (
+                  {(onSelectMeet || linkToDetails) && (
                     <svg className="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   )}
                 </div>
-              </button>
-            </li>
-          ))}
+              </>
+            );
+
+            return (
+              <li key={meet.id}>
+                {linkToDetails ? (
+                  <Link
+                    to={`/meets/${meet.id}`}
+                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-slate-50 transition-colors"
+                  >
+                    {itemContent}
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => onSelectMeet?.(meet)}
+                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-slate-50 transition-colors text-left"
+                    disabled={!onSelectMeet}
+                  >
+                    {itemContent}
+                  </button>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Input, Select, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui';
 import { EventSelector } from './EventSelector';
 import { MeetSelector } from '@/components/meets/MeetSelector';
@@ -31,12 +32,15 @@ export function QuickEntryForm({
   onSuccess, 
   onCancel 
 }: QuickEntryFormProps) {
+  const navigate = useNavigate();
   const [meetId, setMeetId] = useState(defaultMeetId || '');
   const [entries, setEntries] = useState<TimeEntry[]>([
     { id: generateId(), event: '', time_str: '', notes: '' },
   ]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [newPBs, setNewPBs] = useState<EventCode[]>([]);
+  const [savedCount, setSavedCount] = useState(0); // Track number of times saved
+  const [showSuccess, setShowSuccess] = useState(false); // Show success state
   
   // Quick add meet state
   const [showQuickMeet, setShowQuickMeet] = useState(false);
@@ -112,6 +116,8 @@ export function QuickEntryForm({
     try {
       const result = await mutation.mutateAsync(input);
       setNewPBs(result.new_pbs);
+      setSavedCount(result.times.length);
+      setShowSuccess(true);
       onSuccess?.(result);
     } catch (error: any) {
       setErrors({ form: error.message || 'Failed to save times' });
@@ -121,7 +127,13 @@ export function QuickEntryForm({
   const reset = () => {
     setEntries([{ id: generateId(), event: '', time_str: '', notes: '' }]);
     setNewPBs([]);
+    setSavedCount(0);
+    setShowSuccess(false);
     setErrors({});
+  };
+
+  const handleViewMeet = () => {
+    navigate(`/meets/${meetId}`);
   };
 
   const handleQuickMeetSubmit = async () => {
@@ -156,29 +168,50 @@ export function QuickEntryForm({
     }
   };
 
-  if (newPBs.length > 0) {
+  // Show success state after saving
+  if (showSuccess) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-green-600">🎉 New Personal Bests!</CardTitle>
+          <CardTitle className="text-green-600">
+            {newPBs.length > 0 ? '🎉 Times Saved with New PBs!' : '✅ Times Saved Successfully!'}
+          </CardTitle>
           <CardDescription>
-            Congratulations! You achieved new PBs in the following events:
+            {savedCount} time{savedCount !== 1 ? 's' : ''} saved to the meet.
+            {newPBs.length > 0 && ` You achieved ${newPBs.length} new personal best${newPBs.length !== 1 ? 's' : ''}!`}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-2 mb-6">
-            {newPBs.map(event => (
-              <li key={event} className="flex items-center gap-2 text-green-700">
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span className="font-medium">{event}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="flex gap-3">
-            <Button onClick={reset}>Add More Times</Button>
-            <Button variant="outline" onClick={onCancel}>Done</Button>
+          {newPBs.length > 0 && (
+            <ul className="space-y-2 mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
+              {newPBs.map(event => (
+                <li key={event} className="flex items-center gap-2 text-amber-800">
+                  <svg className="h-5 w-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="font-medium">{event}</span>
+                  <span className="text-xs bg-amber-400 text-amber-900 px-1.5 py-0.5 rounded font-bold">PB</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={handleViewMeet}>
+              <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              View Meet
+            </Button>
+            <Button variant="outline" onClick={reset}>
+              <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Add More Times
+            </Button>
+            {onCancel && (
+              <Button variant="ghost" onClick={onCancel}>Done</Button>
+            )}
           </div>
         </CardContent>
       </Card>

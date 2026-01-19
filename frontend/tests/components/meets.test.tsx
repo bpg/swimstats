@@ -7,7 +7,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { MeetList } from '@/components/meets/MeetList';
 import { MeetForm } from '@/components/meets/MeetForm';
 import { MeetSelector } from '@/components/meets/MeetSelector';
-import { mockMeet } from '../mocks/handlers';
+import { MeetTimesList } from '@/components/meets/MeetTimesList';
+import { mockMeet, mockTime } from '../mocks/handlers';
 
 // Test wrapper with providers
 function createWrapper() {
@@ -172,5 +173,51 @@ describe('MeetSelector', () => {
     await user.selectOptions(select, mockMeet.id);
 
     expect(onChange).toHaveBeenCalled();
+  });
+});
+
+describe('MeetList with linkToDetails', () => {
+  it('renders links to meet details page when linkToDetails is true', async () => {
+    render(<MeetList linkToDetails />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(screen.getByText('Test Championship')).toBeInTheDocument();
+    });
+
+    // Check that the meet item is a link
+    const link = screen.getByRole('link', { name: /test championship/i });
+    expect(link).toHaveAttribute('href', `/meets/${mockMeet.id}`);
+  });
+});
+
+describe('MeetTimesList', () => {
+  it('renders times for a meet', async () => {
+    render(<MeetTimesList meetId={mockMeet.id} courseType="25m" />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(screen.getByText('100m Freestyle')).toBeInTheDocument();
+    });
+
+    // Check time is displayed
+    expect(screen.getByText('1:05.32')).toBeInTheDocument();
+  });
+
+  it('shows empty state when no times', async () => {
+    render(<MeetTimesList meetId="no-times-meet" courseType="25m" />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(screen.getByText(/no times recorded/i)).toBeInTheDocument();
+    });
+  });
+
+  it('marks personal best times with PB badge', async () => {
+    render(<MeetTimesList meetId={mockMeet.id} courseType="25m" />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(screen.getByText('1:05.32')).toBeInTheDocument();
+    });
+
+    // PB badge should be present
+    expect(screen.getByText('PB')).toBeInTheDocument();
   });
 });

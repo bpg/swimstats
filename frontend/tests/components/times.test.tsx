@@ -203,8 +203,12 @@ describe('QuickEntryForm', () => {
 
     // The mock returns 100FR as a new PB
     await waitFor(() => {
-      expect(screen.getByText(/new personal bests/i)).toBeInTheDocument();
+      expect(screen.getByText(/times saved/i)).toBeInTheDocument();
     });
+    // Should show View Meet button
+    expect(screen.getByRole('button', { name: /view meet/i })).toBeInTheDocument();
+    // Should show Add More button
+    expect(screen.getByRole('button', { name: /add more/i })).toBeInTheDocument();
   });
 });
 
@@ -255,9 +259,11 @@ describe('QuickEntryForm MeetSelector Integration', () => {
     const submitButton = screen.getByRole('button', { name: /save all times/i });
     await user.click(submitButton);
 
-    // Should succeed and show PB notification
+    // Should succeed and show success message
     await waitFor(() => {
-      expect(screen.getByText(/new personal bests/i)).toBeInTheDocument();
+      expect(screen.getByText(/times saved/i)).toBeInTheDocument();
     });
+    // Should show View Meet button
+    expect(screen.getByRole('button', { name: /view meet/i })).toBeInTheDocument();
   });
 });
