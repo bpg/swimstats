@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useCourseType } from '@/stores/courseFilterStore';
 import { useProgress } from '@/hooks/useProgress';
 import { useSwimmer } from '@/hooks/useSwimmer';
-import { useStandards } from '@/hooks/useStandards';
+import { useStandards, useStandard } from '@/hooks/useStandards';
 import { ProgressChart } from '@/components/charts/ProgressChart';
 import { EventSelector } from '@/components/times/EventSelector';
 import { Card, CardHeader, CardTitle, CardContent, Loading, ErrorBanner } from '@/components/ui';
@@ -24,6 +24,9 @@ export function Progress() {
     gender: swimmer?.gender,
   });
 
+  // Fetch full standard with times when a standard is selected
+  const { data: selectedStandardData } = useStandard(selectedStandardId);
+
   const progressParams = {
     event: selectedEvent,
     course_type: courseType,
@@ -37,15 +40,15 @@ export function Progress() {
     error,
   } = useProgress(progressParams);
 
-  // Find selected standard and its qualifying time for this event
+  // Find the qualifying time for the selected event in the selected standard
   let standardTime: number | undefined;
   let standardName: string | undefined;
-  if (selectedStandardId && standardsData?.standards) {
-    const standard = standardsData.standards.find(s => s.id === selectedStandardId);
-    if (standard) {
-      standardName = standard.name;
-      // Note: We don't have the full standard times here without an additional query
-      // For now, just show the name. Could add another query to get standard times if needed.
+  if (selectedStandardData) {
+    standardName = selectedStandardData.name;
+    // Find the time for this event (match any age group - we'll show the fastest/first one)
+    const matchingTime = selectedStandardData.times?.find(t => t.event === selectedEvent);
+    if (matchingTime) {
+      standardTime = matchingTime.time_ms;
     }
   }
 
@@ -64,17 +67,33 @@ export function Progress() {
           <CardTitle>Filters</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Event selector */}
+            <EventSelector
+              id="event"
+              label="Event"
+              value={selectedEvent}
+              onChange={(e) => setSelectedEvent(e.target.value as EventCode)}
+            />
+
+            {/* Standard selector (optional reference line) */}
             <div>
-              <label htmlFor="event" className="block text-sm font-medium text-slate-700 mb-1">
-                Event
+              <label htmlFor="standard" className="block text-sm font-medium text-slate-700 mb-1">
+                Standard Reference (Optional)
               </label>
-              <EventSelector
-                id="event"
-                value={selectedEvent}
-                onChange={(e) => setSelectedEvent(e.target.value as EventCode)}
-              />
+              <select
+                id="standard"
+                value={selectedStandardId}
+                onChange={(e) => setSelectedStandardId(e.target.value)}
+                className="flex h-10 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+              >
+                <option value="">None</option>
+                {standardsData?.standards?.map((standard) => (
+                  <option key={standard.id} value={standard.id}>
+                    {standard.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Start date */}
@@ -87,7 +106,7 @@ export function Progress() {
                 id="start-date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                className="flex h-10 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
               />
             </div>
 
@@ -101,28 +120,8 @@ export function Progress() {
                 id="end-date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                className="flex h-10 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
               />
-            </div>
-
-            {/* Standard selector (optional reference line) */}
-            <div>
-              <label htmlFor="standard" className="block text-sm font-medium text-slate-700 mb-1">
-                Standard Reference (Optional)
-              </label>
-              <select
-                id="standard"
-                value={selectedStandardId}
-                onChange={(e) => setSelectedStandardId(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
-              >
-                <option value="">None</option>
-                {standardsData?.standards?.map((standard) => (
-                  <option key={standard.id} value={standard.id}>
-                    {standard.name}
-                  </option>
-                ))}
-              </select>
             </div>
           </div>
 
