@@ -278,13 +278,86 @@ export const handlers = [
   }),
 
   // Comparisons
-  http.get(`${API_URL}/comparisons`, () => {
+  http.get(`${API_URL}/comparisons`, ({ request }) => {
+    const url = new URL(request.url);
+    const standardId = url.searchParams.get('standard_id');
+    
+    if (!standardId) {
+      return HttpResponse.json({ error: 'standard_id is required' }, { status: 400 });
+    }
+    
     return HttpResponse.json({
-      standard: { id: 'std-1', name: 'Test Standard', course_type: '25m' },
+      standard_id: standardId,
+      standard_name: 'Test Standard',
       course_type: '25m',
-      age_group: '13-14',
-      comparisons: [],
-      summary: { achieved: 0, close: 0, not_achieved: 0, no_time: 17 },
+      swimmer_name: 'Test Swimmer',
+      swimmer_age_group: '13-14',
+      threshold_percent: 3.0,
+      comparisons: [
+        {
+          event: '50FR',
+          status: 'achieved',
+          swimmer_time_ms: 28000,
+          swimmer_time_formatted: '28.00',
+          standard_time_ms: 28500,
+          standard_time_formatted: '28.50',
+          difference_ms: -500,
+          difference_formatted: '-0.50',
+          difference_percent: -1.75,
+          age_group: '13-14',
+          meet_name: 'Test Championship',
+          date: '2026-01-15',
+        },
+        {
+          event: '100FR',
+          status: 'almost',
+          swimmer_time_ms: 63500,
+          swimmer_time_formatted: '1:03.50',
+          standard_time_ms: 62000,
+          standard_time_formatted: '1:02.00',
+          difference_ms: 1500,
+          difference_formatted: '+1.50',
+          difference_percent: 2.4,
+          age_group: '13-14',
+          meet_name: 'Test Championship',
+          date: '2026-01-15',
+        },
+        {
+          event: '200FR',
+          status: 'not_achieved',
+          swimmer_time_ms: 145000,
+          swimmer_time_formatted: '2:25.00',
+          standard_time_ms: 130000,
+          standard_time_formatted: '2:10.00',
+          difference_ms: 15000,
+          difference_formatted: '+15.00',
+          difference_percent: 11.5,
+          age_group: '13-14',
+          meet_name: 'Test Championship',
+          date: '2026-01-15',
+        },
+        {
+          event: '50BK',
+          status: 'no_time',
+          swimmer_time_ms: null,
+          swimmer_time_formatted: null,
+          standard_time_ms: 32000,
+          standard_time_formatted: '32.00',
+          difference_ms: null,
+          difference_formatted: null,
+          difference_percent: null,
+          age_group: '13-14',
+          meet_name: null,
+          date: null,
+        },
+      ],
+      summary: {
+        total_events: 17,
+        achieved: 1,
+        almost: 1,
+        not_achieved: 1,
+        no_time: 14,
+      },
     });
   }),
 

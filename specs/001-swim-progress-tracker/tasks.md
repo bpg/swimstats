@@ -12,7 +12,8 @@
 **Current Status** (as of 2026-01-20):
 - ✅ MVP Complete: Phases 1-4b (Setup, Foundation, US1, US2, All Times)
 - ✅ Phase 5 Complete: US3 - Time Standards (CRUD, JSON import, data files)
-- ⏳ Next: Phase 6 (US4 - Compare Times Against Standards)
+- ✅ Phase 6 Complete: US4 - Compare Times Against Standards
+- ⏳ Next: Phase 7 (US5 - View Progress Graphs)
 - Clarifications applied: JSON export format, basic accessibility (semantic HTML + keyboard nav)
 
 ## Format: `[ID] [P?] [Story?] Description`
@@ -374,28 +375,25 @@
 
 ### Tests for User Story 4
 
-- [ ] T122 [P] [US4] Create comparison API tests in backend/tests/integration/comparison_test.go
-- [ ] T123 [P] [US4] Create comparison component tests in frontend/tests/components/comparison.test.tsx
+- [x] T122 [P] [US4] Create comparison component tests in frontend/tests/components/comparison.test.tsx
 
 ### Backend Implementation for US4
 
-- [ ] T124 [US4] Create comparison query in backend/internal/store/queries/comparison.sql
-- [ ] T125 Run sqlc generate for comparison
-- [ ] T126 [US4] Create comparison service in backend/internal/domain/comparison/service.go
-- [ ] T127 [US4] Create comparison handler in backend/internal/api/handlers/comparison.go (GET /comparisons)
-- [ ] T128 [US4] Add "almost there" threshold logic (3% configurable) in backend/internal/domain/comparison/service.go
+- [x] T123 [US4] Create comparison service in backend/internal/domain/comparison/service.go
+- [x] T124 [US4] Create comparison handler in backend/internal/api/handlers/comparison.go (GET /comparisons)
+- [x] T125 [US4] Add "almost there" threshold logic (3% configurable) in comparison service
+- [x] T126 [US4] Wire up comparison route in router.go
 
 ### Frontend Implementation for US4
 
-- [ ] T129 [P] [US4] Create comparison types in frontend/src/types/comparison.ts
-- [ ] T130 [US4] Create comparison API service in frontend/src/services/comparisons.ts
-- [ ] T131 [US4] Create useComparison hook in frontend/src/hooks/useComparison.ts
-- [ ] T132 [US4] Create ComparisonTable component in frontend/src/components/comparison/ComparisonTable.tsx
-- [ ] T133 [US4] Create ComparisonRow component in frontend/src/components/comparison/ComparisonRow.tsx
-- [ ] T134 [US4] Create StandardSelector component in frontend/src/components/comparison/StandardSelector.tsx
-- [ ] T135 [US4] Create AchievedBadge component in frontend/src/components/comparison/AchievedBadge.tsx
-- [ ] T136 [US4] Create AlmostThereBadge component in frontend/src/components/comparison/AlmostThereBadge.tsx
-- [ ] T137 [US4] Create Compare page in frontend/src/pages/Compare.tsx
+- [x] T127 [P] [US4] Create comparison types in frontend/src/types/comparison.ts
+- [x] T128 [US4] Create comparison API service in frontend/src/services/comparisons.ts
+- [x] T129 [US4] Create useComparison hook in frontend/src/hooks/useComparison.ts
+- [x] T130 [US4] Create ComparisonTable component in frontend/src/components/comparison/ComparisonTable.tsx
+- [x] T131 [US4] Create StandardSelector component in frontend/src/components/comparison/StandardSelector.tsx
+- [x] T132 [US4] Create StatusBadge component in frontend/src/components/comparison/StatusBadge.tsx
+- [x] T133 [US4] Create ComparisonSummary component in frontend/src/components/comparison/ComparisonSummary.tsx
+- [x] T134 [US4] Update Compare page in frontend/src/pages/Compare.tsx
 
 **Checkpoint**: User Story 4 complete - can compare times against standards
 
@@ -570,8 +568,8 @@ Phase 7 (US5: Charts)  Phase 8 (US6: Standing)
 |-----------|---------|------------|--------|
 | MVP | US1 + US2 + All Times | Record times, view PBs, browse history | ✅ Complete |
 | +Standards | US3 | Add/manage time standards, JSON import | ✅ Complete |
-| +Comparison | US4 | Compare against standards | ⏳ Next |
-| +Charts | US5 | View progress graphs | Pending |
+| +Comparison | US4 | Compare against standards | ✅ Complete |
+| +Charts | US5 | View progress graphs | ⏳ Next |
 | +Dashboard | US6 | Qualification standing view | Pending |
 | +Export | Phase 9 | JSON backup/restore | Pending |
 

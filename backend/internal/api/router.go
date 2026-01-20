@@ -27,19 +27,21 @@ type Router struct {
 	pool         *pgxpool.Pool
 
 	// Services
-	swimmerService  *swimmer.Service
-	meetService     *meet.Service
-	timeService     *timeservice.Service
-	pbService       *comparison.PersonalBestService
-	standardService *standard.Service
+	swimmerService    *swimmer.Service
+	meetService       *meet.Service
+	timeService       *timeservice.Service
+	pbService         *comparison.PersonalBestService
+	comparisonService *comparison.ComparisonService
+	standardService   *standard.Service
 
 	// Handlers
-	authHandler     *handlers.AuthHandler
-	swimmerHandler  *handlers.SwimmerHandler
-	meetHandler     *handlers.MeetHandler
-	timeHandler     *handlers.TimeHandler
-	pbHandler       *handlers.PersonalBestHandler
-	standardHandler *handlers.StandardHandler
+	authHandler       *handlers.AuthHandler
+	swimmerHandler    *handlers.SwimmerHandler
+	meetHandler       *handlers.MeetHandler
+	timeHandler       *handlers.TimeHandler
+	pbHandler         *handlers.PersonalBestHandler
+	comparisonHandler *handlers.ComparisonHandler
+	standardHandler   *handlers.StandardHandler
 }
 
 // NewRouter creates a new API router with all dependencies.
@@ -58,6 +60,7 @@ func NewRouter(logger *slog.Logger, authProvider *auth.Provider, pool *pgxpool.P
 	meetService := meet.NewService(meetRepo)
 	timeService := timeservice.NewService(timeRepo, meetRepo)
 	pbService := comparison.NewPersonalBestService(timeRepo)
+	comparisonService := comparison.NewComparisonService(timeRepo, standardRepo, swimmerRepo)
 	standardService := standard.NewService(standardRepo)
 
 	// Create handlers
@@ -66,23 +69,26 @@ func NewRouter(logger *slog.Logger, authProvider *auth.Provider, pool *pgxpool.P
 	meetHandler := handlers.NewMeetHandler(meetService)
 	timeHandler := handlers.NewTimeHandler(timeService, swimmerService)
 	pbHandler := handlers.NewPersonalBestHandler(pbService, swimmerService)
+	comparisonHandler := handlers.NewComparisonHandler(comparisonService, swimmerService)
 	standardHandler := handlers.NewStandardHandler(standardService)
 
 	return &Router{
-		logger:          logger,
-		authProvider:    authProvider,
-		pool:            pool,
-		swimmerService:  swimmerService,
-		meetService:     meetService,
-		timeService:     timeService,
-		pbService:       pbService,
-		standardService: standardService,
-		authHandler:     authHandler,
-		swimmerHandler:  swimmerHandler,
-		meetHandler:     meetHandler,
-		timeHandler:     timeHandler,
-		pbHandler:       pbHandler,
-		standardHandler: standardHandler,
+		logger:            logger,
+		authProvider:      authProvider,
+		pool:              pool,
+		swimmerService:    swimmerService,
+		meetService:       meetService,
+		timeService:       timeService,
+		pbService:         pbService,
+		comparisonService: comparisonService,
+		standardService:   standardService,
+		authHandler:       authHandler,
+		swimmerHandler:    swimmerHandler,
+		meetHandler:       meetHandler,
+		timeHandler:       timeHandler,
+		pbHandler:         pbHandler,
+		comparisonHandler: comparisonHandler,
+		standardHandler:   standardHandler,
 	}
 }
 
@@ -146,8 +152,8 @@ func (rt *Router) Handler() http.Handler {
 			r.Delete("/standards/{id}", rt.standardHandler.DeleteStandard)
 			r.Put("/standards/{id}/times", rt.standardHandler.SetStandardTimes)
 
-			// Comparisons (to be implemented in US4)
-			r.Get("/comparisons", handlers.NotImplemented)
+			// Comparisons
+			r.Get("/comparisons", rt.comparisonHandler.GetComparison)
 
 			// Progress (to be implemented in US5)
 			r.Get("/progress/{event}", handlers.NotImplemented)
