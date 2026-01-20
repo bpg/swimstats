@@ -77,6 +77,48 @@ const formatXAxis = (date: string) => {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
+// Format time helper (reuse the formatYAxis logic)
+const formatTime = (timeMs: number) => {
+  const totalSeconds = timeMs / 1000;
+  const hundredths = Math.floor((timeMs % 1000) / 10);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = Math.floor(totalSeconds % 60);
+
+  if (minutes === 0) {
+    return `${seconds}.${hundredths.toString().padStart(2, '0')}`;
+  }
+  return `${minutes}:${seconds.toString().padStart(2, '0')}.${hundredths.toString().padStart(2, '0')}`;
+};
+
+// Custom label component for reference line
+const ReferenceLabel = (props: any) => {
+  const { viewBox, standardName, standardTime } = props;
+  const { x, y, width } = viewBox;
+
+  return (
+    <g>
+      <rect
+        x={x + width - 160}
+        y={y - 14}
+        width={150}
+        height={28}
+        fill="#ef4444"
+        rx={4}
+      />
+      <text
+        x={x + width - 85}
+        y={y + 5}
+        textAnchor="middle"
+        fill="#ffffff"
+        fontSize={13}
+        fontWeight="bold"
+      >
+        {standardName}: {formatTime(standardTime)}
+      </text>
+    </g>
+  );
+};
+
 export function ProgressChart({ data, standardTime, standardName }: ProgressChartProps) {
   if (!data || data.length === 0) {
     return (
@@ -107,7 +149,7 @@ export function ProgressChart({ data, standardTime, standardName }: ProgressChar
     <ResponsiveContainer width="100%" height={400}>
       <LineChart
         data={data}
-        margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+        margin={{ top: 20, right: 170, left: 20, bottom: 20 }}
       >
         <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
         <XAxis
@@ -136,14 +178,8 @@ export function ProgressChart({ data, standardTime, standardName }: ProgressChar
             y={standardTime}
             stroke="#ef4444"
             strokeDasharray="5 5"
-            strokeWidth={2}
-            label={{
-              value: standardName || 'Standard',
-              position: 'right',
-              fill: '#ef4444',
-              fontSize: 12,
-              fontWeight: 'bold',
-            }}
+            strokeWidth={3}
+            label={<ReferenceLabel standardName={standardName || 'Standard'} standardTime={standardTime} />}
           />
         )}
 
