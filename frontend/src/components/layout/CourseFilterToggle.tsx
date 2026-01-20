@@ -27,7 +27,7 @@ export function CourseFilterToggle({ className }: CourseFilterToggleProps) {
         Course:
       </span>
       <div
-        className="inline-flex rounded-lg bg-slate-100 p-1"
+        className="inline-flex rounded-lg bg-slate-100 p-0.5"
         role="radiogroup"
         aria-label="Select pool course type"
       >
@@ -38,12 +38,12 @@ export function CourseFilterToggle({ className }: CourseFilterToggleProps) {
             aria-checked={courseType === option.value}
             onClick={() => setCourseType(option.value)}
             className={cn(
-              'px-3 py-1.5 text-sm font-medium rounded-md transition-all',
+              'px-3.5 py-1.5 text-sm font-semibold rounded-md transition-all',
               courseType === option.value
                 ? option.value === '25m'
-                  ? 'bg-blue-100 text-blue-800'
-                  : 'bg-green-100 text-green-800'
-                : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-blue-500 text-white shadow-md'
+                  : 'bg-green-500 text-white shadow-md'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
             )}
             title={option.description}
           >

@@ -132,17 +132,17 @@ export function AppShell({ children }: AppShellProps) {
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-6">
+            <nav className="hidden lg:flex items-center gap-8">
               {/* Primary navigation group */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5">
                 {navItems.slice(0, 5).map((item) => (
                   <Link
                     key={item.href}
                     to={item.href}
                     className={cn(
-                      'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                      'px-3 py-2 rounded-lg text-sm font-medium transition-all',
                       isActive(item.href)
-                        ? 'bg-cyan-50 text-cyan-700'
+                        ? 'bg-cyan-50 text-cyan-700 shadow-sm'
                         : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                     )}
                   >
@@ -152,15 +152,15 @@ export function AppShell({ children }: AppShellProps) {
               </div>
 
               {/* Analytics navigation group */}
-              <div className="flex items-center gap-1 pl-6 border-l border-slate-200">
+              <div className="flex items-center gap-0.5 pl-8 border-l-2 border-slate-300">
                 {navItems.slice(5).map((item) => (
                   <Link
                     key={item.href}
                     to={item.href}
                     className={cn(
-                      'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                      'px-3 py-2 rounded-lg text-sm font-medium transition-all',
                       isActive(item.href)
-                        ? 'bg-cyan-50 text-cyan-700'
+                        ? 'bg-cyan-50 text-cyan-700 shadow-sm'
                         : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                     )}
                   >
@@ -171,17 +171,18 @@ export function AppShell({ children }: AppShellProps) {
             </nav>
 
             {/* Right side */}
-            <div className="flex items-center gap-3">
-              <div className="hidden lg:flex px-3 py-1.5 bg-slate-100 rounded-lg">
+            <div className="flex items-center gap-4">
+              {/* Course filter */}
+              <div className="hidden lg:flex px-3.5 py-1.5 bg-white border border-slate-300 rounded-lg shadow-sm">
                 <CourseFilterToggle />
               </div>
 
               {/* User menu */}
               {isAuthenticated && user && (
-                <div className="flex items-center gap-2 pl-3 border-l border-slate-200">
+                <div className="flex items-center gap-1.5 px-2 py-1 bg-slate-50 rounded-lg border border-slate-200">
                   <Link
                     to="/settings"
-                    className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                    className="p-1.5 rounded-md text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-sm transition-all"
                     title="Settings"
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -196,7 +197,7 @@ export function AppShell({ children }: AppShellProps) {
                   )}
                   <button
                     onClick={handleSignOut}
-                    className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                    className="p-1.5 rounded-md text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-sm transition-all"
                     title="Sign out"
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
