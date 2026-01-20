@@ -17,9 +17,10 @@
 - ✅ Phase 6b Complete: US7 - Import Historical Results (JSON bulk import system)
 - ✅ Phase 7 Complete: US5 - View Progress Graphs (Recharts line charts with standard reference lines)
 - ✅ Navigation UI Polish: Enhanced visual hierarchy, removed redundant Home nav, improved course filter styling
-- ⏳ Next: Phase 8 (Polish - export, accessibility, performance optimization)
+- ✅ Phase 8 Data Export/Import: Complete (T180-T191, 12/12 tasks) - export, import with preview, replace mode, dialogs
+- ⏳ Next: Phase 8 remaining work - documentation (4), accessibility (5), performance (5), testing (4), security (5), validation (5), deployment (5)
 - Clarifications applied: JSON export format, basic accessibility (semantic HTML + keyboard nav)
-- Recent enhancements: Progress charts with PB markers, date filtering, standard reference lines, beautified navigation menu
+- Recent enhancements: Export/import with preview and replace mode, in-app dialogs, comprehensive warnings
 
 ## Format: `[ID] [P?] [Story?] Description`
 

@@ -157,9 +157,9 @@ IMPORT-GUIDE.md               # User guide for data import
 | Phase 6: US4 + US6 - Compare | ✅ Complete | Comparison with adjacent age groups, achievements on PBs, standing dashboard |
 | Phase 7: US5 - Progress Charts | ✅ Complete | Recharts line charts with PB markers, date filtering, standard reference lines |
 | Phase 7b: Navigation UI Polish | ✅ Complete | Enhanced visual hierarchy, logical grouping, improved styling |
-| Phase 8: Polish | 🔄 In Progress | Data export/import with preview complete, accessibility verification pending, documentation pending |
+| Phase 8: Polish | 🔄 In Progress | Data export/import ✅ complete (12/12 tasks). Remaining: documentation, accessibility, performance, testing, security validation |
 
-**Current State**: Phases 1-7b complete (all user stories + UI polish), Phase 8 partially complete. App can:
+**Current State**: Phases 1-7b complete (all user stories + UI polish). Phase 8: Data export/import complete. App can:
 
 - Create and manage swimmer profile
 - Create and manage meets (with inline quick-add from time entry)
@@ -202,6 +202,26 @@ IMPORT-GUIDE.md               # User guide for data import
 - Consolidated "All Times" and "Time History" into single compact table view
 - Removed "All Events" option from All Times (must select specific event for meaningful ranking)
 - All Times shows rank badges (gold/silver/bronze) when sorting by fastest
+
+**Phase 8 Progress** (as of 2026-01-20):
+
+✅ **Data Export & Import Complete** (T180-T191, 12 tasks):
+- Export all data to JSON with timestamped filename
+- Import with preview endpoint showing deletion counts
+- Replace mode: optional sections completely replace existing data
+- Confirmation dialog with detailed warnings
+- In-app success/error dialogs (no browser alerts)
+- Comprehensive integration tests
+- Documentation updated
+
+⏳ **Remaining Phase 8 Work** (~33 tasks):
+- Documentation: README, USER-GUIDE, API docs (4 tasks)
+- Accessibility: axe-core, keyboard nav, semantic HTML, WCAG AA (5 tasks)
+- Performance: API latency, TTI, bundle size validation (5 tasks)
+- Testing: Chart tests, coverage verification (4 tasks)
+- Security: Auth review, access enforcement, session handling (5 tasks)
+- Final Validation: Success criteria, E2E testing, cleanup (5 tasks)
+- Deployment: Docker/K8s config updates (5 tasks)
 - Meet Details page: View all times from a meet with "Add Times" and "View Meet" navigation
 - Save feedback: Success state after saving times with count and navigation options
 - Delete times: Remove individual time entries from meet details page with confirmation
