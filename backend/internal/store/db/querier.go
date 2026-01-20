@@ -36,6 +36,9 @@ type Querier interface {
 	GetPersonalBestForEvent(ctx context.Context, arg GetPersonalBestForEventParams) (GetPersonalBestForEventRow, error)
 	// Returns the fastest time for each event for a swimmer in a specific course type
 	GetPersonalBests(ctx context.Context, arg GetPersonalBestsParams) ([]GetPersonalBestsRow, error)
+	// Returns time progression for a specific event over time
+	// Used for progress charts visualization
+	GetProgressData(ctx context.Context, arg GetProgressDataParams) ([]GetProgressDataRow, error)
 	GetRecentMeets(ctx context.Context, arg GetRecentMeetsParams) ([]GetRecentMeetsRow, error)
 	GetStandard(ctx context.Context, id uuid.UUID) (TimeStandard, error)
 	GetStandardTime(ctx context.Context, id uuid.UUID) (StandardTime, error)

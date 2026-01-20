@@ -4,9 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 
 	"github.com/bpg/swimstats/backend/internal/store/db"
 )
@@ -234,4 +236,31 @@ func (r *TimeRepository) EventExistsForMeet(ctx context.Context, swimmerID, meet
 		return false, fmt.Errorf("check event exists for meet: %w", err)
 	}
 	return exists, nil
+}
+
+// GetProgressData retrieves time progression data for an event.
+func (r *TimeRepository) GetProgressData(ctx context.Context, swimmerID uuid.UUID, courseType, event string, startDate, endDate *time.Time) ([]db.GetProgressDataRow, error) {
+	var column4, column5 pgtype.Date
+
+	if startDate != nil {
+		column4.Time = *startDate
+		column4.Valid = true
+	}
+
+	if endDate != nil {
+		column5.Time = *endDate
+		column5.Valid = true
+	}
+
+	rows, err := r.queries.GetProgressData(ctx, db.GetProgressDataParams{
+		SwimmerID:  swimmerID,
+		CourseType: courseType,
+		Event:      event,
+		Column4:    column4,
+		Column5:    column5,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("get progress data: %w", err)
+	}
+	return rows, nil
 }

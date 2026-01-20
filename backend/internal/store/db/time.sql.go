@@ -298,6 +298,84 @@ func (q *Queries) GetPersonalBests(ctx context.Context, arg GetPersonalBestsPara
 	return items, nil
 }
 
+const getProgressData = `-- name: GetProgressData :many
+SELECT
+    t.id,
+    t.time_ms,
+    COALESCE(t.event_date, m.start_date) AS date,
+    m.name AS meet_name,
+    t.event,
+    -- Check if this time is the personal best (fastest time for this event/course)
+    (t.time_ms = (
+        SELECT MIN(t2.time_ms)
+        FROM times t2
+        JOIN meets m2 ON m2.id = t2.meet_id
+        WHERE t2.swimmer_id = t.swimmer_id
+          AND m2.course_type = m.course_type
+          AND t2.event = t.event
+    )) AS is_pb
+FROM times t
+JOIN meets m ON m.id = t.meet_id
+WHERE t.swimmer_id = $1
+  AND m.course_type = $2
+  AND t.event = $3
+  AND ($4::date IS NULL OR COALESCE(t.event_date, m.start_date) >= $4)
+  AND ($5::date IS NULL OR COALESCE(t.event_date, m.start_date) <= $5)
+ORDER BY COALESCE(t.event_date, m.start_date) ASC, t.time_ms ASC
+`
+
+type GetProgressDataParams struct {
+	SwimmerID  uuid.UUID   `json:"swimmer_id"`
+	CourseType string      `json:"course_type"`
+	Event      string      `json:"event"`
+	Column4    pgtype.Date `json:"column_4"`
+	Column5    pgtype.Date `json:"column_5"`
+}
+
+type GetProgressDataRow struct {
+	ID       uuid.UUID   `json:"id"`
+	TimeMs   int32       `json:"time_ms"`
+	Date     pgtype.Date `json:"date"`
+	MeetName string      `json:"meet_name"`
+	Event    string      `json:"event"`
+	IsPb     bool        `json:"is_pb"`
+}
+
+// Returns time progression for a specific event over time
+// Used for progress charts visualization
+func (q *Queries) GetProgressData(ctx context.Context, arg GetProgressDataParams) ([]GetProgressDataRow, error) {
+	rows, err := q.db.Query(ctx, getProgressData,
+		arg.SwimmerID,
+		arg.CourseType,
+		arg.Event,
+		arg.Column4,
+		arg.Column5,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetProgressDataRow{}
+	for rows.Next() {
+		var i GetProgressDataRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.TimeMs,
+			&i.Date,
+			&i.MeetName,
+			&i.Event,
+			&i.IsPb,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getTime = `-- name: GetTime :one
 SELECT 
     t.id, 

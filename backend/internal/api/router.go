@@ -33,6 +33,7 @@ type Router struct {
 	timeService       *timeservice.Service
 	pbService         *comparison.PersonalBestService
 	comparisonService *comparison.ComparisonService
+	progressService   *comparison.ProgressService
 	standardService   *standard.Service
 	importService     *importer.Service
 
@@ -43,6 +44,7 @@ type Router struct {
 	timeHandler       *handlers.TimeHandler
 	pbHandler         *handlers.PersonalBestHandler
 	comparisonHandler *handlers.ComparisonHandler
+	progressHandler   *handlers.ProgressHandler
 	standardHandler   *handlers.StandardHandler
 	importHandler     *handlers.ImportHandler
 }
@@ -64,6 +66,7 @@ func NewRouter(logger *slog.Logger, authProvider *auth.Provider, pool *pgxpool.P
 	timeService := timeservice.NewService(timeRepo, meetRepo)
 	pbService := comparison.NewPersonalBestService(timeRepo)
 	comparisonService := comparison.NewComparisonService(timeRepo, standardRepo, swimmerRepo)
+	progressService := comparison.NewProgressService(timeRepo)
 	standardService := standard.NewService(standardRepo)
 	importService := importer.NewService(swimmerService, meetService, timeService)
 
@@ -74,6 +77,7 @@ func NewRouter(logger *slog.Logger, authProvider *auth.Provider, pool *pgxpool.P
 	timeHandler := handlers.NewTimeHandler(timeService, swimmerService)
 	pbHandler := handlers.NewPersonalBestHandler(pbService, swimmerService)
 	comparisonHandler := handlers.NewComparisonHandler(comparisonService, swimmerService)
+	progressHandler := handlers.NewProgressHandler(progressService, swimmerService)
 	standardHandler := handlers.NewStandardHandler(standardService)
 	importHandler := handlers.NewImportHandler(importService, logger)
 
@@ -86,6 +90,7 @@ func NewRouter(logger *slog.Logger, authProvider *auth.Provider, pool *pgxpool.P
 		timeService:       timeService,
 		pbService:         pbService,
 		comparisonService: comparisonService,
+		progressService:   progressService,
 		standardService:   standardService,
 		importService:     importService,
 		authHandler:       authHandler,
@@ -94,6 +99,7 @@ func NewRouter(logger *slog.Logger, authProvider *auth.Provider, pool *pgxpool.P
 		timeHandler:       timeHandler,
 		pbHandler:         pbHandler,
 		comparisonHandler: comparisonHandler,
+		progressHandler:   progressHandler,
 		standardHandler:   standardHandler,
 		importHandler:     importHandler,
 	}
@@ -162,8 +168,8 @@ func (rt *Router) Handler() http.Handler {
 			// Comparisons
 			r.Get("/comparisons", rt.comparisonHandler.GetComparison)
 
-			// Progress (to be implemented in US5)
-			r.Get("/progress/{event}", handlers.NotImplemented)
+			// Progress
+			r.Get("/progress/{event}", rt.progressHandler.GetProgressData)
 
 			// Data export/import
 			r.Get("/data/export", handlers.NotImplemented) // To be implemented in Polish phase

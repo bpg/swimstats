@@ -179,3 +179,30 @@ SELECT EXISTS (
       AND meet_id = $2
       AND event = $3
 ) AS exists;
+
+-- name: GetProgressData :many
+-- Returns time progression for a specific event over time
+-- Used for progress charts visualization
+SELECT
+    t.id,
+    t.time_ms,
+    COALESCE(t.event_date, m.start_date) AS date,
+    m.name AS meet_name,
+    t.event,
+    -- Check if this time is the personal best (fastest time for this event/course)
+    (t.time_ms = (
+        SELECT MIN(t2.time_ms)
+        FROM times t2
+        JOIN meets m2 ON m2.id = t2.meet_id
+        WHERE t2.swimmer_id = t.swimmer_id
+          AND m2.course_type = m.course_type
+          AND t2.event = t.event
+    )) AS is_pb
+FROM times t
+JOIN meets m ON m.id = t.meet_id
+WHERE t.swimmer_id = $1
+  AND m.course_type = $2
+  AND t.event = $3
+  AND ($4::date IS NULL OR COALESCE(t.event_date, m.start_date) >= $4)
+  AND ($5::date IS NULL OR COALESCE(t.event_date, m.start_date) <= $5)
+ORDER BY COALESCE(t.event_date, m.start_date) ASC, t.time_ms ASC;
