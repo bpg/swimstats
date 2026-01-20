@@ -71,7 +71,7 @@ func NewRouter(logger *slog.Logger, authProvider *auth.Provider, pool *pgxpool.P
 	comparisonService := comparison.NewComparisonService(timeRepo, standardRepo, swimmerRepo)
 	progressService := comparison.NewProgressService(timeRepo)
 	standardService := standard.NewService(standardRepo)
-	importService := importer.NewService(swimmerService, meetService, timeService)
+	importService := importer.NewService(swimmerService, meetService, timeService, standardService)
 	exportService := exporter.NewService(swimmerService, meetService, timeService, standardService)
 
 	// Create handlers
@@ -180,6 +180,7 @@ func (rt *Router) Handler() http.Handler {
 
 			// Data export/import
 			r.Get("/data/export", rt.exportHandler.ExportAllData)
+			r.Post("/data/import/preview", rt.importHandler.PreviewImport)
 			r.Post("/data/import", rt.importHandler.ImportSwimmerData)
 		})
 	})

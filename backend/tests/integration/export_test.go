@@ -188,8 +188,15 @@ func TestExportAPI(t *testing.T) {
 		// Clean database
 		testDB.CleanTables(t)
 
-		// Import data back
-		rr = client.Post("/api/v1/data/import", exportData)
+		// Import data back (wrap in request with confirmation)
+		importReq := struct {
+			Data      ExportData `json:"data"`
+			Confirmed bool       `json:"confirmed"`
+		}{
+			Data:      exportData,
+			Confirmed: true,
+		}
+		rr = client.Post("/api/v1/data/import", importReq)
 		require.Equal(t, http.StatusOK, rr.Code)
 
 		// Export again
