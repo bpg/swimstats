@@ -176,33 +176,50 @@ As a swim parent, I want to see a dashboard showing my daughter's overall standi
 
 ---
 
-### User Story 7 - Import Historical Results (Priority: P4 - ✅ Implemented)
+### User Story 7 - Data Export and Import (Priority: P2 - ✅ Implemented)
 
-As a swim parent, I want to import my daughter's historical swim results from JSON files so that I don't have to manually enter years of past competition data.
+As a swim parent, I want to export all my daughter's swim data to a JSON file for backup and import it back for restoration so that I can safely preserve and restore all tracked data.
 
-**Why this priority**: This is a convenience feature that saves significant data entry time, but the application is fully functional without it.
+**Why this priority**: Data backup and restoration is essential for data safety and portability. This feature enables users to backup their data, move between devices, or recover from data loss.
 
-**Independent Test**: Can be tested by importing a swimmer JSON file and verifying all times appear in the system with correct events, times, dates, and meets.
+**Independent Test**: Can be tested by exporting all data, clearing the database, then importing the file and verifying all data is restored correctly.
 
 **Acceptance Scenarios**:
 
-1. **Given** I want to import historical data, **When** I provide a JSON file with swimmer data and meets/times, **Then** the system imports all data and creates the swimmer profile
-2. **Given** I want to import time standards, **When** I provide JSON files with time standards, **Then** the system imports all standards and makes them available for comparison
-3. **Given** I confirm the import, **When** processing completes, **Then** all imported times appear in the swimmer's history and personal bests are calculated
-4. **Given** some imported times conflict with existing entries (same event at same meet), **When** conflicts are detected, **Then** the system reports the error and continues with other times
-5. **Given** the import file has invalid format or data, **When** the import fails, **Then** I see a clear error message and no partial data is saved
+1. **Given** I have swimmer data, **When** I export all data from Settings page, **Then** a JSON file downloads containing swimmer profile, all meets/times, and custom standards ✅ **Implemented**
+2. **Given** I want to import data, **When** I select a JSON export file, **Then** the system shows a preview of what will be replaced (swimmer, meets/times counts, standards counts) ✅ **Implemented**
+3. **Given** I review the import preview, **When** the preview shows data will be deleted, **Then** I see clear warnings about deletions with specific counts ✅ **Implemented**
+4. **Given** I confirm the import after reviewing warnings, **When** processing completes, **Then** the existing data sections are replaced with imported data and I see a success dialog ✅ **Implemented**
+5. **Given** import file sections are optional, **When** a section is present in the file, **Then** only that section's data is replaced (swimmer OR meets OR standards) ✅ **Implemented**
+6. **Given** the import file has invalid format or data, **When** the import fails, **Then** I see a clear error dialog and no partial data is saved ✅ **Implemented**
 
 **Implementation Details**:
 
-- **Data Format**: JSON files with structured swimmer, meet, and time data
-- **Import Scripts**:
+- **Export Format**: Single JSON file with optional sections: `swimmer`, `meets` (with nested times), `standards`
+- **Export Location**: Settings page > Data Management > Export Data button
+- **Import Flow**:
+  1. User selects file → `POST /api/v1/data/import/preview` returns preview with counts
+  2. Warning dialog shows what will be deleted/replaced
+  3. User confirms → `POST /api/v1/data/import` with `confirmed: true`
+  4. Success dialog shows completion
+- **Replace Mode**: Import REPLACES data sections (not additive):
+  - Swimmer section present → replaces swimmer profile
+  - Meets section present → deletes ALL existing meets/times, imports new ones
+  - Standards section present → deletes ALL custom standards, imports new ones
+  - Preloaded standards are never affected
+- **API Endpoints**:
+  - `GET /api/v1/data/export` - Export all data
+  - `POST /api/v1/data/import/preview` - Preview import changes
+  - `POST /api/v1/data/import` - Execute confirmed import
+- **UI Components**:
+  - Export button with loading state
+  - File upload input for import
+  - Confirmation dialog with detailed warnings
+  - Success/error dialogs (in-app styled components)
+- **Legacy Import Scripts** (for development):
   - `import-all.sh` - Import all standards and swimmer data
   - `import-standards.sh` - Import time standards only
-  - `test-import.sh` - Import specific swimmer data file
-  - `reset-database.sh` - Clean database for fresh imports
-- **Conversion Scripts**: Python scripts to convert SwimRankings.net data to import format
-- **API Endpoint**: `POST /api/v1/data/import` for swimmer data, `POST /api/v1/standards/import/json` for standards
-- **Data Sources**: Manual JSON file creation or conversion from SwimRankings.net using conversion scripts
+  - Python conversion scripts for SwimRankings.net data
 
 ---
 
@@ -336,8 +353,16 @@ As a swim parent, I want to import my daughter's historical swim results from JS
 **Data Management**
 
 - **FR-080**: System MUST persist all data so it survives browser sessions and page refreshes
-- **FR-081**: System MUST allow full-access users to export all data for backup purposes as a single JSON file
-- **FR-082**: System MUST allow full-access users to import previously exported JSON data for restoration
+- **FR-081**: System MUST allow full-access users to export all data for backup purposes as a single JSON file ✅ **Implemented**
+  - Export includes swimmer profile, all meets with times, and custom standards
+  - Export button located in Settings page > Data Management section
+  - Downloaded file named with timestamp: `swimstats-export-YYYY-MM-DD.json`
+- **FR-082**: System MUST allow full-access users to import previously exported JSON data for restoration ✅ **Implemented**
+  - Import supports optional sections (swimmer, meets, standards)
+  - Import uses REPLACE mode: present sections completely replace existing data
+  - Preview endpoint shows what will be deleted before confirmation required
+  - Warning dialog displays specific counts of data to be deleted/imported
+  - Success and error dialogs use in-app styled components (not browser alerts)
 - **FR-083**: System MUST work in modern web browsers (Chrome, Firefox, Safari, Edge)
 - **FR-084**: System MUST use semantic HTML and support keyboard navigation for basic accessibility
 
