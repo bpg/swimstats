@@ -56,6 +56,13 @@ export const useAuthStore = create<AuthState>()(
         isAuthenticated: state.isAuthenticated,
         user: state.user,
       }),
+      // Fix inconsistent state on rehydration (e.g., isAuthenticated=true but user=null)
+      onRehydrateStorage: () => (state) => {
+        if (state && state.isAuthenticated && !state.user) {
+          // Reset to consistent unauthenticated state
+          state.isAuthenticated = false;
+        }
+      },
     }
   )
 );

@@ -12,6 +12,11 @@
 
 ## Clarifications
 
+### Session 2026-01-20
+
+- Q: What format should be used for data export and import? → A: JSON (single file with all data)
+- Q: What level of accessibility support is needed? → A: Basic (semantic HTML, keyboard navigation)
+
 ### Session 2026-01-17
 
 - Q: What threshold defines "almost there" for qualification status? → A: Within 3% of qualifying time (default), user-configurable
@@ -314,9 +319,10 @@ As a swim parent, I want to import my daughter's historical swim results from on
 **Data Management**
 
 - **FR-080**: System MUST persist all data so it survives browser sessions and page refreshes
-- **FR-081**: System MUST allow full-access users to export all data for backup purposes (downloadable file)
-- **FR-082**: System MUST allow full-access users to import previously exported data for restoration
+- **FR-081**: System MUST allow full-access users to export all data for backup purposes as a single JSON file
+- **FR-082**: System MUST allow full-access users to import previously exported JSON data for restoration
 - **FR-083**: System MUST work in modern web browsers (Chrome, Firefox, Safari, Edge)
+- **FR-084**: System MUST use semantic HTML and support keyboard navigation for basic accessibility
 
 **Historical Import (Future/Optional)**
 

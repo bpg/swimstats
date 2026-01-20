@@ -7,6 +7,13 @@
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
+---
+
+**Current Status** (as of 2026-01-20):
+- ✅ MVP Complete: Phases 1-4b (Setup, Foundation, US1, US2, All Times)
+- ⏳ Next: Phase 5 (US3 - Time Standards)
+- Clarifications applied: JSON export format, basic accessibility (semantic HTML + keyboard nav)
+
 ## Format: `[ID] [P?] [Story?] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
@@ -169,6 +176,7 @@
 - [X] Add Quick Add Meet option to QuickEntryForm for streamlined time entry workflow
 - [X] Reorder navigation menu: Add Times before Meets
 - [X] Fix auth persistence: persist user object in localStorage (not just isAuthenticated)
+- [X] Fix auth rehydration: handle inconsistent state (isAuthenticated=true but user=null) on store load
 - [X] Fix Quick Entry form alignment: use column headers instead of per-row labels
 - [X] Add labelClassName prop to Input, Select, and EventSelector components
 
@@ -441,7 +449,7 @@
 - [ ] T160 [US6] Create EventStatusCard component in frontend/src/components/comparison/EventStatusCard.tsx
 - [ ] T161 [US6] Create ThresholdSettings component in frontend/src/components/settings/ThresholdSettings.tsx
 - [ ] T162 [US6] Create Standing page in frontend/src/pages/Standing.tsx
-- [ ] T163 [US6] Create Settings page in frontend/src/pages/Settings.tsx
+- [ ] T163 [US6] Add threshold settings to existing Settings page in frontend/src/pages/Settings.tsx
 
 **Checkpoint**: User Story 6 complete - can view qualification standing dashboard
 
@@ -451,20 +459,20 @@
 
 **Purpose**: Data export/import, documentation, and final polish
 
-### Data Export/Import
+### Data Export/Import (JSON format per spec clarification)
 
 - [ ] T164 [P] Create data export API tests in backend/tests/integration/export_test.go
-- [ ] T165 Create export service in backend/internal/domain/data/export.go
-- [ ] T166 Create import service in backend/internal/domain/data/import.go
+- [ ] T165 Create export service in backend/internal/domain/data/export.go (single JSON file with all data)
+- [ ] T166 Create import service in backend/internal/domain/data/import.go (JSON validation, conflict detection)
 - [ ] T167 Create data handlers in backend/internal/api/handlers/data.go (GET /data/export, POST /data/import)
-- [ ] T168 Create DataExport page in frontend/src/pages/DataExport.tsx
-- [ ] T169 Create DataImport component in frontend/src/components/data/DataImport.tsx
+- [ ] T168 Create DataExport page in frontend/src/pages/DataExport.tsx (download JSON backup)
+- [ ] T169 Create DataImport component in frontend/src/components/data/DataImport.tsx (file upload, preview, confirm)
 
 ### Documentation & Polish
 
 - [ ] T170 [P] Update README.md with project setup instructions
 - [ ] T171 [P] Create API documentation from OpenAPI spec
-- [ ] T172 Run accessibility audit with axe-core and fix issues
+- [ ] T172 Verify basic accessibility: semantic HTML, keyboard navigation, focus indicators
 - [ ] T173 Run Lighthouse performance audit and optimize
 - [ ] T174 Verify all empty states have helpful guidance
 - [ ] T175 Verify all loading states show appropriate indicators
@@ -548,22 +556,26 @@ Phase 7 (US5: Charts)  Phase 8 (US6: Standing)
 
 ### Incremental Delivery
 
-| Increment | Stories | Capability |
-|-----------|---------|------------|
-| MVP | US1 + US2 | Record times, view PBs |
-| +Standards | US3 | Add/manage time standards |
-| +Comparison | US4 | Compare against standards |
-| +Charts | US5 | View progress graphs |
-| +Dashboard | US6 | Qualification standing view |
+| Increment | Stories | Capability | Status |
+|-----------|---------|------------|--------|
+| MVP | US1 + US2 + All Times | Record times, view PBs, browse history | ✅ Complete |
+| +Standards | US3 | Add/manage time standards | ⏳ Next |
+| +Comparison | US4 | Compare against standards | Pending |
+| +Charts | US5 | View progress graphs | Pending |
+| +Dashboard | US6 | Qualification standing view | Pending |
+| +Export | Phase 9 | JSON backup/restore | Pending |
 
 ### Suggested MVP Scope
 
-**Minimum Viable Product**: Phases 1-4 (Setup, Foundation, US1, US2)
-- Authentication working
+**Minimum Viable Product**: Phases 1-4b (Setup, Foundation, US1, US2, All Times) — ✅ COMPLETE
+- Authentication working (dev mode + OIDC ready)
 - Can record swimmer profile
-- Can create meets and enter times
-- Can view personal bests
-- Course filtering works
+- Can create meets (single-day and multi-day) and enter times
+- Can view personal bests organized by stroke
+- Can view all times per event with PB badges and ranking
+- Can view meet details and delete individual times
+- Course filtering works (25m/50m)
+- One-event-per-meet validation enforced
 
 ---
 

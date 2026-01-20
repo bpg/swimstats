@@ -22,7 +22,7 @@ Build a web application to track competitive swimming progress for a Canadian sw
 **Build/CI**: GitHub Actions, multi-stage Docker builds
 **Registry**: GitHub Container Registry (ghcr.io)
 **Performance Goals**: API p95 < 200ms reads, < 500ms writes; TTI < 3s; graphs render < 2s for 500 times
-**Constraints**: < 250KB gzipped JS bundle; WCAG 2.1 AA accessibility
+**Constraints**: < 250KB gzipped JS bundle; basic accessibility (semantic HTML, keyboard navigation)
 **Scale/Scope**: Single swimmer (expandable), ~500 times, ~50 meets, ~10 standards
 
 ## Constitution Check
@@ -33,7 +33,7 @@ Build a web application to track competitive swimming progress for a Canadian sw
 |-----------|-------------|-----------------|--------|
 | I. Code Quality | Linting, type safety, DRY, single responsibility | Go: golangci-lint, strict typing; TS: ESLint, strict mode | ✅ Pass |
 | II. Test-Driven Development | Test-first, >90% coverage critical paths, unit/integration/contract tests | Go: table-driven tests, testify; React: Vitest, RTL; API contract tests | ✅ Pass |
-| III. UX Consistency | Design system, WCAG 2.1 AA, responsive, loading states, error handling | TailwindCSS design tokens, accessible components, loading skeletons | ✅ Pass |
+| III. UX Consistency | Design system, basic a11y (semantic HTML, keyboard nav), responsive, loading states, error handling | TailwindCSS design tokens, accessible components, loading skeletons | ✅ Pass |
 | IV. Performance | API p95 <200ms/<500ms, TTI <3s, <250KB bundle, no N+1 queries | sqlc prevents N+1, Vite code splitting, React Query caching | ✅ Pass |
 
 **Quality Gates Compliance:**
@@ -157,7 +157,7 @@ docker-compose.yaml           # Local development
 - Added Settings button to navigation
 - Added swimmer profile editing to Settings page
 - Fixed "Recent Meets0" / "Time History0" display bug (React rendering numeric 0)
-- Fixed auth persistence (persist user object in localStorage)
+- Fixed auth persistence (persist user object in localStorage, handle inconsistent state on rehydration)
 - Fixed request ID generation (invalid characters in logging middleware)
 - Fixed Quick Entry form alignment (column headers instead of per-row labels)
 
