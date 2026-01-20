@@ -132,33 +132,57 @@ export function AppShell({ children }: AppShellProps) {
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className={cn(
-                    'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-                    isActive(item.href)
-                      ? 'bg-cyan-50 text-cyan-700'
-                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                  )}
-                >
-                  {item.label}
-                </Link>
-              ))}
+            <nav className="hidden lg:flex items-center gap-6">
+              {/* Primary navigation group */}
+              <div className="flex items-center gap-1">
+                {navItems.slice(0, 5).map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={cn(
+                      'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                      isActive(item.href)
+                        ? 'bg-cyan-50 text-cyan-700'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Analytics navigation group */}
+              <div className="flex items-center gap-1 pl-6 border-l border-slate-200">
+                {navItems.slice(5).map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={cn(
+                      'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                      isActive(item.href)
+                        ? 'bg-cyan-50 text-cyan-700'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
             </nav>
 
             {/* Right side */}
-            <div className="flex items-center gap-4">
-              <CourseFilterToggle className="hidden sm:flex" />
-              
+            <div className="flex items-center gap-3">
+              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-lg">
+                <span className="text-xs font-medium text-slate-600">Course:</span>
+                <CourseFilterToggle />
+              </div>
+
               {/* User menu */}
               {isAuthenticated && user && (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 pl-3 border-l border-slate-200">
                   <Link
                     to="/settings"
-                    className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
                     title="Settings"
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -167,13 +191,13 @@ export function AppShell({ children }: AppShellProps) {
                     </svg>
                   </Link>
                   {!canWrite() && (
-                    <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded">
+                    <span className="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded font-medium">
                       View Only
                     </span>
                   )}
                   <button
                     onClick={handleSignOut}
-                    className="text-sm text-slate-600 hover:text-slate-900"
+                    className="px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 font-medium transition-colors"
                   >
                     Sign out
                   </button>
@@ -183,7 +207,7 @@ export function AppShell({ children }: AppShellProps) {
               {/* Mobile menu button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100"
+                className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
                 aria-label="Toggle menu"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -200,42 +224,73 @@ export function AppShell({ children }: AppShellProps) {
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 bg-white">
-            <div className="px-4 py-2 space-y-1">
-              {navItems.map((item) => (
+          <div className="lg:hidden border-t border-slate-200 bg-white">
+            <div className="px-4 py-3 space-y-1">
+              {/* Main navigation */}
+              <div className="space-y-1">
+                {navItems.slice(0, 5).map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                      isActive(item.href)
+                        ? 'bg-cyan-50 text-cyan-700'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    )}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Analytics group */}
+              <div className="pt-3 pb-2 space-y-1 border-t border-slate-200">
+                <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Analytics</p>
+                {navItems.slice(5).map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                      isActive(item.href)
+                        ? 'bg-cyan-50 text-cyan-700'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    )}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Settings and course filter */}
+              <div className="pt-3 space-y-3 border-t border-slate-200">
                 <Link
-                  key={item.href}
-                  to={item.href}
+                  to="/settings"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
                     'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-                    isActive(item.href)
+                    isActive('/settings')
                       ? 'bg-cyan-50 text-cyan-700'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   )}
                 >
-                  {item.icon}
-                  {item.label}
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Settings
                 </Link>
-              ))}
-              <Link
-                to="/settings"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={cn(
-                  'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-                  isActive('/settings')
-                    ? 'bg-cyan-50 text-cyan-700'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                )}
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Settings
-              </Link>
-              <div className="pt-2 border-t border-slate-200">
-                <CourseFilterToggle className="w-full justify-center" />
+                <div className="px-3">
+                  <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                    <span className="text-sm font-medium text-slate-700">Course:</span>
+                    <CourseFilterToggle />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
