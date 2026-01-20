@@ -92,28 +92,28 @@ const formatTime = (timeMs: number) => {
 
 // Custom label component for reference line
 const ReferenceLabel = (props: any) => {
-  const { viewBox, standardName, standardTime } = props;
-  const { x, y, width } = viewBox;
+  const { viewBox, standardTime, standardName } = props;
+  const { x, y } = viewBox;
 
   return (
     <g>
-      <rect
-        x={x + width - 160}
-        y={y - 14}
-        width={150}
-        height={28}
-        fill="#ef4444"
-        rx={4}
-      />
       <text
-        x={x + width - 85}
-        y={y + 5}
-        textAnchor="middle"
-        fill="#ffffff"
-        fontSize={13}
+        x={x + 10}
+        y={y - 8}
+        fill="#ef4444"
+        fontSize={12}
+        fontWeight="600"
+      >
+        {standardName}
+      </text>
+      <text
+        x={x + 10}
+        y={y + 8}
+        fill="#ef4444"
+        fontSize={16}
         fontWeight="bold"
       >
-        {standardName}: {formatTime(standardTime)}
+        {formatTime(standardTime)}
       </text>
     </g>
   );
@@ -149,7 +149,7 @@ export function ProgressChart({ data, standardTime, standardName }: ProgressChar
     <ResponsiveContainer width="100%" height={400}>
       <LineChart
         data={data}
-        margin={{ top: 20, right: 170, left: 20, bottom: 20 }}
+        margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
       >
         <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
         <XAxis
@@ -179,7 +179,7 @@ export function ProgressChart({ data, standardTime, standardName }: ProgressChar
             stroke="#ef4444"
             strokeDasharray="5 5"
             strokeWidth={3}
-            label={<ReferenceLabel standardName={standardName || 'Standard'} standardTime={standardTime} />}
+            label={<ReferenceLabel standardTime={standardTime} standardName={standardName || 'Standard'} />}
           />
         )}
 
