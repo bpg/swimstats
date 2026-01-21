@@ -20,7 +20,7 @@ services:
 
   # Optional: Run migrations automatically on startup
   migrate:
-    image: migrate/migrate:v4.17.0@sha256:4d017c6fb5997127093648cab09e63d377997125c3d3dcca18e5d1c847da49fa
+    image: migrate/migrate:v4.19.1@sha256:cc4ad8e19d66791e3689405d9a028ce6e9614f32032db14acda1469f7201d6e4
     container_name: swimstats-migrate
     depends_on:
       postgres:
