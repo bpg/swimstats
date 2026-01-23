@@ -18,9 +18,11 @@ RUN --mount=type=cache,target=/go/pkg/mod \
 COPY . .
 
 # Build the binary (with cache mounts for modules and build cache)
+ARG TARGETOS=linux
+ARG TARGETARCH
 RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+    CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build \
     -ldflags="-w -s" \
     -o /app/server \
     ./cmd/server
