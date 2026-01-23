@@ -3,6 +3,14 @@ FROM node:24-alpine@sha256:931d7d57f8c1fd0e2179dbff7cc7da4c9dd100998bc2b32afc851
 
 WORKDIR /app
 
+# Build arguments for OIDC configuration (Vite embeds these at build time)
+ARG VITE_OIDC_AUTHORITY
+ARG VITE_OIDC_CLIENT_ID
+
+# Make build args available as environment variables during build
+ENV VITE_OIDC_AUTHORITY=$VITE_OIDC_AUTHORITY
+ENV VITE_OIDC_CLIENT_ID=$VITE_OIDC_CLIENT_ID
+
 # Copy package files
 COPY package.json package-lock.json* ./
 
