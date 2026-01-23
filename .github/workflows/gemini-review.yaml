@@ -1,0 +1,65 @@
+name: Gemini Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    name: Gemini AI Review
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.owner.login == github.repository_owner
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Read Constitution
+        id: constitution
+        run: |
+          if [ -f ".specify/memory/constitution.md" ]; then
+            # Extract key sections, removing HTML comments
+            CONSTITUTION=$(sed '/^<!--/,/^-->/d' .specify/memory/constitution.md | head -200)
+            echo "content<<EOF" >> $GITHUB_OUTPUT
+            echo "$CONSTITUTION" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "content=No constitution file found." >> $GITHUB_OUTPUT
+          fi
+
+      - name: Gemini Code Review
+        uses: rubensflinco/gemini-code-review-action@v1.0.5
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_prompt: |
+            You are a code reviewer for the SwimStats project. Review the pull request changes
+            according to the project's Constitution and coding standards below.
+
+            ## Project Context
+            - **Backend**: Go 1.25+, chi router, sqlc for type-safe SQL
+            - **Frontend**: React 18, TypeScript 5.x, Vite, TailwindCSS, React Query
+            - **Database**: PostgreSQL 16
+            - **Testing**: Go testing + testify (backend), Vitest + React Testing Library (frontend)
+
+            ## Project Constitution (Key Sections)
+
+            ${{ steps.constitution.outputs.content }}
+
+            ## Review Instructions
+
+            Focus your review on:
+            1. **Code Quality**: Readability, single responsibility, DRY compliance, type safety
+            2. **Test Coverage**: Check if tests are included for new functionality
+            3. **Security**: Look for potential vulnerabilities (injection, XSS, etc.)
+            4. **Performance**: Identify N+1 queries, memory leaks, bundle size concerns
+            5. **Conventional Commits**: Verify commit messages follow the format `type(scope): description`
+            6. **Accessibility**: For UI changes, check WCAG compliance hints
+
+            Be constructive and specific. If code looks good, say so briefly.
+            Flag any violations of the Constitution principles.
