@@ -19,7 +19,7 @@ export function PersonalBestCard({ pb, achievedStandards }: PersonalBestCardProp
   const eventName = eventInfo?.name ?? pb.event;
 
   const handleCardClick = () => {
-    navigate(`/times?event=${pb.event}`);
+    navigate(`/all-times?event=${pb.event}`);
   };
 
   return (
