@@ -1,5 +1,6 @@
 import { Swimmer, AGE_GROUPS } from '@/types/swimmer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { formatDate } from '@/utils/timeFormat';
 
 export interface SwimmerProfileProps {
   swimmer: Swimmer;
@@ -9,15 +10,6 @@ export interface SwimmerProfileProps {
 
 export function SwimmerProfile({ swimmer, compact = false, onEdit }: SwimmerProfileProps) {
   const ageGroupLabel = AGE_GROUPS.find((ag) => ag.value === swimmer.current_age_group)?.label;
-
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('en-CA', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
 
   if (compact) {
     return (

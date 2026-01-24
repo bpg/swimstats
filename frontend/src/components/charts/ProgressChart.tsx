@@ -11,6 +11,7 @@ import {
   Dot,
 } from 'recharts';
 import { ProgressDataPoint } from '@/types/progress';
+import { formatDate } from '@/utils/timeFormat';
 
 interface ProgressChartProps {
   data: ProgressDataPoint[];
@@ -62,13 +63,7 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
       <div className="bg-white p-3 border border-slate-200 rounded-md shadow-lg">
         <p className="font-semibold text-slate-900">{data.time_formatted}</p>
         <p className="text-sm text-slate-600">{data.meet_name}</p>
-        <p className="text-sm text-slate-500">
-          {new Date(data.date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          })}
-        </p>
+        <p className="text-sm text-slate-500">{formatDate(data.date)}</p>
         {data.is_pb && <p className="text-xs text-green-600 font-semibold mt-1">Personal Best</p>}
       </div>
     );
@@ -91,8 +86,7 @@ const formatYAxis = (timeMs: number) => {
 
 // Format date for X-axis
 const formatXAxis = (date: string) => {
-  const d = new Date(date);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return formatDate(date);
 };
 
 // Format time helper (reuse the formatYAxis logic)

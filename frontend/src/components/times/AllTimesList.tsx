@@ -1,6 +1,6 @@
 import { TimeRecord, getEventInfo } from '@/types/time';
 import { SortBy } from './SortToggle';
-import { formatDateRange } from '@/utils/timeFormat';
+import { formatDate, formatDateRange } from '@/utils/timeFormat';
 
 interface AllTimesListProps {
   times: TimeRecord[];
@@ -41,11 +41,7 @@ export function AllTimesList({ times, pbTimeId, sortBy }: AllTimesListProps) {
     if (!time.meet) return '—';
     // If event_date is set and different from meet start_date, show it
     if (time.event_date && time.event_date !== time.meet.start_date) {
-      return new Date(time.event_date + 'T00:00:00').toLocaleDateString('en-CA', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      });
+      return formatDate(time.event_date);
     }
     return formatDateRange(time.meet.start_date, time.meet.end_date);
   };

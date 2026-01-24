@@ -1,6 +1,7 @@
 import React from 'react';
 import { EventComparison } from '@/types/comparison';
 import { StatusBadge } from './StatusBadge';
+import { formatDate } from '@/utils/timeFormat';
 
 interface ComparisonTableProps {
   comparisons: EventComparison[];
@@ -172,11 +173,7 @@ export function ComparisonTable({ comparisons, showNoTime = false }: ComparisonT
                         </div>
                         {comp.date && (
                           <div className="text-xs text-slate-500 mt-0.5">
-                            {new Date(comp.date).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })}
+                            {formatDate(comp.date)}
                           </div>
                         )}
                       </div>

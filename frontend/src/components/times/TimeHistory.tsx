@@ -3,7 +3,7 @@ import { CourseType } from '@/types/meet';
 import { Card, CardContent, CardHeader, CardTitle, Loading, ErrorBanner } from '@/components/ui';
 import { useTimes, useDeleteTime } from '@/hooks/useTimes';
 import { useAuthStore } from '@/stores/authStore';
-import { formatDateRange } from '@/utils/timeFormat';
+import { formatDate, formatDateRange } from '@/utils/timeFormat';
 
 export interface TimeHistoryProps {
   courseType?: CourseType;
@@ -47,11 +47,7 @@ export function TimeHistory({
     if (!time.meet) return '—';
     // If event_date is set and different from meet start_date, show it
     if (time.event_date && time.event_date !== time.meet.start_date) {
-      return new Date(time.event_date + 'T00:00:00').toLocaleDateString('en-CA', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      });
+      return formatDate(time.event_date);
     }
     return formatDateRange(time.meet.start_date, time.meet.end_date);
   };
