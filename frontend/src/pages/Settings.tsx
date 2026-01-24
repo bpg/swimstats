@@ -112,11 +112,24 @@ export function Settings() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
-        <p className="text-slate-600 mt-1">
-          Manage your account, swimmer profile, and preferences.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
+          <p className="text-slate-600 mt-1">Manage your swimmer profile and preferences.</p>
+        </div>
+        <div className="text-right text-sm">
+          <div className="text-slate-900">{user?.name || '—'}</div>
+          <div className="text-slate-500">{user?.email || '—'}</div>
+          {canWrite() ? (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-1">
+              Full Access
+            </span>
+          ) : (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 mt-1">
+              View Only
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Swimmer Profile Section */}
@@ -186,40 +199,6 @@ export function Settings() {
         </Card>
       )}
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Account</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-slate-500">Email</label>
-                <p className="text-slate-900">{user?.email || '—'}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-slate-500">Name</label>
-                <p className="text-slate-900">{user?.name || '—'}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-slate-500">Access Level</label>
-                <p className="text-slate-900">
-                  {canWrite() ? (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      Full Access
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                      View Only
-                    </span>
-                  )}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-      </div>
 
       {/* Data Management Section */}
       <Card>
