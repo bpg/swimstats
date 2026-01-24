@@ -75,32 +75,32 @@ export function ComparisonTable({ comparisons, showNoTime = false }: ComparisonT
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-slate-200">
+      <table className="w-full divide-y divide-slate-200 table-fixed" style={{ minWidth: '900px' }}>
         <thead className="bg-slate-50">
           <tr>
-            <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-48">
+            <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-52">
               Event
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-32">
+            <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-28">
               Your Time
             </th>
             {hasPrevAgeGroup && (
-              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider w-28">
+              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-32">
                 Prev Standard
               </th>
             )}
-            <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-indigo-50 border-x-2 border-indigo-200 w-28">
+            <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap bg-indigo-50 border-x-2 border-indigo-200 w-36">
               Current Standard
             </th>
             {hasNextAgeGroup && (
-              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider w-28">
+              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-32">
                 Next Standard
               </th>
             )}
-            <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider w-32">
+            <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-32">
               Difference
             </th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider w-24">
+            <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-24">
               Status
             </th>
           </tr>
@@ -131,7 +131,7 @@ export function ComparisonTable({ comparisons, showNoTime = false }: ComparisonT
                   <td className="px-4 py-3 whitespace-nowrap align-top">
                     {comp.swimmer_time_formatted ? (
                       <div>
-                        <div className="text-sm font-mono tabular-nums text-slate-900">
+                        <div className="text-sm font-mono tabular-nums text-slate-900 font-semibold">
                           {comp.swimmer_time_formatted}
                         </div>
                         {comp.date && (
@@ -152,14 +152,14 @@ export function ComparisonTable({ comparisons, showNoTime = false }: ComparisonT
                   {hasPrevAgeGroup && (
                     <td
                       className={`px-4 py-3 whitespace-nowrap align-top text-center ${
-                        comp.prev_achieved ? 'bg-green-50' : ''
+                        comp.prev_achieved ? 'bg-slate-100' : ''
                       }`}
                     >
                       {comp.prev_standard_time_formatted ? (
                         <div>
                           <span
                             className={`text-sm font-mono tabular-nums ${
-                              comp.prev_achieved ? 'text-green-700 font-semibold' : 'text-slate-600'
+                              comp.prev_achieved ? 'text-slate-700 font-semibold' : 'text-slate-600'
                             }`}
                           >
                             {comp.prev_standard_time_formatted}
@@ -175,11 +175,27 @@ export function ComparisonTable({ comparisons, showNoTime = false }: ComparisonT
                       )}
                     </td>
                   )}
-                  {/* Current age group column (highlighted) */}
-                  <td className="px-4 py-3 whitespace-nowrap align-top text-center bg-indigo-50 border-x-2 border-indigo-200">
+                  {/* Current age group column (highlighted based on status) */}
+                  <td
+                    className={`px-4 py-3 whitespace-nowrap align-top text-center border-x-2 border-indigo-200 ${
+                      comp.status === 'achieved'
+                        ? 'bg-green-50'
+                        : comp.status === 'almost'
+                          ? 'bg-amber-50'
+                          : ''
+                    }`}
+                  >
                     {comp.standard_time_formatted ? (
                       <div>
-                        <span className="text-sm font-mono tabular-nums text-slate-900 font-semibold">
+                        <span
+                          className={`text-sm font-mono tabular-nums ${
+                            comp.status === 'achieved'
+                              ? 'text-green-700 font-semibold'
+                              : comp.status === 'almost'
+                                ? 'text-amber-700 font-semibold'
+                                : 'text-slate-600'
+                          }`}
+                        >
                           {comp.standard_time_formatted}
                         </span>
                         {comp.age_group !== 'OPEN' && (
@@ -243,7 +259,7 @@ export function ComparisonTable({ comparisons, showNoTime = false }: ComparisonT
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap align-top text-center">
-                    <StatusBadge status={comp.status} />
+                    <StatusBadge status={comp.status} nextAchieved={comp.next_achieved} />
                   </td>
                 </tr>
               ))}

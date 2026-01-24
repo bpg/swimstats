@@ -206,7 +206,7 @@ See how your personal bests stack up against time standards.
 
 1. Navigate to **Compare**
 2. Select a time standard from the dropdown
-3. View the comparison table
+3. View the comparison table with your standing summary in the header
 
 ### Understanding the Table
 
@@ -214,23 +214,33 @@ See how your personal bests stack up against time standards.
 |--------|-------------|
 | Event | The swimming event |
 | Your Time | Your personal best (with date achieved) |
-| Standard | Target time for the selected standard |
-| Status | Achieved (green), Almost (amber 3%), Not Yet (gray) |
-| Difference | Time gap to standard (with percentage) |
-| Prev/Next Age Groups | Adjacent age group standards for reference |
+| Prev Standard | Previous age group standard (gray highlight when achieved) |
+| Current Standard | Target time for your age group (green/amber highlight based on status) |
+| Next Standard | Next age group standard (blue highlight when achieved) |
+| Difference | Time gap to current standard (with percentage) |
+| Status | Achievement status badge |
 
 ### Status Indicators
 
-- **Achieved** (Emerald with white text): Your PB meets or beats the standard
-- **Almost** (Amber): Within 3% of the standard
-- **Not Yet** (Gray): More than 3% away from the standard
+- **Achieved** (Emerald badge): Your PB meets or beats the current standard
+- **Achieved with Star** (Emerald badge with gold star): Your PB also meets the next age group standard
+- **Almost** (Amber badge and highlight): Within 3% of the standard
+- **Not Yet** (Gray badge): More than 3% away from the standard
+- **No Time** (Light gray): No recorded time for this event
+
+### Column Highlighting
+
+Standard columns are highlighted based on achievement:
+- **Prev Standard**: Gray background when achieved
+- **Current Standard**: Green background when achieved, amber when almost
+- **Next Standard**: Blue background when achieved
 
 ### Standing Summary
 
-At the top of the comparison, see your overall standing:
-- Number of standards achieved
-- Number "almost there" (within 3%)
-- Number not yet achieved
+The header shows your overall standing inline:
+- Number of standards achieved (green)
+- Number "almost there" within 3% (amber)
+- Number not yet achieved (gray)
 
 ---
 
