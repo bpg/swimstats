@@ -11,8 +11,8 @@ const statusConfig: Record<
 > = {
   achieved: {
     label: 'Achieved',
-    bgColor: 'bg-green-100',
-    textColor: 'text-green-800',
+    bgColor: 'bg-emerald-600',
+    textColor: 'text-white',
   },
   almost: {
     label: 'Almost',

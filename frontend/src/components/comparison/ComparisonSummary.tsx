@@ -10,9 +10,9 @@ export function ComparisonSummary({ summary, thresholdPercent }: ComparisonSumma
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div className="bg-green-50 rounded-lg p-4 text-center">
-        <div className="text-2xl font-bold text-green-700">{summary.achieved}</div>
-        <div className="text-sm text-green-600">Achieved</div>
+      <div className="bg-emerald-600 rounded-lg p-4 text-center">
+        <div className="text-2xl font-bold text-white">{summary.achieved}</div>
+        <div className="text-sm text-emerald-100">Achieved</div>
       </div>
       <div className="bg-amber-50 rounded-lg p-4 text-center">
         <div className="text-2xl font-bold text-amber-700">{summary.almost}</div>

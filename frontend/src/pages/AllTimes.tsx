@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useCourseType } from '@/stores/courseFilterStore';
 import { useTimes } from '@/hooks/useTimes';
 import { usePersonalBests } from '@/hooks/usePersonalBests';
@@ -9,13 +10,27 @@ import { EventCode, EVENTS, getEventInfo } from '@/types/time';
 // Default to first event (50m Freestyle)
 const DEFAULT_EVENT: EventCode = EVENTS[0].code;
 
+// Valid event codes for URL param validation
+const VALID_EVENTS = new Set(EVENTS.map((e) => e.code));
+
 /**
  * All Times page - view all recorded times for a selected event.
+ * Supports ?event=CODE URL parameter for deep linking from Personal Bests.
  */
 export function AllTimes() {
   const courseType = useCourseType();
-  const [selectedEvent, setSelectedEvent] = useState<EventCode>(DEFAULT_EVENT);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [sortBy, setSortBy] = useState<SortBy>('date');
+
+  // Derive selected event from URL, with fallback to default
+  const eventFromUrl = searchParams.get('event') as EventCode | null;
+  const selectedEvent =
+    eventFromUrl && VALID_EVENTS.has(eventFromUrl) ? eventFromUrl : DEFAULT_EVENT;
+
+  // Update URL when event changes
+  const handleEventChange = (event: EventCode) => {
+    setSearchParams({ event });
+  };
 
   // Fetch times for the selected event
   const {
@@ -55,7 +70,7 @@ export function AllTimes() {
           <label htmlFor="event-filter" className="block text-sm font-medium text-slate-700 mb-1">
             Event
           </label>
-          <EventFilter value={selectedEvent} onChange={setSelectedEvent} className="w-full" />
+          <EventFilter value={selectedEvent} onChange={handleEventChange} className="w-full" />
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">Sort by</label>

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter } from 'react-router-dom';
 import { PersonalBestCard } from '@/components/comparison/PersonalBestCard';
 import { PersonalBestGrid } from '@/components/comparison/PersonalBestGrid';
 import { NewPBBadge } from '@/components/times/NewPBBadge';
@@ -18,7 +19,9 @@ const createTestQueryClient = () =>
 const renderWithProviders = (ui: React.ReactElement) => {
   const testQueryClient = createTestQueryClient();
   return render(
-    <QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>
+    <BrowserRouter>
+      <QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>
+    </BrowserRouter>
   );
 };
 
