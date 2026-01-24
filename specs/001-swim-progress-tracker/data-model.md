@@ -46,6 +46,7 @@ The athlete being tracked. Single swimmer initially, model supports multiple.
 | name | VARCHAR(255) | NOT NULL | Swimmer's full name |
 | birth_date | DATE | NOT NULL | Date of birth (for age calculations) |
 | gender | VARCHAR(10) | NOT NULL, CHECK(gender IN ('female', 'male')) | Gender for standards matching |
+| threshold_percent | DECIMAL(5,2) | NOT NULL, DEFAULT 3.0, CHECK(0-100) | "Almost there" threshold percentage |
 | created_at | TIMESTAMPTZ | NOT NULL, DEFAULT NOW() | Record creation time |
 | updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT NOW() | Last update time |
 

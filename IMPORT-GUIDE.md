@@ -158,6 +158,7 @@ Then navigate to:
 | `swimmer.name` | string | ✅ | Full name | "Jane Doe" |
 | `swimmer.birth_date` | string | ✅ | YYYY-MM-DD | "2012-05-14" |
 | `swimmer.gender` | string | ✅ | "female" or "male" | "female" |
+| `swimmer.threshold_percent` | number | ❌ | "Almost there" threshold (0-100) | 5.0 (default: 3.0) |
 | `meet.name` | string | ✅ | Meet name | "Fall Classic 2025" |
 | `meet.city` | string | ✅ | City name | "Toronto" |
 | `meet.country` | string | ✅ | Country | "Canada" |
