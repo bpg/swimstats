@@ -104,16 +104,26 @@ export function parseTimeToMs(timeStr: string): number {
 
 /**
  * Format a date string for display in YYYY-MM-DD format.
- * @param dateStr - Date string (YYYY-MM-DD)
- * @returns Formatted date (e.g., "2013-01-22")
+ * @param dateStr - Date string (YYYY-MM-DD or ISO format)
+ * @returns Formatted date (e.g., "2013-01-22") or empty string if invalid
  */
-export function formatDate(dateStr: string): string {
+export function formatDate(dateStr: string | undefined | null): string {
+  if (!dateStr) {
+    return '';
+  }
   // Already in YYYY-MM-DD format, just return it
   if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
     return dateStr;
   }
-  // Parse and reformat if needed
-  const date = new Date(dateStr + 'T00:00:00');
+  // Handle ISO format (e.g., "2025-01-22T00:00:00Z")
+  if (dateStr.includes('T')) {
+    return dateStr.split('T')[0];
+  }
+  // Try parsing as a date
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) {
+    return '';
+  }
   return date.toISOString().split('T')[0];
 }
 
