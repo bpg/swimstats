@@ -198,7 +198,7 @@ func TestTimeAPI(t *testing.T) {
 		// Add times to both meets
 		rr = client.Post("/api/v1/times", TimeInput{MeetID: meetID25, Event: "100FR", TimeMS: 65320, EventDate: "2026-03-15"})
 		require.Equal(t, http.StatusCreated, rr.Code)
-		rr = client.Post("/api/v1/times", TimeInput{MeetID: meet50.ID, Event: "100FR", TimeMS: 68000, EventDate: "2026-04-20"})
+		rr = client.Post("/api/v1/times", TimeInput{MeetID: meet50.ID, Event: "100FR", TimeMS: 68000, EventDate: "2026-04-15"})
 		require.Equal(t, http.StatusCreated, rr.Code)
 
 		rr = client.Get("/api/v1/times?course_type=25m")
