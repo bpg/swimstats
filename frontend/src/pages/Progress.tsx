@@ -5,7 +5,15 @@ import { useSwimmer } from '@/hooks/useSwimmer';
 import { useStandards, useStandard } from '@/hooks/useStandards';
 import { ProgressChart } from '@/components/charts/ProgressChart';
 import { EventSelector } from '@/components/times/EventSelector';
-import { Card, CardHeader, CardTitle, CardContent, Loading, ErrorBanner, EventLink } from '@/components/ui';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Loading,
+  ErrorBanner,
+  EventLink,
+} from '@/components/ui';
 import { EventCode } from '@/types/time';
 
 /**
