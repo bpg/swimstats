@@ -18,10 +18,8 @@ export function MeetLink({ meetId, meetName, className }: MeetLinkProps) {
     <Link
       to={`/meets/${meetId}`}
       className={`
-        font-medium text-slate-900 dark:text-slate-100
-        underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2
-        hover:text-blue-600 hover:decoration-blue-600
-        dark:hover:text-blue-400 dark:hover:decoration-blue-400
+        font-medium text-blue-800 dark:text-blue-300
+        hover:text-blue-600 dark:hover:text-blue-400
         focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
         focus-visible:ring-offset-2 rounded
         transition-colors

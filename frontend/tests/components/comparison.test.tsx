@@ -130,7 +130,7 @@ describe('ComparisonTable', () => {
   ];
 
   it('renders comparison rows', () => {
-    render(<ComparisonTable comparisons={mockComparisons} />);
+    render(<ComparisonTable comparisons={mockComparisons} />, { wrapper: createWrapper() });
 
     expect(screen.getByText('50m Free')).toBeInTheDocument();
     expect(screen.getByText('100m Free')).toBeInTheDocument();
@@ -139,27 +139,27 @@ describe('ComparisonTable', () => {
   });
 
   it('hides events without times by default', () => {
-    render(<ComparisonTable comparisons={mockComparisons} />);
+    render(<ComparisonTable comparisons={mockComparisons} />, { wrapper: createWrapper() });
 
     // 50BK has no_time status and should be hidden
     expect(screen.queryByText('50m Back')).not.toBeInTheDocument();
   });
 
   it('shows events without times when showNoTime is true', () => {
-    render(<ComparisonTable comparisons={mockComparisons} showNoTime />);
+    render(<ComparisonTable comparisons={mockComparisons} showNoTime />, { wrapper: createWrapper() });
 
     expect(screen.getByText('50m Back')).toBeInTheDocument();
   });
 
   it('shows status badges', () => {
-    render(<ComparisonTable comparisons={mockComparisons} />);
+    render(<ComparisonTable comparisons={mockComparisons} />, { wrapper: createWrapper() });
 
     expect(screen.getByText('Achieved')).toBeInTheDocument();
     expect(screen.getByText('Almost')).toBeInTheDocument();
   });
 
   it('shows time differences beneath standard times', () => {
-    render(<ComparisonTable comparisons={mockComparisons} />);
+    render(<ComparisonTable comparisons={mockComparisons} />, { wrapper: createWrapper() });
 
     // Differences are now shown inline with percentage beneath standard time
     expect(screen.getByText(/-0\.50/)).toBeInTheDocument();
@@ -167,15 +167,23 @@ describe('ComparisonTable', () => {
   });
 
   it('shows meet names', () => {
-    render(<ComparisonTable comparisons={mockComparisons} />);
+    render(<ComparisonTable comparisons={mockComparisons} />, { wrapper: createWrapper() });
 
     expect(screen.getAllByText('Test Meet')).toHaveLength(2);
   });
 
   it('groups events by stroke', () => {
-    render(<ComparisonTable comparisons={mockComparisons} />);
+    render(<ComparisonTable comparisons={mockComparisons} />, { wrapper: createWrapper() });
 
     expect(screen.getByText('Freestyle')).toBeInTheDocument();
+  });
+
+  it('renders event names as clickable links to All Times page', () => {
+    render(<ComparisonTable comparisons={mockComparisons} />, { wrapper: createWrapper() });
+
+    // Check that event name is a link
+    const eventLink = screen.getByRole('link', { name: /view all times for 50m freestyle/i });
+    expect(eventLink).toHaveAttribute('href', '/all-times?event=50FR');
   });
 });
 
