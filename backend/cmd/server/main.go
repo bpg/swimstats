@@ -13,6 +13,7 @@ import (
 
 	"github.com/bpg/swimstats/backend/internal/api"
 	"github.com/bpg/swimstats/backend/internal/auth"
+	"github.com/bpg/swimstats/backend/internal/migrate"
 	"github.com/bpg/swimstats/backend/internal/store/postgres"
 )
 
@@ -51,6 +52,26 @@ func loadConfig() Config {
 	}
 }
 
+// runMigrations executes database migrations and exits.
+// Used by Kubernetes init container to run migrations before the main server starts.
+func runMigrations(cfg Config, logger *slog.Logger) {
+	logger.Info("running database migrations",
+		"environment", cfg.Environment,
+	)
+
+	applied, err := migrate.Run(cfg.DatabaseURL, logger)
+	if err != nil {
+		logger.Error("migration failed", "error", err)
+		os.Exit(1)
+	}
+
+	if applied > 0 {
+		logger.Info("migrations completed", "applied", applied)
+	} else {
+		logger.Info("no migrations needed")
+	}
+}
+
 func main() {
 	// Configure structured logging
 	logLevel := slog.LevelInfo
@@ -65,6 +86,12 @@ func main() {
 
 	// Load configuration
 	cfg := loadConfig()
+
+	// Handle migrate subcommand for init container use
+	if len(os.Args) > 1 && os.Args[1] == "migrate" {
+		runMigrations(cfg, logger)
+		return
+	}
 	logger.Info("starting server",
 		"port", cfg.Port,
 		"environment", cfg.Environment,
