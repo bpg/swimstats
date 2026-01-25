@@ -24,10 +24,10 @@
 
 **Purpose**: Create reusable link components that all user stories depend on
 
-- [ ] T001 [P] Create EventLink component in frontend/src/components/ui/EventLink.tsx
-- [ ] T002 [P] Create MeetLink component in frontend/src/components/ui/MeetLink.tsx
-- [ ] T003 Write unit tests for EventLink and MeetLink in frontend/tests/components/links.test.tsx
-- [ ] T004 Run tests to verify EventLink and MeetLink pass all unit tests
+- [x] T001 [P] Create EventLink component in frontend/src/components/ui/EventLink.tsx
+- [x] T002 [P] Create MeetLink component in frontend/src/components/ui/MeetLink.tsx
+- [x] T003 Write unit tests for EventLink and MeetLink in frontend/tests/components/links.test.tsx
+- [x] T004 Run tests to verify EventLink and MeetLink pass all unit tests
 
 **Checkpoint**: Reusable link components ready - user story implementation can now begin
 
@@ -41,12 +41,12 @@
 
 ### Tests for User Story 1
 
-- [ ] T005 [US1] Add integration test for Progress page event link navigation in frontend/tests/components/progress.test.tsx
+- [x] T005 [US1] Add integration test for Progress page event link navigation in frontend/tests/components/progress.test.tsx
 
 ### Implementation for User Story 1
 
-- [ ] T006 [US1] Import EventLink and update Progress page chart title in frontend/src/pages/Progress.tsx
-- [ ] T007 [US1] Verify keyboard navigation (Tab, Enter) works for event link on Progress page
+- [x] T006 [US1] Import EventLink and update Progress page chart title in frontend/src/pages/Progress.tsx
+- [x] T007 [US1] Verify keyboard navigation (Tab, Enter) works for event link on Progress page
 
 **Checkpoint**: Progress page event name is clickable and navigates to All Times
 
@@ -60,12 +60,12 @@
 
 ### Tests for User Story 2
 
-- [ ] T008 [US2] Add integration test for MeetTimesList event link navigation in frontend/tests/components/meets.test.tsx
+- [x] T008 [US2] Add integration test for MeetTimesList event link navigation in frontend/tests/components/meets.test.tsx
 
 ### Implementation for User Story 2
 
-- [ ] T009 [US2] Import EventLink and update event name display in frontend/src/components/meets/MeetTimesList.tsx
-- [ ] T010 [US2] Verify keyboard navigation works for event links in MeetTimesList
+- [x] T009 [US2] Import EventLink and update event name display in frontend/src/components/meets/MeetTimesList.tsx
+- [x] T010 [US2] Verify keyboard navigation works for event links in MeetTimesList
 
 **Checkpoint**: Meet details page event names are clickable and navigate to All Times
 
@@ -82,14 +82,14 @@
 
 ### Tests for User Stories 3 & 5
 
-- [ ] T011 [P] [US5] Add integration test for AllTimesList meet link navigation in frontend/tests/components/alltimes.test.tsx
-- [ ] T012 [US3+US5] Add integration tests for TimeHistory event and meet link navigation in frontend/tests/components/times.test.tsx
+- [x] T011 [P] [US5] Add integration test for AllTimesList meet link navigation in frontend/tests/components/alltimes.test.tsx
+- [x] T012 [US3+US5] Add integration tests for TimeHistory event and meet link navigation in frontend/tests/components/times.test.tsx
 
 ### Implementation for User Stories 3 & 5
 
-- [ ] T013 [US5] Import MeetLink and update meet name display in frontend/src/components/times/AllTimesList.tsx
-- [ ] T014 [US3+US5] Import EventLink and MeetLink, update both name displays in frontend/src/components/times/TimeHistory.tsx
-- [ ] T015 [US3+US5] Verify keyboard navigation works for all links in TimeHistory and AllTimesList
+- [x] T013 [US5] Import MeetLink and update meet name display in frontend/src/components/times/AllTimesList.tsx
+- [x] T014 [US3+US5] Import EventLink and MeetLink, update both name displays in frontend/src/components/times/TimeHistory.tsx
+- [x] T015 [US3+US5] Verify keyboard navigation works for all links in TimeHistory and AllTimesList
 
 **Checkpoint**: TimeHistory has both event and meet links; AllTimesList has meet links
 
@@ -103,10 +103,10 @@
 
 ### Implementation for User Stories 4 & 7
 
-- [ ] T016 [US4] Verify EventLink styling matches spec in all locations (Progress, MeetTimesList, TimeHistory)
-- [ ] T017 [US7] Verify MeetLink styling matches spec in all locations (AllTimesList, TimeHistory)
-- [ ] T018 [US4] Verify event names on All Times page are NOT styled as links (no circular nav)
-- [ ] T019 [US7] Verify meet name on Meet Details page header is NOT styled as a link (no circular nav)
+- [x] T016 [US4] Verify EventLink styling matches spec in all locations (Progress, MeetTimesList, TimeHistory)
+- [x] T017 [US7] Verify MeetLink styling matches spec in all locations (AllTimesList, TimeHistory)
+- [x] T018 [US4] Verify event names on All Times page are NOT styled as links (no circular nav)
+- [x] T019 [US7] Verify meet name on Meet Details page header is NOT styled as a link (no circular nav)
 
 **Checkpoint**: All links have consistent visual treatment across the application
 
@@ -118,14 +118,16 @@
 
 **Independent Test**: View Progress chart, interact with data point, click meet name in tooltip, verify navigation
 
+**Note**: This phase requires backend changes to include `meet_id` in the ProgressDataPoint API response. The current backend progress endpoint does not return meet_id. This is deferred to a future enhancement.
+
 ### Tests for User Story 6
 
-- [ ] T020 [US6] Add integration test for Progress page meet link navigation in frontend/tests/components/progress.test.tsx
+- [ ] T020 [US6] Add integration test for Progress page meet link navigation in frontend/tests/components/progress.test.tsx (BLOCKED - requires backend meet_id)
 
 ### Implementation for User Story 6
 
-- [ ] T021 [US6] Import MeetLink and update chart tooltip/data display in frontend/src/pages/Progress.tsx
-- [ ] T022 [US6] Verify keyboard navigation works for meet links in chart tooltips
+- [ ] T021 [US6] Import MeetLink and update chart tooltip/data display in frontend/src/pages/Progress.tsx (BLOCKED - requires backend meet_id)
+- [ ] T022 [US6] Verify keyboard navigation works for meet links in chart tooltips (BLOCKED - requires backend meet_id)
 
 **Checkpoint**: Progress page chart tooltips have clickable meet names
 
@@ -135,12 +137,12 @@
 
 **Purpose**: Final verification and cleanup
 
-- [ ] T023 Run full frontend test suite (npm test)
-- [ ] T024 Run lint check (npm run lint)
-- [ ] T025 Manual accessibility audit - verify all links have visible focus states
-- [ ] T026 Manual accessibility audit - verify Tab order is correct in tables
-- [ ] T027 Verify navigation preserves course filter context (FR-008)
-- [ ] T028 Run quickstart.md validation checklist
+- [x] T023 Run full frontend test suite (npm test)
+- [x] T024 Run lint check (npm run lint)
+- [x] T025 Manual accessibility audit - verify all links have visible focus states
+- [x] T026 Manual accessibility audit - verify Tab order is correct in tables
+- [x] T027 Verify navigation preserves course filter context (FR-008)
+- [x] T028 Run quickstart.md validation checklist
 
 ---
 

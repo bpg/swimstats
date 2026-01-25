@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter } from 'react-router-dom';
 import { EventFilter } from '@/components/times/EventFilter';
 import { SortToggle } from '@/components/times/SortToggle';
 import { AllTimesList } from '@/components/times/AllTimesList';
@@ -21,7 +22,9 @@ function createTestQueryClient() {
 function renderWithProviders(ui: React.ReactElement) {
   const queryClient = createTestQueryClient();
   return render(
-    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>{ui}</BrowserRouter>
+    </QueryClientProvider>
   );
 }
 
@@ -192,7 +195,21 @@ describe('AllTimesList', () => {
 
   it('displays notes when present', () => {
     renderWithProviders(<AllTimesList times={mockTimes} sortBy="date" />);
-    
+
     expect(screen.getByText('Finals')).toBeInTheDocument();
+  });
+
+  it('renders meet names as clickable links to Meet Details', () => {
+    renderWithProviders(<AllTimesList times={mockTimes} sortBy="date" />);
+
+    // Check that meet names are links
+    const winterChampsLink = screen.getByRole('link', { name: /view details for winter champs/i });
+    expect(winterChampsLink).toHaveAttribute('href', '/meets/meet-1');
+
+    const fallClassicLink = screen.getByRole('link', { name: /view details for fall classic/i });
+    expect(fallClassicLink).toHaveAttribute('href', '/meets/meet-2');
+
+    const springMeetLink = screen.getByRole('link', { name: /view details for spring meet/i });
+    expect(springMeetLink).toHaveAttribute('href', '/meets/meet-3');
   });
 });

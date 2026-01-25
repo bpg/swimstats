@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TimeRecord, getEventInfo, EventCode } from '@/types/time';
-import { Loading, ErrorBanner, Button } from '@/components/ui';
+import { Loading, ErrorBanner, Button, EventLink } from '@/components/ui';
 import { useTimes, useDeleteTime } from '@/hooks/useTimes';
 import { usePersonalBests } from '@/hooks/usePersonalBests';
 import { useAuthStore } from '@/stores/authStore';
@@ -130,9 +130,7 @@ export function MeetTimesList({ meetId, courseType }: MeetTimesListProps) {
                 return (
                   <tr key={time.id} className={isPB ? 'bg-amber-50' : 'hover:bg-slate-50'}>
                     <td className="py-3">
-                      <div className="font-medium text-slate-900">
-                        {eventInfo?.name || time.event}
-                      </div>
+                      <EventLink event={time.event} />
                     </td>
                     <td className="py-3">
                       <div className="flex items-center gap-2">

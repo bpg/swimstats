@@ -1,6 +1,7 @@
 import { TimeRecord, getEventInfo } from '@/types/time';
 import { SortBy } from './SortToggle';
 import { formatDate, formatDateRange } from '@/utils/timeFormat';
+import { MeetLink } from '@/components/ui';
 
 interface AllTimesListProps {
   times: TimeRecord[];
@@ -106,7 +107,13 @@ export function AllTimesList({ times, pbTimeId, sortBy }: AllTimesListProps) {
                 </td>
 
                 {/* Meet */}
-                <td className="py-3 text-slate-700">{time.meet?.name ?? '—'}</td>
+                <td className="py-3">
+                  {time.meet ? (
+                    <MeetLink meetId={time.meet_id} meetName={time.meet.name} />
+                  ) : (
+                    <span className="text-slate-400">—</span>
+                  )}
+                </td>
 
                 {/* Date */}
                 <td className="py-3 text-slate-600">{formatMeetDate(time)}</td>

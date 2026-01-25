@@ -7,7 +7,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { TimeEntryForm } from '@/components/times/TimeEntryForm';
 import { QuickEntryForm } from '@/components/times/QuickEntryForm';
 import { EventSelector } from '@/components/times/EventSelector';
+import { TimeHistory } from '@/components/times/TimeHistory';
 import { mockMeet, mockTime } from '../mocks/handlers';
+import * as authStoreModule from '@/stores/authStore';
 
 // Test wrapper with providers
 function createWrapper() {
@@ -240,6 +242,19 @@ describe('QuickEntryForm', () => {
   });
 });
 
+// Mock auth store for TimeHistory tests
+vi.spyOn(authStoreModule, 'useAuthStore').mockImplementation(
+  (selector?: (state: Record<string, unknown>) => unknown) => {
+    const mockState = {
+      user: { id: 'test-user', name: 'Test User', access_level: 'full' },
+      isAuthenticated: true,
+      canWrite: () => true,
+      accessLevel: () => 'full',
+    };
+    return selector ? selector(mockState) : mockState;
+  }
+);
+
 describe('QuickEntryForm MeetSelector Integration', () => {
   it('shows meet selector when no meetId provided', async () => {
     render(<QuickEntryForm courseType="25m" />, { wrapper: createWrapper() });
@@ -299,5 +314,33 @@ describe('QuickEntryForm MeetSelector Integration', () => {
     });
     // Should show View Meet button
     expect(screen.getByRole('button', { name: /view meet/i })).toBeInTheDocument();
+  });
+});
+
+describe('TimeHistory Link Navigation', () => {
+  it('renders event names as links to All Times page', async () => {
+    render(<TimeHistory courseType="25m" />, { wrapper: createWrapper() });
+
+    // Wait for times to load
+    await waitFor(() => {
+      expect(screen.getByText('100m Freestyle')).toBeInTheDocument();
+    });
+
+    // Check that event name is a link
+    const eventLink = screen.getByRole('link', { name: /view all times for 100m freestyle/i });
+    expect(eventLink).toHaveAttribute('href', '/all-times?event=100FR');
+  });
+
+  it('renders meet names as links to Meet Details page', async () => {
+    render(<TimeHistory courseType="25m" />, { wrapper: createWrapper() });
+
+    // Wait for times to load
+    await waitFor(() => {
+      expect(screen.getByText('Test Championship')).toBeInTheDocument();
+    });
+
+    // Check that meet name is a link
+    const meetLink = screen.getByRole('link', { name: /view details for test championship/i });
+    expect(meetLink).toHaveAttribute('href', `/meets/${mockMeet.id}`);
   });
 });

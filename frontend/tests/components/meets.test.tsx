@@ -309,4 +309,16 @@ describe('MeetTimesList', () => {
       expect(screen.queryByRole('button', { name: /confirm delete/i })).not.toBeInTheDocument();
     });
   });
+
+  it('renders event names as clickable links to All Times page', async () => {
+    render(<MeetTimesList meetId={mockMeet.id} courseType="25m" />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(screen.getByText('100m Freestyle')).toBeInTheDocument();
+    });
+
+    // Check that event name is a link
+    const eventLink = screen.getByRole('link', { name: /view all times for 100m freestyle/i });
+    expect(eventLink).toHaveAttribute('href', '/all-times?event=100FR');
+  });
 });

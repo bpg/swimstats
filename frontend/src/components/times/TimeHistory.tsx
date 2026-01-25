@@ -1,6 +1,6 @@
-import { TimeRecord, EventCode, getEventInfo } from '@/types/time';
+import { TimeRecord, EventCode } from '@/types/time';
 import { CourseType } from '@/types/meet';
-import { Card, CardContent, CardHeader, CardTitle, Loading, ErrorBanner } from '@/components/ui';
+import { Card, CardContent, CardHeader, CardTitle, Loading, ErrorBanner, EventLink, MeetLink } from '@/components/ui';
 import { useTimes, useDeleteTime } from '@/hooks/useTimes';
 import { useAuthStore } from '@/stores/authStore';
 import { formatDate, formatDateRange } from '@/utils/timeFormat';
@@ -75,14 +75,10 @@ export function TimeHistory({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {times.map((time) => {
-                const eventInfo = getEventInfo(time.event);
-                return (
+              {times.map((time) => (
                   <tr key={time.id} className="hover:bg-slate-50">
                     <td className="py-3">
-                      <div className="font-medium text-slate-900">
-                        {eventInfo?.name || time.event}
-                      </div>
+                      <EventLink event={time.event} />
                       {time.notes && <div className="text-xs text-slate-500">{time.notes}</div>}
                     </td>
                     <td className="py-3">
@@ -100,7 +96,7 @@ export function TimeHistory({
                     <td className="py-3">
                       {time.meet ? (
                         <div>
-                          <div className="text-slate-900">{time.meet.name}</div>
+                          <MeetLink meetId={time.meet_id} meetName={time.meet.name} />
                           <div className="text-xs text-slate-500">
                             {time.meet.city}
                             <span
@@ -168,8 +164,7 @@ export function TimeHistory({
                       </div>
                     </td>
                   </tr>
-                );
-              })}
+              ))}
             </tbody>
           </table>
         </div>
