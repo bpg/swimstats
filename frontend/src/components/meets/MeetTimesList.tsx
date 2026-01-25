@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TimeRecord, getEventInfo, EventCode } from '@/types/time';
+import { TimeRecord, getEventInfo } from '@/types/time';
 import { Loading, ErrorBanner, Button, EventLink } from '@/components/ui';
 import { useTimes, useDeleteTime } from '@/hooks/useTimes';
 import { usePersonalBests } from '@/hooks/usePersonalBests';
