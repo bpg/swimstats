@@ -27,7 +27,7 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgres://swimstats:swimstats@postgres:5432/swimstats?sslmode=disable
-    command: ["/app/server", "migrate"]
+    command: ["migrate"]
     profiles:
       - migrate
 
