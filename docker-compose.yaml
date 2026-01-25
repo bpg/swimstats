@@ -16,16 +16,18 @@ services:
       timeout: 5s
       retries: 5
 
-  # Optional: Run migrations automatically on startup
+  # Run database migrations using the backend binary
   migrate:
-    image: migrate/migrate:v4.19.1@sha256:cc4ad8e19d66791e3689405d9a028ce6e9614f32032db14acda1469f7201d6e4
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: swimstats-migrate
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./backend/migrations:/migrations
-    command: ["-path", "/migrations", "-database", "postgres://swimstats:swimstats@postgres:5432/swimstats?sslmode=disable", "up"]
+    environment:
+      DATABASE_URL: postgres://swimstats:swimstats@postgres:5432/swimstats?sslmode=disable
+    command: ["migrate"]
     profiles:
       - migrate
 

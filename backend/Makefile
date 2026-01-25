@@ -1,4 +1,4 @@
-.PHONY: lint test test-setup test-teardown test-migrate test-run build clean help
+.PHONY: lint test test-setup test-teardown test-migrate test-run build clean help migrate
 
 # Configuration (can be overridden for CI)
 GOLANGCI_LINT_VERSION ?= v2.8.0
@@ -43,12 +43,15 @@ test-setup: test-teardown ## Start test database container
 test-teardown: ## Stop and remove test database container
 	@docker rm -f $(TEST_DB_CONTAINER) 2>/dev/null || true
 
-test-migrate: ## Run migrations on test database
+test-migrate: ## Run migrations on test database (uses psql for speed)
 	@echo "Running migrations..."
 	@for f in $$(ls migrations/*.up.sql | sort); do \
 		echo "Applying $$f..."; \
 		PGPASSWORD=$(TEST_DB_PASSWORD) psql -h $(TEST_DB_HOST) -p $(TEST_DB_PORT) -U $(TEST_DB_USER) -d $(TEST_DB_NAME) -f $$f; \
 	done
+
+migrate: ## Run migrations using embedded migration tool
+	DATABASE_URL=$(TEST_DB_URL) go run ./cmd/server migrate
 
 test-run: ## Run tests only (no setup/teardown, for CI)
 	DATABASE_URL=$(TEST_DB_URL) go test -v -race -coverprofile=coverage.out ./...
