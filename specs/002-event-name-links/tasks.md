@@ -89,6 +89,7 @@
 
 - [x] T013 [US5] Import MeetLink and update meet name display in frontend/src/components/times/AllTimesList.tsx
 - [x] T014 [US3+US5] Import EventLink and MeetLink, update both name displays in frontend/src/components/times/TimeHistory.tsx
+- [x] T014b [US3] Import EventLink and update event name display in frontend/src/components/comparison/ComparisonTable.tsx
 - [x] T015 [US3+US5] Verify keyboard navigation works for all links in TimeHistory and AllTimesList
 
 **Checkpoint**: TimeHistory has both event and meet links; AllTimesList has meet links
