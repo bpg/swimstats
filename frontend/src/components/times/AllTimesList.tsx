@@ -66,7 +66,7 @@ export function AllTimesList({ times, pbTimeId, sortBy }: AllTimesListProps) {
             const rank = sortBy === 'time' ? index + 1 : undefined;
 
             return (
-              <tr key={time.id} className={isPB ? 'bg-amber-50' : 'hover:bg-slate-50'}>
+              <tr key={time.id} className={isPB ? 'bg-amber-50' : ''}>
                 {/* Rank (only when sorting by time) */}
                 {sortBy === 'time' && (
                   <td className="py-3 pr-3">

@@ -158,7 +158,7 @@ export function ComparisonTable({ comparisons, showNoTime = false }: ComparisonT
               </tr>
               {/* Events */}
               {group.events.map((comp) => (
-                <tr key={comp.event} className="hover:bg-slate-50">
+                <tr key={comp.event}>
                   <td className="px-4 py-3 whitespace-nowrap align-top">
                     <div className="text-sm">
                       <EventLink event={comp.event as EventCode}>

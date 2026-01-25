@@ -128,7 +128,7 @@ export function MeetTimesList({ meetId, courseType }: MeetTimesListProps) {
                 const eventInfo = getEventInfo(time.event);
 
                 return (
-                  <tr key={time.id} className={isPB ? 'bg-amber-50' : 'hover:bg-slate-50'}>
+                  <tr key={time.id} className={isPB ? 'bg-amber-50' : ''}>
                     <td className="py-3">
                       <EventLink event={time.event} />
                     </td>

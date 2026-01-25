@@ -76,7 +76,7 @@ export function TimeHistory({
             </thead>
             <tbody className="divide-y divide-slate-100">
               {times.map((time) => (
-                  <tr key={time.id} className="hover:bg-slate-50">
+                  <tr key={time.id}>
                     <td className="py-3">
                       <EventLink event={time.event} />
                       {time.notes && <div className="text-xs text-slate-500">{time.notes}</div>}
