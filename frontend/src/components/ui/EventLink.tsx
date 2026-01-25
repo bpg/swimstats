@@ -29,7 +29,7 @@ export function EventLink({ event, className, children }: EventLinkProps) {
         border-b border-transparent hover:border-blue-600 dark:hover:border-blue-400
         hover:text-blue-600 dark:hover:text-blue-400
         focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-        focus-visible:ring-offset-2 rounded
+        focus-visible:ring-offset-2
         transition-colors
         ${className ?? ''}
       `.trim()}
