@@ -159,9 +159,9 @@ When Claude Code or other AI assistants work on this codebase, they MUST follow 
   All work MUST be done on feature or fix branches.
 - **Always create a new branch**: When starting work on a new feature or fix, AI assistants
   MUST create an appropriately named branch (`feature/*` or `fix/*`) before making any commits.
-- **Verify quality gates before PR**: AI assistants MUST run linter and tests locally and
-  ensure they pass BEFORE creating a Pull Request. This includes:
-  - Frontend: `cd frontend && npm run lint && npm test -- --run`
+- **Verify quality gates before PR**: AI assistants MUST run all checks and tests locally
+  and ensure they pass BEFORE creating a Pull Request. This includes:
+  - Frontend: `cd frontend && make check && npm test -- --run` (lint, format, typecheck, tests)
   - Backend: `cd backend && golangci-lint run && go test ./...`
   PRs with failing CI are considered defects in the AI assistant's work.
 - **Push and create PRs when done**: AI assistants MAY push branches and create Pull Requests
