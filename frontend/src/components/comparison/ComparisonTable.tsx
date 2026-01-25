@@ -2,6 +2,8 @@ import React from 'react';
 import { EventComparison } from '@/types/comparison';
 import { StatusBadge } from './StatusBadge';
 import { formatDate } from '@/utils/timeFormat';
+import { EventLink } from '@/components/ui';
+import { EventCode } from '@/types/time';
 
 interface ComparisonTableProps {
   comparisons: EventComparison[];
@@ -156,10 +158,12 @@ export function ComparisonTable({ comparisons, showNoTime = false }: ComparisonT
               </tr>
               {/* Events */}
               {group.events.map((comp) => (
-                <tr key={comp.event} className="hover:bg-slate-50">
+                <tr key={comp.event}>
                   <td className="px-4 py-3 whitespace-nowrap align-top">
-                    <div className="text-sm font-medium text-slate-900">
-                      {eventNames[comp.event] || comp.event}
+                    <div className="text-sm">
+                      <EventLink event={comp.event as EventCode}>
+                        {eventNames[comp.event] || comp.event}
+                      </EventLink>
                     </div>
                     {comp.meet_name && (
                       <div className="text-xs text-slate-500 mt-0.5">{comp.meet_name}</div>

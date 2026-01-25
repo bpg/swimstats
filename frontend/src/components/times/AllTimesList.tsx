@@ -1,6 +1,7 @@
 import { TimeRecord, getEventInfo } from '@/types/time';
 import { SortBy } from './SortToggle';
 import { formatDate, formatDateRange } from '@/utils/timeFormat';
+import { MeetLink } from '@/components/ui';
 
 interface AllTimesListProps {
   times: TimeRecord[];
@@ -58,14 +59,14 @@ export function AllTimesList({ times, pbTimeId, sortBy }: AllTimesListProps) {
             <th className="pb-3 font-medium">Date</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-slate-100 text-sm">
           {sortedTimes.map((time, index) => {
             const isPB = time.id === pbTimeId;
             const eventInfo = getEventInfo(time.event);
             const rank = sortBy === 'time' ? index + 1 : undefined;
 
             return (
-              <tr key={time.id} className={isPB ? 'bg-amber-50' : 'hover:bg-slate-50'}>
+              <tr key={time.id} className={isPB ? 'bg-amber-50' : ''}>
                 {/* Rank (only when sorting by time) */}
                 {sortBy === 'time' && (
                   <td className="py-3 pr-3">
@@ -106,7 +107,13 @@ export function AllTimesList({ times, pbTimeId, sortBy }: AllTimesListProps) {
                 </td>
 
                 {/* Meet */}
-                <td className="py-3 text-slate-700">{time.meet?.name ?? '—'}</td>
+                <td className="py-3">
+                  {time.meet ? (
+                    <MeetLink meetId={time.meet_id} meetName={time.meet.name} />
+                  ) : (
+                    <span className="text-slate-400">—</span>
+                  )}
+                </td>
 
                 {/* Date */}
                 <td className="py-3 text-slate-600">{formatMeetDate(time)}</td>
