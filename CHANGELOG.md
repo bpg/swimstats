@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.10.1](https://github.com/bpg/swimstats/compare/v0.10.0...v0.10.1) (2026-01-25)
+
+
+### Bug Fixes
+
+* **api:** require event_date for times and add input sanitization ([#108](https://github.com/bpg/swimstats/issues/108)) ([b6b30dd](https://github.com/bpg/swimstats/commit/b6b30dd3beaaa7faab67d3802de9763b9364583d))
+* **ui:** reset standard selection when course type changes on Compare page ([#111](https://github.com/bpg/swimstats/issues/111)) ([9f288dd](https://github.com/bpg/swimstats/commit/9f288dd71ba05fac7817d33f398c958c993f23eb))
+
+
+### Miscellaneous
+
+* **docs:** update docs to reflect embedded database migrations ([#110](https://github.com/bpg/swimstats/issues/110)) ([0c47afc](https://github.com/bpg/swimstats/commit/0c47afcb91773a7f58b3bd11166d29ddf0bbc9bc))
+
 ## [0.10.0](https://github.com/bpg/swimstats/compare/v0.9.0...v0.10.0) (2026-01-25)
 
 
