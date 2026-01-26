@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.0](https://github.com/bpg/swimstats/compare/v0.10.1...v0.11.0) (2026-01-26)
+
+
+### Features
+
+* **ui:** add course and gender filters to Standards page ([#114](https://github.com/bpg/swimstats/issues/114)) ([ba6917e](https://github.com/bpg/swimstats/commit/ba6917e2ad66d6c303d623f7b0a27697766639ae))
+* **ui:** group meet times by date for multi-day meets ([#112](https://github.com/bpg/swimstats/issues/112)) ([b5dc8cd](https://github.com/bpg/swimstats/commit/b5dc8cd9d9b9dc6e0baff7fd4bfda66e944ff631))
+
 ## [0.10.1](https://github.com/bpg/swimstats/compare/v0.10.0...v0.10.1) (2026-01-25)
 
 
