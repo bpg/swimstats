@@ -32,6 +32,38 @@ A web application for competitive swimmers to track their times, view personal b
 - 🔄 **Course Filtering** - Separate 25m (short course) and 50m (long course) data
 - 📱 **Responsive** - Works on desktop and mobile
 
+## Screenshots
+
+<details>
+<summary>Personal Bests - Track your fastest times</summary>
+
+![Personal Bests](docs/screenshots/personal-bests.png)
+</details>
+
+<details>
+<summary>Progress Charts - Visualize improvement over time</summary>
+
+![Progress Charts](docs/screenshots/progress.png)
+</details>
+
+<details>
+<summary>All Times - Complete history with dashboard</summary>
+
+![All Times](docs/screenshots/all-times.png)
+</details>
+
+<details>
+<summary>Meets - Organize times by competition</summary>
+
+![Meets](docs/screenshots/meets.png)
+</details>
+
+<details>
+<summary>Settings - Profile and data management</summary>
+
+![Settings](docs/screenshots/settings.png)
+</details>
+
 ## Tech Stack
 
 **Backend:**
@@ -311,4 +343,4 @@ Verify all OIDC environment variables are correctly set and the OIDC provider is
 
 ## License
 
-MIT
+[AGPL-3.0](LICENSE)
