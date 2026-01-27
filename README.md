@@ -47,7 +47,7 @@ A web application for competitive swimmers to track their times, view personal b
 </details>
 
 <details>
-<summary>All Times - Complete history with dashboard</summary>
+<summary>All Times - Browse time history by event</summary>
 
 ![All Times](docs/screenshots/all-times.png)
 </details>
@@ -56,6 +56,18 @@ A web application for competitive swimmers to track their times, view personal b
 <summary>Meets - Organize times by competition</summary>
 
 ![Meets](docs/screenshots/meets.png)
+</details>
+
+<details>
+<summary>Compare - Check times against standards</summary>
+
+![Compare](docs/screenshots/compare.png)
+</details>
+
+<details>
+<summary>Standards - Manage time standards</summary>
+
+![Standards](docs/screenshots/standards.png)
 </details>
 
 <details>
@@ -68,7 +80,7 @@ A web application for competitive swimmers to track their times, view personal b
 
 **Backend:**
 
-- Go 1.25+
+- Go 1.24+
 - Chi router
 - PostgreSQL with SQLC
 - OIDC authentication (Authentik/Keycloak compatible)
@@ -83,7 +95,7 @@ A web application for competitive swimmers to track their times, view personal b
 
 ## Prerequisites
 
-- [Go 1.25+](https://go.dev/dl/)
+- [Go 1.24+](https://go.dev/dl/)
 - [Node.js 18+](https://nodejs.org/)
 - [Docker](https://www.docker.com/) & Docker Compose
 
