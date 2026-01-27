@@ -179,17 +179,21 @@ jobs:
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             $(printf '${{ env.REGISTRY }}/${{ github.repository }}/backend@sha256:%s ' *)
 
+      - name: Get manifest digest
+        id: manifest
+        run: |
+          digest=$(docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ github.repository }}/backend:${{ steps.meta.outputs.version }} --format '{{.Manifest.Digest}}')
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ github.repository }}/backend:${{ steps.meta.outputs.version }}
 
-      # TODO: Re-enable attestation once repository permissions are configured
       - name: Attest
-        if: false
         uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
         with:
           subject-name: ${{ env.REGISTRY }}/${{ github.repository }}/backend
-          subject-digest: ${{ steps.push.outputs.digest }}
+          subject-digest: ${{ steps.manifest.outputs.digest }}
           push-to-registry: true
 
   merge-frontend:
@@ -236,15 +240,19 @@ jobs:
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             $(printf '${{ env.REGISTRY }}/${{ github.repository }}/frontend@sha256:%s ' *)
 
+      - name: Get manifest digest
+        id: manifest
+        run: |
+          digest=$(docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ github.repository }}/frontend:${{ steps.meta.outputs.version }} --format '{{.Manifest.Digest}}')
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ github.repository }}/frontend:${{ steps.meta.outputs.version }}
 
-      # TODO: Re-enable attestation once repository permissions are configured
       - name: Attest
-        if: false
         uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
         with:
           subject-name: ${{ env.REGISTRY }}/${{ github.repository }}/frontend
-          subject-digest: ${{ steps.push.outputs.digest }}
+          subject-digest: ${{ steps.manifest.outputs.digest }}
           push-to-registry: true
