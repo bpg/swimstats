@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.11.1](https://github.com/bpg/swimstats/compare/v0.11.0...v0.11.1) (2026-01-27)
+
+
+### Bug Fixes
+
+* **docs:** correct all-times and progress screenshots ([93a48b3](https://github.com/bpg/swimstats/commit/93a48b307057c8af080712fac0072d3696c19294))
+* **docs:** correct README inaccuracies and improve screenshots ([1ece2ff](https://github.com/bpg/swimstats/commit/1ece2ff81efb3da5fe71c397a84d7b696e317bab))
+* **docs:** show full progress chart in screenshot ([4486cd7](https://github.com/bpg/swimstats/commit/4486cd741d59956309ed9fab1910530e9ad29f7e))
+* **ui:** use consistent swimmer logo on login pages ([63a7850](https://github.com/bpg/swimstats/commit/63a7850da8c3426504bb8aa966926f9648cf38ab))
+
+
+### Miscellaneous
+
+* **docs:** add screenshots and update README ([cc892c0](https://github.com/bpg/swimstats/commit/cc892c07a105881b8cad7ea7df86a74d9fe630c6))
+* **docs:** add section about AI-assisted development ([c494678](https://github.com/bpg/swimstats/commit/c494678fd2c4d7ca6ba484a4fdd5806f56cc54b8))
+* **docs:** clarify manual time entry in README ([b1d9190](https://github.com/bpg/swimstats/commit/b1d9190810d0ce5ec14f4ce407e17500f6c4fe4d))
+* **docs:** mention squashed history due to PII ([8ad119d](https://github.com/bpg/swimstats/commit/8ad119ddaaf7046e295e80033abe950453967fa7))
+
 ## [0.11.0](https://github.com/bpg/swimstats/compare/v0.10.1...v0.11.0) (2026-01-26)
 
 
