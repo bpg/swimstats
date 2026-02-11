@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.0.0](https://github.com/bpg/swimstats/compare/v1.0.6...v2.0.0) (2026-02-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Update jsdom (27.4.0 → 28.0.0) ([#162](https://github.com/bpg/swimstats/issues/162))
+
+### Miscellaneous
+
+* **ci:** update actions/checkout digest (8e8c483 → de0fac2) ([#149](https://github.com/bpg/swimstats/issues/149)) ([9334596](https://github.com/bpg/swimstats/commit/93345965a74f94a4fe35c91bbefa534d0320d804))
+* **ci:** update image postgres (4eb15de → aa6eb30) ([#150](https://github.com/bpg/swimstats/issues/150)) ([daba321](https://github.com/bpg/swimstats/commit/daba321b3b728ec34f59ae9f9aeaeff826e3d0df))
+* **container:** update image caddy (8f2f33e → cde4154) ([#151](https://github.com/bpg/swimstats/issues/151)) ([8869b55](https://github.com/bpg/swimstats/commit/8869b5579ab7daa2f0fe34a3cc342ecbce715658))
+* **container:** update image golang (98e6cff → f6751d8) ([#152](https://github.com/bpg/swimstats/issues/152)) ([6017e4a](https://github.com/bpg/swimstats/commit/6017e4a0d5613a099077ea9cff300729f091ff37))
+* **deps:** update @types/node (25.1.0 → 25.2.0) ([#158](https://github.com/bpg/swimstats/issues/158)) ([ade0610](https://github.com/bpg/swimstats/commit/ade0610eb31e6a43e8ddcb88117909e03feebcdb))
+* **deps:** update @types/react (19.2.10 → 19.2.11) ([#153](https://github.com/bpg/swimstats/issues/153)) ([9a90946](https://github.com/bpg/swimstats/commit/9a90946201c5864be54054297df323d34fb50b63))
+* **deps:** update @vitejs/plugin-react (5.1.2 → 5.1.3) ([#154](https://github.com/bpg/swimstats/issues/154)) ([c9999ab](https://github.com/bpg/swimstats/commit/c9999ab2d7253e12ac1c2ba40d285a052e388200))
+* **deps:** update axios (1.13.4 → 1.13.5) [security] ([#165](https://github.com/bpg/swimstats/issues/165)) ([7c5c4b3](https://github.com/bpg/swimstats/commit/7c5c4b3f279a9d54b9e321982bf14b1829cb6241))
+* **deps:** update eslint-plugin-react-refresh (0.4.26 → 0.5.0) ([#159](https://github.com/bpg/swimstats/issues/159)) ([27ea99f](https://github.com/bpg/swimstats/commit/27ea99feb458581af0b806c9c6cc2ec8454f5d22))
+* **deps:** update globals (17.2.0 → 17.3.0) ([#160](https://github.com/bpg/swimstats/issues/160)) ([5bd3d5a](https://github.com/bpg/swimstats/commit/5bd3d5a56865615e200352a224321890cf138c0d))
+* **deps:** Update jsdom (27.4.0 → 28.0.0) ([#162](https://github.com/bpg/swimstats/issues/162)) ([ce4b5b0](https://github.com/bpg/swimstats/commit/ce4b5b0fdf22a2cd9068930f19e05822f9d82a53))
+* **deps:** update module github.com/go-chi/chi/v5 (v5.2.4 → v5.2.5) ([#155](https://github.com/bpg/swimstats/issues/155)) ([0d8c5ab](https://github.com/bpg/swimstats/commit/0d8c5ab265178d882a4160ebe4f82db9cbdd3ea1))
+* **deps:** update msw (2.12.7 → 2.12.8) ([#156](https://github.com/bpg/swimstats/issues/156)) ([07a9627](https://github.com/bpg/swimstats/commit/07a96276059f5e6b15e37a02d78f41cfa853fcef))
+* **deps:** update zustand (5.0.10 → 5.0.11) ([#157](https://github.com/bpg/swimstats/issues/157)) ([0d102d1](https://github.com/bpg/swimstats/commit/0d102d1a3ce1f4c33ba8a7daaa77b9db73cc11ea))
+
 ## [1.0.6](https://github.com/bpg/swimstats/compare/v1.0.5...v1.0.6) (2026-01-31)
 
 
